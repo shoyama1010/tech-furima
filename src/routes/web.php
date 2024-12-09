@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [ItemController::class, 'index'])->name('items.index');
+
+// プロフィール編集ページ
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user/profile', function () {
+        return view('auth.profile'); // プロフィール編集ビュー
+    })->name('profile.show');
 });
