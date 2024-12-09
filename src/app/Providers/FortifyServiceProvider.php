@@ -23,6 +23,7 @@ class FortifyServiceProvider extends ServiceProvider
     }
     public function boot(): void
     {
+        // 会員登録処理にクラスを紐付ける
         Fortify::createUsersUsing(CreateNewUser::class);
         
         Fortify::registerView(function () {
@@ -33,17 +34,17 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.login');  // ログイン画面
         });
 
+        // ログイン時のレートリミット設定
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
-
             return Limit::perMinute(10)->by($email . $request->ip());
         });
 
         // 会員登録処理の設定
-        // Fortify::createUsersUsing(CreateNewUser::class);
-        Fortify::createUsersUsing(function (\App\Http\Requests\RegisterRequest $request) {
-                $action = new CreateNewUser();
-                return $action->create($request->all());           
-            });
+        // // Fortify::createUsersUsing(CreateNewUser::class);
+        // Fortify::createUsersUsing(function (\App\Http\Requests\RegisterRequest $request) {
+        //         $action = new CreateNewUser();
+        //         return $action->create($request->all());           
+        //     });
     }
 }
