@@ -19,12 +19,9 @@
                 <input type="text" class="form-control" placeholder="検索">
             </div>
             <!-- ボタン -->
-            <div class="login">
-                <a href="#" class="btn btn-primary">会員登録</a>
-                <a href="#" class="btn btn-secondary">ログイン</a>
-            </div>
-            <div>
-                <a href="#" class="btn btn-mypage">マイページ</a>
+            <div class="logout">
+                <a href="#" class="btn btn-primary">ログアウト</a>
+                <a href="#" class="btn btn-secondary">マイページ</a>
                 <a href="#" class="btn btn-sell">出品</a>
             </div>
         </div>

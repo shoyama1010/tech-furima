@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('main')
 <div class="container">
     <h2 class="text-center mb-4">ログイン</h2>
     

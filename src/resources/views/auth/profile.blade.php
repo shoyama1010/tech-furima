@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
+@section('main')
 <div class="container">
     <h2 class="text-center mb-4">プロフィール設定</h2>
     <form method="POST" action="{{ route('user-profile-information.update') }}">

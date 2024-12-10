@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
-@section('content')
+@section('title', '会員登録')
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+@endsection
+
+@section('main')
 <div class="container">
     <h2 class="text-center mb-4">会員登録</h2>
 

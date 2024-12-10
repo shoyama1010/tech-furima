@@ -20,9 +20,6 @@ use App\Http\Controllers\ItemController;
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
-// プロフィール編集ページ
-Route::middleware(['auth'])->group(function () {
-    Route::get('/user/profile', function () {
-        return view('auth.profile'); // プロフィール編集ビュー
-    })->name('profile.show');
-});
+Route::get('/register', function () {
+    return view('auth.register'); // 会員登録ページ
+})->name('register');
