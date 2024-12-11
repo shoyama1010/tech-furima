@@ -3,7 +3,8 @@
 @section('main')
 
 <div class="main">
-    <h1>商品一覧</h1>
+    <h2>おすすめ商品</h2>
+    <h2>マイリスト</h2>
     <div class="items-container">
         @foreach ($items as $item)
         <div class="item">
