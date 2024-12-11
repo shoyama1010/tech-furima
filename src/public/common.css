@@ -1,5 +1,5 @@
 .navbar {
-    background-color: #333;
+    background-color:black;
     color: #fff;
     padding: 10px;
 }
@@ -16,4 +16,8 @@
 
 .container {
     margin-top: 20px;
+}
+
+.nav {
+    background-color: black;
 }
