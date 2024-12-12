@@ -1,0 +1,71 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.row.mb-4 {
+    display: flex;
+    justify-content: space-between;
+    /* 左右に余裕を持たせる */
+    align-items: center;
+    margin-bottom: 20px;
+    /* justify-content: center; */
+    /* 中央揃え */
+    /* gap: 20px; */
+    /* 間隔を調整 */
+}
+
+/* .item-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+} */
+
+.item img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* .item-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+} */
+
+/* .item-price {
+    color: #f15b5b;
+    font-size: 16px;
+    margin-bottom: 10px;
+} */
+
+.item {
+    border: 1px solid #ddd;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 300px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.items-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    /* 左揃え */
+}
+
+/* 追加 */
+.item h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.item p {
+    margin-bottom: 5px;
+    color: #666;
+}

@@ -18,6 +18,7 @@
             <div class="mx-3 flex-grow-1">
                 <input type="text" class="form-control" placeholder="検索">
             </div>
+            
             <!-- ボタン -->
             <div class="logout">
                 <form method="POST" action="{{ route('logout') }}" class="d-inline">

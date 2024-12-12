@@ -1,0 +1,33 @@
+header {
+    background-color: #000 !important;
+    /* ヘッダーの背景を黒に設定 */
+    color: #fff;
+    /* テキストを白に設定 */
+    padding: 10px 0;
+}
+
+header a {
+    color: #fff !important;
+    /* ヘッダー内リンクの色を白に設定 */
+    text-decoration: none;
+        /* リンク下線を削除 */
+}
+
+/* .navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+} */
+
+.navbar a:hover {
+    color: #f15b5b;
+}
+
+/* .container {
+    margin-top: 20px;
+} */
+
+.navbar {
+    padding: 10px;
+    background-color: #000 !important;
+}
