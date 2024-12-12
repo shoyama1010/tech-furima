@@ -18,14 +18,14 @@
             <div class="mx-3 flex-grow-1">
                 <input type="text" class="form-control" placeholder="検索">
             </div>
-            
+
             <!-- ボタン -->
             <div class="logout">
                 <form method="POST" action="{{ route('logout') }}" class="d-inline">
                     @csrf
                     <button type="submit" class="btn btn-primary">ログアウト</button>
                 </form>
-                <a href="{{ url('/user/profile') }}" class="btn btn-secondary">マイページ</a>
+                <a href="{{ route('mypage')}}" class="btn btn-secondary">マイページ</a>
                 <a href="{{ url('/items/create') }}" class="btn btn-sell">出品</a>
             </div>
         </div>

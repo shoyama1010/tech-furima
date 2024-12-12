@@ -34,3 +34,8 @@ Route::post('/login', [AuthController::class, 'login']);
 
 // ログアウト処理
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mypage', [ItemController::class, 'mypage'])->name('mypage');
+});
+
