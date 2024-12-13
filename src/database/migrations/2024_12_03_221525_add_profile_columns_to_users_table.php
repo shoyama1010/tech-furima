@@ -14,7 +14,9 @@ class AddProfileColumnsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->string('phone')->nullable(); // 電話番号
+            $table->string('address')->nullable(); // 住所
+            $table->string('profile_image')->nullable(); // プロフィール画像パス
         });
     }
 
@@ -26,7 +28,9 @@ class AddProfileColumnsToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropColumn(['phone', 'address', 'profile_image']);
+            });
         });
     }
 }

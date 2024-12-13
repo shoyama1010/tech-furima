@@ -20,18 +20,16 @@ use App\Http\Controllers\AuthController;
 // });
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
-
+// 会員登録処理
 Route::get('/register', function () {
-    return view('auth.register'); // 会員登録ページ
+    return view('auth.register'); 
 })->name('register');
 Route::post('/register', [AuthController::class, 'register']);
-
 // ログイン処理
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-
 // ログアウト処理
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -39,3 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mypage', [ItemController::class, 'mypage'])->name('mypage');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mypage/profile', [ItemController::class, 'editProfile'])->name('profile.edit');
+    Route::post('/mypage/profile', [ItemController::class, 'updateProfile'])->name('profile.update');
+});
