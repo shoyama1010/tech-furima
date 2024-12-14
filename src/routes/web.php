@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,6 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 // 会員登録処理
@@ -40,4 +38,9 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/mypage/profile', [ItemController::class, 'editProfile'])->name('profile.edit');
     Route::post('/mypage/profile', [ItemController::class, 'updateProfile'])->name('profile.update');
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 });
+
+Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');
+
+// Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');

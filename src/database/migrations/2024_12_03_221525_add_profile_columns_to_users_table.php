@@ -27,10 +27,19 @@ class AddProfileColumnsToUsersTable extends Migration
      */
     public function down()
     {
+        // Schema::table('users', function (Blueprint $table) {
+        //     $table->dropColumn(['phone', 'address', 'profile_image']);
+        // });
         Schema::table('users', function (Blueprint $table) {
-            Schema::table('users', function (Blueprint $table) {
-                $table->dropColumn(['phone', 'address', 'profile_image']);
-            });
+            if (Schema::hasColumn('users', 'phone')) {
+                $table->dropColumn('phone');
+            }
+            if (Schema::hasColumn('users', 'address')) {
+                $table->dropColumn('address');
+            }
+            if (Schema::hasColumn('users', 'profile_image')) {
+                $table->dropColumn('profile_image');
+            }
         });
     }
 }

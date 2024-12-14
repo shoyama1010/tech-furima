@@ -7,8 +7,6 @@
         <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : '/images/default-profile.png' }}" alt="プロフィール画像" class="rounded-circle" width="100" height="100">
         <h1>ユーザー名</h1>
         <p>{{ $user->name }}</p>
-        <!-- <a href="{{ url('/mypage/profile') }}" class="btn btn-outline-primary">プロフィールを編集</a> -->
-        <!-- <a href="{{ route('profile.edit') }}" class="btn btn-primary btn-edit">プロフィールを編集</a> -->
         <a href="{{ route('profile.edit') }}" class="btn btn-primary mt-2">プロフィールを編集</a>
     </div>
 </div>

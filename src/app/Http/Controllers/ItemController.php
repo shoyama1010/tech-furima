@@ -9,13 +9,26 @@ use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // データベースから商品を取得
-        $items = Item::all(); // 必要ならpaginate()も利用可
+        $user = Auth::user();     
+        $items = Item::all(); // データベースから商品全体を取得
+
+        $viewType = $request->query('page', 'recommend'); // デフォルトは'recommend'
+        // 認証済みかつ'mylist'が選択されている場合
+        if ($viewType === 'mylist' && $user) {
+            // ユーザーが「いいね」した商品を取得
+            $items = $user->likes()->with('item')->get()->pluck('item');
+        }
 
         // ビューにデータを渡して表示
-        return view('items.index', compact('items'));
+        // return view('items.index', compact('items'));
+        return view('items.index',
+            [
+                'items' => $items,
+                'viewType' => $viewType, // 現在の表示タイプ
+            ]
+        );
     }
 
     public function mypage()
@@ -56,8 +69,8 @@ class ItemController extends Controller
             if ($user->profile_image) {
                 Storage::delete($user->profile_image); // 既存の画像を削除
             }
-            $path = $request->file('profile_image')->store('profile_images');
-            $validated['profile_image'] = $path;
+            $path = $request->file('profile_image')->store('profile_images', 'public');
+            $validated['profile_image'] = $path; // 公開ディレクトリに保存
         }
 
         // ユーザー情報の更新
@@ -65,4 +78,18 @@ class ItemController extends Controller
 
         return redirect()->route('mypage')->with('success', 'プロフィールを更新しました。');
     }
+
+    public function show($id)
+    {
+        // 商品情報を取得
+        $item = Item::with('category', 'comments.user')->findOrFail($id);
+
+        // 商品が見つからなかった場合に404エラー
+        if (!$item) {
+            abort(404, '商品が見つかりませんでした。');
+        }
+        
+        return view('items.detail', compact('item'));
+    }
+
 }
