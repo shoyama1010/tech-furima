@@ -13,9 +13,9 @@
         <h2>{{ $item->name }}</h2>
         <p><strong>ブランド名:</strong> {{ $item->brand }}</p>
         <p><strong>価格:</strong> ¥{{ number_format($item->price) }}</p>
-        <a href="#" class="btn btn-danger">購入手続きへ</a>
         <p><strong>いいね数:</strong> {{ $item->likes_count ?? 0 }}</p>
         <p><strong>コメント数:</strong> {{ $item->comments->count() }}</p>
+        <a href="#" class="btn btn-danger">購入手続きへ</a>
         <p><strong>商品説明:</strong> {{ $item->description }}</p>
         <p><strong>カテゴリ:</strong> {{ $item->category->name ?? 'なし' }}</p>
         <p><strong>状態:</strong> {{ $item->condition }}</p>
@@ -24,7 +24,7 @@
         <div class="comments-section">
             <!-- コメント履歴 -->
             <div class="comments-list">
-                <h3>コメント履歴</h3>
+                <h3>コメント ({{ $item->comments->count() }})</h3>
                 @foreach ($item->comments as $comment)
                 <div class="comment">
                     <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}</p>
@@ -33,7 +33,7 @@
                 @endforeach
             </div>
 
-            <h3>コメント</h3>
+            <h3>商品へのコメント</h3>
             <form action="{{ route('comments.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="item_id" value="{{ $item->id }}">

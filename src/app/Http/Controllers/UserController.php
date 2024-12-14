@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-public function show()
-{
-return view('user.mypage'); // マイページビューを指定
-}
+    public function show()
+    {
+        return view('user.mypage'); // マイページビューを指定
+    }
 }
