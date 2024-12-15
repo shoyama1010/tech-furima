@@ -25,6 +25,7 @@ http://localhost
 ・html
 ・css
 ・mysql 8.0.26
+・メール認証：mailhog
 
 # テーブル設計
 
