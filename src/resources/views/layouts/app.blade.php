@@ -13,7 +13,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/common.css') }}">
     <link rel="stylesheet" href="{{ asset('css/item.css') }}">
-    <!-- <link rel="stylesheet" href="{{ asset('css/mypage.css') }}"> -->
+    <link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
     <!-- !-- プロフィール関連CSS -->
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/detail.css') }}">

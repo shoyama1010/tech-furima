@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Requests\ProfileRequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,7 @@ class ItemController extends Controller
         // 認証済みかつ'mylist'が選択されている場合
         if ($viewType === 'mylist' && $user) {
             // ユーザーが「いいね」した商品を取得
+
             $items = $user->likes()->with('item')->get()->pluck('item');
         }
 
@@ -52,17 +54,10 @@ class ItemController extends Controller
     }
     
     // プロフィールを更新
-    public function updateProfile(Request $request)
+    public function updateProfile(ProfileRequest $request)
     {
         $user = Auth::user();
-
-        // バリデーション
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string|max:255',
-            'profile_image' => 'nullable|image|mimes:jpeg,png|max:2048',
-        ]);
+     
 
         // プロフィール画像の保存
         if ($request->hasFile('profile_image')) {
@@ -74,7 +69,7 @@ class ItemController extends Controller
         }
 
         // ユーザー情報の更新
-        $user->update($validated);
+        $user->update($request->validated());
 
         return redirect()->route('mypage')->with('success', 'プロフィールを更新しました。');
     }

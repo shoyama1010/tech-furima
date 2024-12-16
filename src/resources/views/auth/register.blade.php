@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
-@section('title', '会員登録')
+<!-- @section('title', '会員登録') -->
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 @endsection
 
 @section('main')
 <div class="container">
+
     <h2 class="text-center mb-4">会員登録</h2>
 
     @if ($errors->any())
@@ -21,7 +22,7 @@
 
     <form method="POST" action="{{ route('register') }}">
         @csrf
-        <div class="form-group mb-3">
+        <div class="form-group mb-3">    
             <label for="name">ユーザー名</label>
             <input type="text" id="name" name="name" class="form-control" required>
         </div>

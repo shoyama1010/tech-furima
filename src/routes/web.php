@@ -18,29 +18,31 @@ use App\Http\Controllers\CommentController;
 
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
-// 会員登録処理
-Route::get('/register', function () {
-    return view('auth.register'); 
-})->name('register');
-Route::post('/register', [AuthController::class, 'register']);
-// ログイン処理
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-Route::post('/login', [AuthController::class, 'login']);
-// ログアウト処理
+
+Route::middleware(['guest'])->group(
+    function () {
+        // 会員登録処理
+        Route::get('/register', function () {
+            return view('auth.register');
+        })->name('register');
+        Route::post('/register', [AuthController::class, 'register']);
+
+        // ログイン処理
+        Route::get('/login', function () {
+            return view('auth.login');
+        })->name('login');
+        Route::post('/login', [AuthController::class, 'login']);
+    }
+);
+
+// ログアウト処理 (認証済みのみ）
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/mypage', [ItemController::class, 'mypage'])->name('mypage');
-});
-
-Route::middleware(['auth'])->group(function () {
     Route::get('/mypage/profile', [ItemController::class, 'editProfile'])->name('profile.edit');
     Route::post('/mypage/profile', [ItemController::class, 'updateProfile'])->name('profile.update');
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 });
 
 Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');
-
-// Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');

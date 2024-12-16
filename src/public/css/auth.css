@@ -16,22 +16,84 @@ h2 {
 form {
     display: flex;
     flex-direction: column;
+    gap: 15px;
+}
+
+.container form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
 form input,
 form button {
-    margin-bottom: 15px;
+    width: 100%;
+    /* 入力フィールドとボタンの幅を調整 */
+    max-width: 300px;
+    /* 最大幅を設定 */
+    margin: 0 auto;
+    /* 下側の余白 */
+    border: 1px solid #ccc;
+    /* 境界線 */
+    border-radius: 5px;
+    /* 角を丸く */
+    box-sizing: border-box;
+    /* padding込みでサイズを調整 */
     padding: 10px;
     font-size: 16px;
+    box-sizing: border-box;
+    /* padding込みでサイズを調整 */
 }
 
-button {
+.container button {
     background-color: #007bff;
     color: white;
-    border: none;
+    font-weight: bold;
+    /* フォントを太字 */
     cursor: pointer;
+    border: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    /* ホバー時の滑らかな変化 */
 }
 
-button:hover {
+.container button:hover {
     background-color: #0056b3;
+}
+
+/* エラーメッセージのスタイル */
+.container .alert {
+    background-color: #ffdddd;
+    /* 背景色 */
+    color: #d8000c;
+    /* テキスト色 */
+    border: 1px solid #d8000c;
+    /* 境界線 */
+    border-radius: 5px;
+    /* 角を丸く */
+    padding: 10px;
+    /* 内側の余白 */
+    margin-bottom: 15px;
+    /* 下側の余白 */
+    text-align: left;
+    /* 左揃え */
+    font-size: 14px;
+}
+
+/* ログインリンクのスタイル */
+.container a {
+    display: block;
+    /* ブロック要素 */
+    text-align: center;
+    /* 中央揃え */
+    color: #007bff;
+    /* リンクの色 */
+    text-decoration: none;
+    /* 下線を消す */
+    font-size: 14px;
+}
+
+.container a:hover {
+    text-decoration: underline;
+    /* ホバー時に下線を表示 */
 }

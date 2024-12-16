@@ -2,6 +2,7 @@
 
 @section('main')
 <div class="container">
+    
     <!-- 商品画像部分 -->
     <div class="image-container">
         <!-- <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" class="img-fluid"> -->

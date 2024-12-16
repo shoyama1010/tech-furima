@@ -2,35 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\Item;
 use App\Http\Requests\CommentRequest;
+use Illuminate\Support\Facades\Auth; // Authファサードをインポート
 
 class CommentController extends Controller
-{
+{  
     public function store(CommentRequest $request)
     {
-        // バリデーション
-        // $request->validate([
-        //     'content' => 'required|string|max:500',
-        //     'item_id' => 'required|exists:items,id',
-        // ]);
-
-        // デバッグ用
-        if (!auth()->check()) {
-            dd('ユーザーがログインしていません');
-        }
-
-        if (is_null(auth()->id())) {
-            dd('auth()->id()がNULLです');
-        }
-
         // コメントを保存
         Comment::create([
-            'content' => $request->input('content'),
-            'item_id' => $request->input('item_id'),
-            'user_id' => auth()->id(), // ログインユーザーID
+            'user_id' => Auth::id(),
+            'item_id' => $request->validated()['item_id'], // validated()でバリデーション済みデータを取得
+            'content' => $request->validated()['content'],
         ]);
 
         return redirect()->back()->with('success', 'コメントが投稿されました！');
