@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,10 +40,15 @@ Route::middleware(['guest'])->group(
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
+    // マイページ
     Route::get('/mypage', [ItemController::class, 'mypage'])->name('mypage');
     Route::get('/mypage/profile', [ItemController::class, 'editProfile'])->name('profile.edit');
     Route::post('/mypage/profile', [ItemController::class, 'updateProfile'])->name('profile.update');
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    
+    // 購入処理
+    Route::get('/purchase/{id}', [PurchaseController::class, 'buyitem'])->name('purchase.show');
+
 });
 
 Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');

@@ -6,7 +6,7 @@
 @endsection
 
 @section('main')
-<div class="container">
+<div class="auth-container">
 
     <h2 class="text-center mb-4">会員登録</h2>
 

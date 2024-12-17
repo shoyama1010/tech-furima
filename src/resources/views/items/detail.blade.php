@@ -2,7 +2,7 @@
 
 @section('main')
 <div class="container">
-    
+
     <!-- 商品画像部分 -->
     <div class="image-container">
         <!-- <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" class="img-fluid"> -->
@@ -16,7 +16,7 @@
         <p><strong>価格:</strong> ¥{{ number_format($item->price) }}</p>
         <p><strong>いいね数:</strong> {{ $item->likes_count ?? 0 }}</p>
         <p><strong>コメント数:</strong> {{ $item->comments->count() }}</p>
-        <a href="#" class="btn btn-danger">購入手続きへ</a>
+        <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
         <p><strong>商品説明:</strong> {{ $item->description }}</p>
         <p><strong>カテゴリ:</strong> {{ $item->category->name ?? 'なし' }}</p>
         <p><strong>状態:</strong> {{ $item->condition }}</p>

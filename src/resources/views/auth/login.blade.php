@@ -1,9 +1,13 @@
 @extends('layouts.app')
 
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+@endsection
+
 @section('main')
-<div class="container">
+<div class="auth-container">
     <h2 class="text-center mb-4">ログイン</h2>
-    
+
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -25,7 +29,7 @@
             <input type="password" id="password" name="password" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-primary w-100">ログインする</button>
-        
+
         <a href="{{ route('register') }}" class="d-block text-center mt-3">会員登録はこちら</a>
     </form>
 </div>
