@@ -42,4 +42,4 @@
         <a href="{{ route('login') }}" class="d-block text-center mt-3">ログインはこちら</a>
     </form>
 </div>
-<!-- @endsection -->
+@endsection

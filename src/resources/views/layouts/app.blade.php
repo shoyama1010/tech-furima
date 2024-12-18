@@ -17,6 +17,8 @@
     <!-- !-- プロフィール関連CSS -->
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/detail.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/address.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/purchase.css') }}">
     <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </head>

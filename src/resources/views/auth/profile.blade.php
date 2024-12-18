@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+@endsection
+
 @section('main')
 <div class="container">
     <h2 class="text-center mb-4">プロフィール設定</h2>

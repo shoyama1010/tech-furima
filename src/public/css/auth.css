@@ -45,7 +45,8 @@
 }
 
 .auth-container button {
-    background-color: #007bff;
+    /* background-color: #007bff; */
+    background-color: #f15b5b;
     color: white;
     font-weight: bold;
     /* フォントを太字 */
