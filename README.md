@@ -17,6 +17,8 @@ http://localhost
 ・コメント送信機能
 ・ユーザー情報変更機能
 ・商品検索機能
+・購入機能
+・決済機能
 
 # 使用技術
 ・Laravel 8
@@ -26,6 +28,7 @@ http://localhost
 ・css
 ・mysql 8.0.26
 ・メール認証：mailhog
+・stripe
 
 # テーブル設計
 
