@@ -10,22 +10,22 @@ header a {
     color: #fff !important;
     /* ヘッダー内リンクの色を白に設定 */
     text-decoration: none;
-        /* リンク下線を削除 */
+    /* リンク下線を削除 */
 }
 
-/* .navbar a {
+.navbar a {
     color: #fff;
     text-decoration: none;
     margin: 0 15px;
-} */
+}
 
 .navbar a:hover {
     color: #f15b5b;
 }
 
-/* .container {
+.container {
     margin-top: 20px;
-} */
+}
 
 .navbar {
     padding: 10px;
@@ -41,4 +41,9 @@ header a {
 
 .text-danger {
     color: #f15b5b !important;
+}
+
+.logout {
+    display: flex;
+    justify-content: space-between;
 }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-<!-- @section('title', '会員登録') -->
+@section('title', '会員登録')
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/auth.css') }}">
 @endsection
@@ -42,4 +42,4 @@
         <a href="{{ route('login') }}" class="d-block text-center mt-3">ログインはこちら</a>
     </form>
 </div>
-@endsection
+<!-- @endsection -->

@@ -46,9 +46,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/mypage/profile', [ItemController::class, 'updateProfile'])->name('profile.update');
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     
-    // 購入処理
+    // 購入画面表示
     Route::get('/purchase/{id}', [PurchaseController::class, 'buyitem'])->name('purchase.show');
-
+    // 購入処理
+    Route::post('/purchase/{id}', [PurchaseController::class, 'purchase'])->name('purchase.process');
+    // 配送先変更画面
+    Route::get('/purchase/address/{id}', [PurchaseController::class, 'editAddress'])->name('purchase.address.edit');
+    Route::post('/purchase/address/{id}', [PurchaseController::class, 'updateAddress'])->name('purchase.address.update');
 });
 
 Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');
