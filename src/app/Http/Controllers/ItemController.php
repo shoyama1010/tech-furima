@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Category;
 
 class ItemController extends Controller
 {
@@ -85,6 +86,26 @@ class ItemController extends Controller
         }
         
         return view('items.detail', compact('item'));
+    }
+
+    // 商品カテゴリー
+    public function create()
+    {
+        $categories = Category::all();
+        return view('items.create', compact('categories'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'category_id' => 'required|exists:categories,id',
+            'condition' => 'required|in:new,used',
+        ]);
+
+        Item::create($request->all());
+        return redirect()->route('items.index')->with('success', '商品を出品しました！');
     }
 
 }
