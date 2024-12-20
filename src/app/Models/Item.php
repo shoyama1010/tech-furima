@@ -36,10 +36,12 @@ class Item extends Model
     public function likes()
     {
         return $this->hasMany(Like::class); //１対多
-        // return $this->belongsToMany(Item::class, 'likes');  
-        // User ↔︎ Item: 多対多
     }
-    
+    // 追加処理
+    // public function likeCount()
+    // {
+    //     return $this->likes()->count();
+    // }
 
     public function images()
     {

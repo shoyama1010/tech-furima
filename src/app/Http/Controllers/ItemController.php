@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
+use App\Models\Like;
 
 class ItemController extends Controller
 {
@@ -20,10 +21,8 @@ class ItemController extends Controller
         // 認証済みかつ'mylist'が選択されている場合
         if ($viewType === 'mylist' && $user) {
             // ユーザーが「いいね」した商品を取得
-
             $items = $user->likes()->with('item')->get()->pluck('item');
         }
-
         // ビューにデータを渡して表示
         // return view('items.index', compact('items'));
         return view('items.index',
@@ -78,7 +77,7 @@ class ItemController extends Controller
     public function show($id)
     {
         // 商品情報を取得
-        $item = Item::with('category', 'comments.user')->findOrFail($id);
+        $item = Item::with(['likes','category', 'comments.user'])->findOrFail($id);
 
         // 商品が見つからなかった場合に404エラー
         if (!$item) {
@@ -108,4 +107,24 @@ class ItemController extends Controller
         return redirect()->route('items.index')->with('success', '商品を出品しました！');
     }
 
+    public function like(Request $request, $id)
+    {
+        $userId = auth()->id();
+
+        // すでにいいねしているか確認
+        $like = Like::where('user_id', $userId)->where('item_id', $id)->first();
+
+        if ($like) {
+            // いいねを解除
+            $like->delete();
+            return response()->json(['message' => 'いいねを解除しました', 'liked' => false]);
+        } else {
+            // いいねを登録
+            Like::create([
+                'user_id' => $userId,
+                'item_id' => $id,
+            ]);
+            return response()->json(['message' => 'いいねしました', 'liked' => true]);
+        }
+    }
 }
