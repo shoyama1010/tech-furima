@@ -7,9 +7,10 @@ use App\Models\Item;
 
 class LikeController extends Controller
 {
-    public function toggle(Item $item)
+    public function toggle(Request $request, Item $item)
     {
         $user = auth()->user();
+        
         $liked = $item->likes()->where('user_id', $user->id)->exists();
 
         if ($liked) {

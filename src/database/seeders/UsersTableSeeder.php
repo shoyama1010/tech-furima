@@ -15,6 +15,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        // 全データを削除
+        DB::table('users')->delete();
+
+        // IDのオートインクリメントをリセット
+        DB::statement('ALTER TABLE users AUTO_INCREMENT = 1;');
+
         DB::table('users')->insert([
             [
                 'name' => 'Test User',

@@ -13,10 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        // $this->call([
-        //     ItemsTableSeeder::class,
-        // ]);
+
+        // 順序を整理: Categories → Users → Items
+        $this->call(CategoriesTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(ItemsTableSeeder::class);
     }

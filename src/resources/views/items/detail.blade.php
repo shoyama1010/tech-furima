@@ -33,9 +33,9 @@
         <!-- カテゴリ表示 -->
         <p><strong>カテゴリ:</strong>
             @if ($item->category)
-            <span class="badge bg-primary">{{ $item->category->name }}</span>
+                <span class="badge bg-primary">{{ $item->category->name }}</span>
             @else
-            なし
+                なし
             @endif
         </p>
 

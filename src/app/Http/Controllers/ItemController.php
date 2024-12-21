@@ -97,10 +97,13 @@ class ItemController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'price' => 'required|numeric',
             'description' => 'required|string|max:1000',
             'category_id' => 'required|exists:categories,id',
             'condition' => 'required|in:new,used',
         ]);
+
+        $validated['user_id'] = auth()->id();
 
         Item::create($request->all());
         return redirect()->route('items.index')->with('success', '商品を出品しました！');

@@ -16,6 +16,7 @@ class Item extends Model
         'image_url',
         'user_id',
         'category_id',
+        'condition',
     ];
 
     public function user()
@@ -37,11 +38,7 @@ class Item extends Model
     {
         return $this->hasMany(Like::class); //１対多
     }
-    // 追加処理
-    // public function likeCount()
-    // {
-    //     return $this->likes()->count();
-    // }
+  
 
     public function images()
     {
