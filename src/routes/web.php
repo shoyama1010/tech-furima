@@ -5,6 +5,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,3 +63,5 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');
+Route::post('/items/{item}/toggle-like', [LikeController::class, 'toggle'])->name('items.toggle-like');
+

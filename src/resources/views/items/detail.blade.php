@@ -17,13 +17,14 @@
 
         <!-- いいね機能 -->
         <div class="like-section">
-            <!-- <p><strong>いいね数:</strong> ?{{ $item->likes_count ?? 0 }}</p> -->
+            <!-- <p><strong>いいね数:</strong> {{ $item->likes_count ?? 0 }}</p> -->
             <strong>いいね数:</strong>
             <span id="like-count">{{ $item->likes->count() }}</span>
             <button id="like-button" class="btn btn-outline-secondary">
                 {{ $item->likes->contains('user_id', auth()->id()) ? '★' : '☆' }}
             </button>
         </div>
+
         <!-- コメント表示 -->
         <p><strong>コメント数:</strong> {{ $item->comments->count() }}</p>
         <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
@@ -31,22 +32,16 @@
 
         <!-- カテゴリ表示 -->
         <p><strong>カテゴリ:</strong>
-            <!-- {{ $item->category->name ?? 'なし' }} -->
-            @if ($item->categories && !$item->categories->isEmpty())
-            @foreach ($item->categories as $category)
-            <span class="badge bg-primary">{{ $category->name }}</span>
-            @endforeach
+            @if ($item->category)
+            <span class="badge bg-primary">{{ $item->category->name }}</span>
             @else
             なし
             @endif
-            <!-- @if($item->category)
-            {{ $item->category->name }}
-            @else
-            なし
-            @endif -->
         </p>
+
         <!-- コンディション状態 -->
         <p><strong>状態:</strong> {{ $item->condition }}</p>
+
         <!-- コメント処理 -->
         <div class="comments-section">
             <!-- コメント履歴 -->
@@ -71,23 +66,8 @@
     </div>
 </div>
 
-<script>
-    document.getElementById('like-button').addEventListener('click', () => {
-        fetch(`/items/{{ $item->id }}/like`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('like-button').textContent = data.liked ? '★' : '☆';
-                document.getElementById('like-count').textContent =
-                    parseInt(document.getElementById('like-count').textContent) + (data.liked ? 1 : -1);
-            });
-    });
-</script>
+
+
 <script>
     document.getElementById('like-button').addEventListener('click', function() {
         fetch(`/items/{{ $item->id }}/toggle-like`, {

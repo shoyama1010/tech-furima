@@ -26,6 +26,8 @@ header a {
 .container {
     margin-top: 20px;
     /* background-color: #000 !important; */
+    /* display: flex; */
+    /* justify-content: space-between; */
 }
 
 .navbar {
@@ -46,6 +48,9 @@ header a {
 
 .logout {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between;  
+}
+
+.btn btn-sell {
     
 }

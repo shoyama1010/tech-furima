@@ -9,7 +9,7 @@
          
             <!-- 検索バー -->
             <div class="mx-3 flex-grow-1">
-                <input type="text" class="form-control" placeholder="検索">
+                <input type="text" class="form-control" placeholder="なにをお探しですか？">
             </div>
 
             <!-- ボタン -->

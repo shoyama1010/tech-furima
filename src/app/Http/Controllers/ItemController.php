@@ -58,7 +58,6 @@ class ItemController extends Controller
     {
         $user = Auth::user();
      
-
         // プロフィール画像の保存
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image) {
