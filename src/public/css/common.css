@@ -3,7 +3,7 @@ header {
     /* ヘッダーの背景を黒に設定 */
     color: #fff;
     /* テキストを白に設定 */
-    padding: 10px 0;
+    padding: 5px 0;
 }
 
 header a {
@@ -23,17 +23,28 @@ header a {
     color: #f15b5b;
 }
 
-.container {
-    margin-top: 20px;
-    /* background-color: #000 !important; */
-    /* display: flex; */
-    /* justify-content: space-between; */
+/* 追加 */
+.logout {
+    display: flex;
+    justify-content: flex-end;
+    /* 右揃え */
+    gap: 10px;
+    /* ボタン間の隙間 */
+}
+
+
+.header-container {
+    margin-top: 10px;
+    background-color: #000 !important;
+    display: flex;
+    justify-content: space-between;
+    /* justify-content: space-around; */
 }
 
 .navbar {
     padding: 10px;
     background-color: #000 !important;
-    /* max-width: 1200px; */
+    max-width: 1200px;
 }
 
 
@@ -46,11 +57,32 @@ header a {
     color: #f15b5b !important;
 }
 
-.logout {
-    display: flex;
-    justify-content: space-between;  
+/* 追加 */
+
+/* 出品ボタンのスタイル */
+.btn-sell {
+    background-color: #fff;
+    /* 背景色を白 */
+    color: #000 !important;
+    /* 文字色を黒 */
+    border: 1px solid #fff;
+    /* 枠線を白 */
+    padding: 8px 12px;
+    border-radius: 4px;
 }
 
-.btn btn-sell {
-    
+
+
+.btn-primary {
+    background-color: #007bff;
+    /* ログアウトボタンの背景色 */
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    /* ログアウトボタンホバー時の色 */
 }

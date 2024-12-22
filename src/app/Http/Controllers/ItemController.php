@@ -24,7 +24,6 @@ class ItemController extends Controller
             $items = $user->likes()->with('item')->get()->pluck('item');
         }
         // ビューにデータを渡して表示
-        // return view('items.index', compact('items'));
         return view('items.index',
             [
                 'items' => $items,
