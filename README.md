@@ -35,6 +35,8 @@ http://localhost
 
 # ER図
 
+![furima1](https://github.com/user-attachments/assets/970ff2c5-7c29-41c3-9168-b1d98da86336)
+
 # 環境構築
 1 Gitファイルをクローンする
 git clone https://github.com/shoyama1010/tech-furima.git
