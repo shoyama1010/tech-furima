@@ -1,5 +1,6 @@
 # tech-furima
 
+![スクリーンショット (315)](https://github.com/user-attachments/assets/efe1a434-1ee6-4cb5-ae76-2c849c63ab57)
 
 アイテムの出品と購入を行うためのフリマアプリです。
 出品されている商品を検索できます。また、商品の詳細を閲覧することができます。
