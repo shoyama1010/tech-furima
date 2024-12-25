@@ -26,6 +26,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'Test User',
                 'email' => 'test@example.com',
                 'password' => Hash::make('password'), // パスワードを暗号化
+                'postal_code' => '123-4567', // テスト郵便番号
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

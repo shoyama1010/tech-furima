@@ -18,8 +18,8 @@
             <input type="text" name="address" class="form-control" required>
         </div>
         <div class="form-group mb-3">
-            <label for="name">宛先名</label>
-            <input type="text" name="name" class="form-control" required>
+            <label for="building">建物名</label>
+            <input type="text" name="building" class="form-control" required>
         </div>
         <button type="submit" class="btn btn-primary">更新する</button>
     </form>

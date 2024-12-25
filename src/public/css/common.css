@@ -53,12 +53,12 @@ header a {
     text-decoration: underline;
 }
 
+
 .text-danger {
     color: #f15b5b !important;
 }
 
 /* 追加 */
-
 /* 出品ボタンのスタイル */
 .btn-sell {
     background-color: #fff;

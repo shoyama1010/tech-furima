@@ -15,8 +15,8 @@
             <input type="text" id="name" name="name" value="{{ auth()->user()->name }}" class="form-control" required>
         </div>
         <div class="form-group mb-3">
-            <label for="phone">電話番号</label>
-            <input type="text" id="phone" name="phone" class="form-control">
+            <label for="postal_code">郵便番号</label>
+            <input type="text" id="postal_code" name="postal_code" class="form-control">
         </div>
         <div class="form-group mb-3">
             <label for="address">住所</label>
