@@ -21,6 +21,8 @@ use App\Http\Controllers\LikeController;
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
+Route::get('/search', [ItemController::class, 'search'])->name('items.search');
+
 Route::middleware(['guest'])->group(
     function () {
         // 会員登録処理

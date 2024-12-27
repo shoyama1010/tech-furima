@@ -11,7 +11,12 @@
             @if(Auth::check())
             <!-- 検索バー -->
             <div class="mx-3 flex-grow-1">
-                <input type="text" class="form-control" placeholder="なにをお探しですか？">
+                <!-- <form class="flex" action="/search" method="GET"> -->
+                <form action="{{ route('items.search') }}" method="GET" class="d-flex mx-3 flex-grow-1">
+                    @csrf
+                    <input type="text" class="form-control" placeholder="なにをお探しですか？" value="{!! $keyword ?? '' !!}" name="keyword" />
+                    <!-- <input type="submit" class="search__btn" value="検索" /> -->
+                </form>
             </div>
 
             <!-- ボタン -->

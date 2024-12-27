@@ -14,7 +14,7 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();     
+        $user = Auth::user();
         $items = Item::all(); // データベースから商品全体を取得
 
         $viewType = $request->query('page', 'recommend'); // デフォルトは'recommend'
@@ -24,13 +24,30 @@ class ItemController extends Controller
             $items = $user->likes()->with('item')->get()->pluck('item');
         }
         // ビューにデータを渡して表示
-        return view('items.index',
+        return view(
+            'items.index',
             [
                 'items' => $items,
                 'viewType' => $viewType, // 現在の表示タイプ
             ]
         );
     }
+
+    // 検索機能    
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword'); // 検索キーワード取得
+
+        // キーワード検索処理
+        $items = Item::where('name', 'LIKE', '%' . $keyword . '%') 
+        // 商品名で部分一致で検索
+            ->orWhere('description', 'LIKE', '%' . $keyword . '%') 
+            // 商品説明でも検索
+            ->paginate(10); // ページネーション
+
+        return view('search', compact('items', 'keyword'));
+    }
+    
 
     public function mypage()
     {
