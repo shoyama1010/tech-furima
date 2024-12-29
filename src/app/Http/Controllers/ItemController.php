@@ -73,6 +73,14 @@ class ItemController extends Controller
     public function updateProfile(ProfileRequest $request)
     {
         $user = Auth::user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'postal_code' => 'nullable|string|max:7',
+            'address' => 'nullable|string|max:255',
+            'building' => 'nullable|string|max:255',
+            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
      
         // プロフィール画像の保存
         if ($request->hasFile('profile_image')) {

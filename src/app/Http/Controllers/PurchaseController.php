@@ -55,6 +55,46 @@ class PurchaseController extends Controller
         return redirect($session->url);
     }
 
+    public function success($id)
+    {
+        // 商品の購入成功後の処理
+        $item = Item::findOrFail($id);
+
+        // `is_sold` フラグを true に更新
+        // $item->is_sold = true;
+        // $item->save();
+        // 商品を "sold" 状態に変更
+        $item->update(['is_sold' => true]);
+
+        // ユーザーの購入履歴に登録する（例: Orderテーブルに保存）
+        // auth()->user()->orders()->create([
+        //     'item_id' => $item->id,
+        //     'quantity' => 1,
+        //     'total_price' => $item->price,
+        //     'status' => 'completed', // 完了ステータス
+        // ]);
+        // Order にデータを保存
+        $order = \App\Models\Order::create([
+            'user_id' => auth()->id(),
+            'item_id' => $item->id,
+            'quantity' => 1,
+            'total_price' => $item->price,
+            'status' => 'completed',
+        ]);
+
+        \App\Models\Payment::create([
+            'user_id' => auth()->id(), // 購入者のID
+            'order_id' => $order->id, // 関連する注文のID
+            'payment_method' => 'stripe', // 支払い方法（例: stripe）
+            'amount' => $item->price, // 支払い金額
+            'status' => 'completed', // ステータス
+        ]);
+
+
+        return redirect()->route('mypage')->with('success', '購入が完了しました。');
+    }
+
+
     public function history()
     {
         $orders = \App\Models\Order::where('user_id', auth()->id())->get();
