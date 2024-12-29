@@ -22,6 +22,7 @@ class PurchaseController extends Controller
     {
         $item = Item::findOrFail($id);
 
+        // Stripe設定
         Stripe::setApiKey(config('services.stripe.secret'));
 
         $session = Session::create([
@@ -37,12 +38,29 @@ class PurchaseController extends Controller
                 ]
             ],
             'mode' => 'payment',
-            'success_url' => route('items.index') . '?success=true',
+            'success_url' => route('purchase.success', $id), // 成功後のリダイレクト先
             'cancel_url' => route('purchase.show', $id),
         ]);
+        // 購入完了後のロジック
+        $order = \App\Models\Order::create([
+            'user_id' => auth()->id(),
+            'item_id' => $item->id,
+            'quantity' => 1,
+            'total_price' => $item->price,
+            'status' => 'completed',
+        ]);
+        
+        // 商品を "sold" 状態に変更
+        $item->update(['is_sold' => true]);
         return redirect($session->url);
     }
 
+    public function history()
+    {
+        $orders = \App\Models\Order::where('user_id', auth()->id())->get();
+
+        return view('purchase.history', compact('orders'));
+    }
     public function editAddress($id)
     {
         $item = Item::findOrFail($id);

@@ -80,7 +80,8 @@ class ItemController extends Controller
                 Storage::delete($user->profile_image); // 既存の画像を削除
             }
             $path = $request->file('profile_image')->store('profile_images', 'public');
-            $validated['profile_image'] = $path; // 公開ディレクトリに保存
+            // $validated['profile_image'] = $path; // 公開ディレクトリに保存
+            $user->profile_image = $path;
         }
 
         // ユーザー情報の更新

@@ -24,6 +24,12 @@
                 <p>{{ $item->description }}</p>
                 <p><strong>価格:</strong> ¥{{ number_format($item->price) }}</p>
                 <p><strong>状態:</strong> {{ $item->condition }}</p>
+
+                @if($item->is_sold)
+                <span class="badge bg-danger">SOLD</span>
+                @else
+                <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-primary">購入手続きへ</a>
+                @endif
             </div>
             @endforeach
         </div>

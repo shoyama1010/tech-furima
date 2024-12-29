@@ -4,7 +4,6 @@
 @section('main')
 <div class="container">
     <h1>検索結果</h1>
-    <p>検索ワード: <strong>{{ $keyword }}</strong></p>
 
     @if($items->isEmpty())
     <p>該当する商品が見つかりませんでした。</p>

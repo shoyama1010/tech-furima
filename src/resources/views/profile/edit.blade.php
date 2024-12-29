@@ -12,6 +12,7 @@
             <h1>プロフィール設定</h1>
             <div class="form-group">
                 <label for="profile_image">プロフィール画像</label>
+                
                 <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : '/images/default_profile.png' }}" alt="プロフィール画像">
                 <input type="file" name="profile_image" id="profile_image" class="form-control">
             </div>

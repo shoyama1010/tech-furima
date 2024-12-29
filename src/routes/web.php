@@ -53,6 +53,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/purchase/{id}', [PurchaseController::class, 'buyitem'])->name('purchase.show');
     // 購入処理
     Route::post('/purchase/{id}', [PurchaseController::class, 'purchase'])->name('purchase.process');
+    // 購入履歴の表示
+    Route::get('/mypage/history', [PurchaseController::class, 'history'])->name('purchase.history');
+
     // 配送先変更画面
     Route::get('/purchase/address/{id}', [PurchaseController::class, 'editAddress'])->name('purchase.address.edit');
     Route::post('/purchase/address/{id}', [PurchaseController::class, 'updateAddress'])->name('purchase.address.update');
