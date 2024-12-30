@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Http\Requests\ProfileRequest;
+use App\Http\Requests\ExhibitionRequest;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -39,15 +41,15 @@ class ItemController extends Controller
         $keyword = $request->input('keyword'); // 検索キーワード取得
 
         // キーワード検索処理
-        $items = Item::where('name', 'LIKE', '%' . $keyword . '%') 
-        // 商品名で部分一致で検索
-            ->orWhere('description', 'LIKE', '%' . $keyword . '%') 
+        $items = Item::where('name', 'LIKE', '%' . $keyword . '%')
+            // 商品名で部分一致で検索
+            ->orWhere('description', 'LIKE', '%' . $keyword . '%')
             // 商品説明でも検索
             ->paginate(10); // ページネーション
 
         return view('search', compact('items', 'keyword'));
     }
-    
+
 
     public function mypage()
     {
@@ -66,9 +68,9 @@ class ItemController extends Controller
     public function editProfile()
     {
         $user = Auth::user(); // ログインユーザー情報を取得
-        return view('profile.edit', ['user' => $user]);
+        return view('profile.edit', compact('user'));
     }
-    
+
     // プロフィールを更新
     public function updateProfile(ProfileRequest $request)
     {
@@ -81,7 +83,7 @@ class ItemController extends Controller
             'building' => 'nullable|string|max:255',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-     
+
         // プロフィール画像の保存
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image) {
@@ -93,7 +95,8 @@ class ItemController extends Controller
         }
 
         // ユーザー情報の更新
-        $user->update($request->validated());
+        // $user->update($request->validated());
+        $user->update($request->only(['name', 'postal_code', 'address', 'building']));
 
         return redirect()->route('mypage')->with('success', 'プロフィールを更新しました。');
     }
@@ -101,13 +104,13 @@ class ItemController extends Controller
     public function show($id)
     {
         // 商品情報を取得
-        $item = Item::with(['likes','category', 'comments.user'])->findOrFail($id);
+        $item = Item::with(['likes', 'category', 'comments.user'])->findOrFail($id);
 
         // 商品が見つからなかった場合に404エラー
         if (!$item) {
             abort(404, '商品が見つかりませんでした。');
         }
-        
+
         return view('items.detail', compact('item'));
     }
 
@@ -118,7 +121,7 @@ class ItemController extends Controller
         return view('items.create', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function store(ExhibitionRequest $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -126,11 +129,18 @@ class ItemController extends Controller
             'description' => 'required|string|max:1000',
             'category_id' => 'required|exists:categories,id',
             'condition' => 'required|in:new,used',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // 画像のバリデーション追加
         ]);
 
         $validated['user_id'] = auth()->id();
-
-        Item::create($request->all());
+        // / 画像がアップロードされている場合
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('item_images', 'public');
+            $validatedData['image_url'] = $path;
+        }
+        // 商品を保存
+        Item::create($validatedData);
+        // Item::create($request->all());
         return redirect()->route('items.index')->with('success', '商品を出品しました！');
     }
 

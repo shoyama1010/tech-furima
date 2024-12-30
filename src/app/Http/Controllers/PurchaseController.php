@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Item;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
+use App\Models\Address;
 
 class PurchaseController extends Controller
 {
-    public function buyitem($id)
-    {
+    public function buyitem($id){
         // 商品データを取得
         $item = Item::findOrFail($id);
 
@@ -18,10 +18,8 @@ class PurchaseController extends Controller
         return view('purchase.show', compact('item'));
     }
 
-    public function purchase($id)
-    {
+    public function purchase($id){
         $item = Item::findOrFail($id);
-
         // Stripe設定
         Stripe::setApiKey(config('services.stripe.secret'));
 
@@ -49,30 +47,17 @@ class PurchaseController extends Controller
             'total_price' => $item->price,
             'status' => 'completed',
         ]);
-        
         // 商品を "sold" 状態に変更
         $item->update(['is_sold' => true]);
         return redirect($session->url);
     }
-
-    public function success($id)
-    {
+    public function success($id){
         // 商品の購入成功後の処理
         $item = Item::findOrFail($id);
 
-        // `is_sold` フラグを true に更新
-        // $item->is_sold = true;
-        // $item->save();
         // 商品を "sold" 状態に変更
         $item->update(['is_sold' => true]);
 
-        // ユーザーの購入履歴に登録する（例: Orderテーブルに保存）
-        // auth()->user()->orders()->create([
-        //     'item_id' => $item->id,
-        //     'quantity' => 1,
-        //     'total_price' => $item->price,
-        //     'status' => 'completed', // 完了ステータス
-        // ]);
         // Order にデータを保存
         $order = \App\Models\Order::create([
             'user_id' => auth()->id(),
@@ -81,7 +66,6 @@ class PurchaseController extends Controller
             'total_price' => $item->price,
             'status' => 'completed',
         ]);
-
         \App\Models\Payment::create([
             'user_id' => auth()->id(), // 購入者のID
             'order_id' => $order->id, // 関連する注文のID
@@ -89,35 +73,47 @@ class PurchaseController extends Controller
             'amount' => $item->price, // 支払い金額
             'status' => 'completed', // ステータス
         ]);
-
-
         return redirect()->route('mypage')->with('success', '購入が完了しました。');
     }
 
-
-    public function history()
-    {
+    public function history() {
         $orders = \App\Models\Order::where('user_id', auth()->id())->get();
 
         return view('purchase.history', compact('orders'));
     }
+
+    public function show($id)
+    {
+        $item = Item::findOrFail($id); // 商品情報を取得
+        // $user = auth()->user(); // ログインしているユーザーを取得
+        // ログインユーザーの住所情報を取得
+        $address = Address::where('user_id', auth()->id())->first();
+
+        return view('purchase.show', compact('item', 'address'));
+    }
+
+    // 配送先住所編集画面の表示
     public function editAddress($id)
     {
         $item = Item::findOrFail($id);
-        return view('purchase.address_edit', compact('item'));
+        $address = Address::where('user_id', auth()->id())->first() ?? new Address(); // ユーザーの住所情報
+        return view('purchase.address_edit', compact('item','address'));
     }
-
+    // 配送先住所の更新処理
     public function updateAddress(Request $request, $id)
     {
         $request->validate([
-            'postal_code' => 'required|string|max:7',
+            // 'postal_code' => 'required|string|max:8',
+            'postal_code' => 'required|regex:/^\d{3}-\d{4}$/',
             'address' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
         ]);
 
-        $item = Item::findOrFail($id);
-        $item->shipping_address = $request->input('address');
-        $item->save();
+        $address = Address::where('user_id', auth()->id())->firstOrNew();
+        $address->user_id = auth()->id(); // 明示的にuser_idを設定
+        $address->postal_code = $request->input('postal_code');
+        $address->address = $request->input('address');
+        $address->is_default = true;
+        $address->save();
 
         return redirect()->route('purchase.show', $id)->with('success', '配送先住所が更新されました。');
     }

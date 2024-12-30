@@ -7,9 +7,30 @@
 @section('main')
 <div class="container">
     <h2 class="text-center mb-4">商品を出品する</h2>
+    <!-- エラーメッセージ -->
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
-    <form action="{{ route('items.store') }}" method="POST">
+    <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        <div class="form-group">
+            <label for="image">商品画像</label>
+            <input type="file" name="image" id="image" class="form-control">
+            
+            <!-- プレビュー -->
+            @if(isset($item) && $item->image_url)
+            <div class="mt-3">
+                <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" class="img-fluid">
+            </div>
+            @endif
+        </div>
 
         <div class="form-group mb-3">
             <label for="name">商品名</label>
@@ -40,9 +61,10 @@
 
         <div class="form-group mb-3">
             <label for="condition">商品の価格</label>
-            <select id="condition" name="condition" class="form-control" required>
+            <input type="number" name="price" id="price" class="form-control" value="{{ old('price') }}" required>
+            <!-- <select id="condition" name="condition" class="form-control" required>
                 <option value="price">￥</option>
-            </select>
+            </select> -->
         </div>
 
         <button type="submit" class="btn btn-primary w-100">出品する</button>
