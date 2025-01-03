@@ -12,7 +12,7 @@ class Address extends Model
     protected $fillable = [
         'user_id',
         'postal_code',
-        'address', // 新しいカラム
+        'address', 
         'is_default',
         'updated_by',
     ];

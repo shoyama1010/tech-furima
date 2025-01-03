@@ -46,5 +46,6 @@ class FortifyServiceProvider extends ServiceProvider
         //         $action = new CreateNewUser();
         //         return $action->create($request->all());           
         //     });
+       
     }
 }

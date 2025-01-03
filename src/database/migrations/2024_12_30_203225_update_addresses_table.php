@@ -21,7 +21,7 @@ class UpdateAddressesTable extends Migration
             $table->string('address')->nullable()->after('postal_code'); // 郵便番号の後にaddressを追加
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *

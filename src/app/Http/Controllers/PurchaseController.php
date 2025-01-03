@@ -12,10 +12,14 @@ class PurchaseController extends Controller
 {
     public function buyitem($id){
         // 商品データを取得
+
         $item = Item::findOrFail($id);
+        // ログインユーザーの住所情報を取得
+        $user = auth()->user();
+        $address = Address::where('user_id', $user->id)->first();
 
         // 購入画面を表示
-        return view('purchase.show', compact('item'));
+        return view('purchase.show', compact('item', 'address'));
     }
 
     public function purchase($id){
@@ -85,9 +89,11 @@ class PurchaseController extends Controller
     public function show($id)
     {
         $item = Item::findOrFail($id); // 商品情報を取得
-        // $user = auth()->user(); // ログインしているユーザーを取得
-        // ログインユーザーの住所情報を取得
-        $address = Address::where('user_id', auth()->id())->first();
+        $user = auth()->user(); // ログインしているユーザーを取得
+
+        // ログインユーザーの住所情報を取得（データがない場合は新規インスタンス）
+        // $address = Address::where('user_id', $user->id)->first() ?? new Address();
+        $address = Address::where('user_id', $user->id)->first();
 
         return view('purchase.show', compact('item', 'address'));
     }
@@ -99,20 +105,31 @@ class PurchaseController extends Controller
         $address = Address::where('user_id', auth()->id())->first() ?? new Address(); // ユーザーの住所情報
         return view('purchase.address_edit', compact('item','address'));
     }
+
     // 配送先住所の更新処理
     public function updateAddress(Request $request, $id)
-    {
+    {      
         $request->validate([
-            // 'postal_code' => 'required|string|max:8',
-            'postal_code' => 'required|regex:/^\d{3}-\d{4}$/',
+            'postal_code' => 'required|string|max:8',
+            // 'postal_code' => 'required|regex:/^\d{3}-\d{4}$/',
             'address' => 'required|string|max:255',
+        ]);    
+        // $address = Address::where('user_id', auth()->id())->firstOrNew();
+        // ログインしているユーザーの住所情報を取得、または新規作成
+        $address = Address::where('user_id', auth()->id())->firstOrNew([
+            'user_id' => auth()->id()
         ]);
-
-        $address = Address::where('user_id', auth()->id())->firstOrNew();
-        $address->user_id = auth()->id(); // 明示的にuser_idを設定
+        
+        // $address->user_id = auth()->id(); // 明示的にuser_idを設定
+        // 入力値を設定
         $address->postal_code = $request->input('postal_code');
         $address->address = $request->input('address');
         $address->is_default = true;
+        
+        // デバッグ用にデータ確認
+        logger()->info('Address Data', $address->toArray());
+
+        // 保存処理
         $address->save();
 
         return redirect()->route('purchase.show', $id)->with('success', '配送先住所が更新されました。');

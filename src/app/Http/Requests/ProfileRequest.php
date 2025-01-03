@@ -26,7 +26,7 @@ class ProfileRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            // 'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
             'profile_image' => 'nullable|image|mimes:jpeg,png|max:2048',
         ];

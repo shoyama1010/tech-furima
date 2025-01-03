@@ -8,6 +8,8 @@
             <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
             <p>価格: ¥{{ number_format($item->price) }}</p>
         </div>
+
+        <!-- 支払い方法選択フォーム -->
         <form method="POST" action="{{ route('purchase.process', $item->id) }}">
             @csrf
             <div class="payment-container">
@@ -19,12 +21,20 @@
             </div>
             <button type="submit" class="btn btn-primary mt-3">購入する</button>
         </form>
+
         <div class="mt-4">
             <h5>配送先住所</h5>
+            @if ($address) <!-- $address が存在するか確認 -->
             <p>
-                <i class="bi bi-envelope"></i> 〒 {{ $address->postal_code ?? '未設定' }}<br>
-                <i class="bi bi-geo-alt"></i> {{ $address->address ?? '未設定' }}
+                <i class="bi bi-envelope"></i> 〒{{ $address->postal_code }}<br>
+                <i class="bi bi-geo-alt"></i> {{ $address->address }}<br>
+                <!-- @if ($address->building) -->
+                <i class="bi bi-building"></i> {{ $address->building }}
+                <!-- @endif -->
             </p>
+            @else
+            <p>配送先住所が未設定です。</p>
+            @endif
             <a href="{{ route('purchase.address.edit', $item->id) }}" class="btn btn-link">変更する</a>
         </div>
     </div>

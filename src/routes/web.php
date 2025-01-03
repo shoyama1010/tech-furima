@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,10 +44,14 @@ Route::middleware(['guest'])->group(
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth'])->group(function () {
-    // マイページ
-    Route::get('/mypage', [ItemController::class, 'mypage'])->name('mypage');
-    Route::get('/mypage/profile', [ItemController::class, 'editProfile'])->name('profile.edit');
-    Route::post('/mypage/profile', [ItemController::class, 'updateProfile'])->name('profile.update');
+    // マイページ関連のルート
+    Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
+    Route::get('/mypage/profile', [UserController::class, 'edit'])->name('profile.edit');
+    Route::post('/mypage/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+
+    // プロフィール更新処理
+    Route::put('/user/profile', [UserController::class, 'update'])->name('user-profile-information.update');
+
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     
     // 購入画面表示
