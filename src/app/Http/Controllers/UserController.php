@@ -51,18 +51,4 @@ class UserController extends Controller
 
         return redirect()->route('mypage')->with('success', 'プロフィールを更新しました。');
     }
-
-    // public function update(Request $request)
-    // {
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'postal_code' => 'nullable|string|max:7',
-    //         'address' => 'nullable|string|max:255',
-    //     ]);
-
-    //     $user = auth()->user();
-    //     $user->update($request->only(['name', 'postal_code', 'address']));
-
-    //     return back()->with('success', 'プロフィールが更新されました。');
-    // }
 }

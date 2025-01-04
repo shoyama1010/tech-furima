@@ -76,5 +76,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');
+// Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
+
 Route::post('/items/{item}/toggle-like', [LikeController::class, 'toggle'])->name('items.toggle-like');
 

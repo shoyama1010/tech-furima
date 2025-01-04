@@ -16,14 +16,28 @@ class ItemController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();
-        $items = Item::all(); // データベースから商品全体を取得
+        $user = Auth::user(); // 現在ログイン中のユーザーIDを取得
+        $userId = $user ? $user->id : null; // ログインしていない場合はnull
 
-        $viewType = $request->query('page', 'recommend'); // デフォルトは'recommend'
-        // 認証済みかつ'mylist'が選択されている場合
-        if ($viewType === 'mylist' && $user) {
+        $status = $request->query('status', 'sell'); // 'sell'がデフォルト
+        $viewType = $request->query('page', 'recommend'); // デフォルト:'recommend'
+        // $items = Item::all(); // データベースから商品全体を取得
+
+        //「mylist」機能
+        if ($viewType === 'mylist' && $user) { // 認証済みかつ'mylist'が選択されている場合
             // ユーザーが「いいね」した商品を取得
             $items = $user->likes()->with('item')->get()->pluck('item');
+        } else {
+            // 商品一覧の取得
+            $items = Item::where('status', '!=', 'draft') // 下書き商品を除外
+                ->where('status', $status) // 'sell'または'sold'を選択
+                ->where(function ($query) use ($userId) {
+                    // 自分が出品した商品を除外（ログイン中のユーザーIDに基づく）
+                    if (!is_null($userId)) { // ログイン済みの場合のみ除外処理を適用
+                        $query->where('user_id', '!=', $userId);
+                    }
+                })
+                ->get();
         }
         // ビューにデータを渡して表示
         return view(
@@ -53,51 +67,12 @@ class ItemController extends Controller
     public function mypage()
     {
         $user = Auth::user(); // ログインユーザー情報を取得
-        $itemsSold = Item::where('user_id', $user->id)->get(); 
+        $itemsSold = $user->items; // ユーザーが出品した商品
         // ユーザーが出品した商品
         $itemsPurchased = []; // 購入した商品（必要に応じて実装）
 
-        return view('profile.mypage', [
-            'user' => $user,
-            'itemsSold' => $itemsSold,
-            'itemsPurchased' => $itemsPurchased
-        ]);
+        return view('profile.mypage', compact('user', 'itemsSold', 'itemsPurchased'));
     }
-
-    // // プロフィール編集画面を表示
-    // public function editProfile()
-    // {
-    //     $user = Auth::user(); // ログインユーザー情報を取得
-        
-    //     return view('profile.edit', compact('user'));
-    // }
-    // // プロフィールを更新
-    // public function updateProfile(ProfileRequest $request)
-    // {
-    //     $user = Auth::user();
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'postal_code' => 'nullable|string|max:7',
-    //         'address' => 'nullable|string|max:255',
-    //         'building' => 'nullable|string|max:255',
-    //         'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-    //     ]);
-    //     // プロフィール画像の保存
-    //     if ($request->hasFile('profile_image')) {
-    //         if ($user->profile_image) {
-    //             Storage::delete($user->profile_image); // 既存の画像を削除
-    //         }
-
-    //         $path = $request->file('profile_image')->store('profile_images', 'public');
-    //         // $validated['profile_image'] = $path; // 公開ディレクトリに保存
-    //         $user->profile_image = $path;
-    //     }
-    //     // ユーザー情報の更新
-    //     // $user->update($request->validated());
-    //     $user->update($request->only(['name', 'postal_code', 'address', 'building']));
-
-    //     return redirect()->route('mypage')->with('success', 'プロフィールを更新しました。');
-    // }
 
     public function show($id)
     {
@@ -117,16 +92,18 @@ class ItemController extends Controller
     public function store(ExhibitionRequest $request)
     {
         $validatedData = $request->validated();
+
+        // 画像アップロード処理
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('item_images', 'public');
             $validatedData['image_url'] = $path;
         }
 
+        // 商品データーを保存
         $validatedData['user_id'] = auth()->id();
-        
-        // 商品を保存
-        Item::create($validatedData);
-        
+        $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
+        $item = Item::create($validatedData);
+
         return redirect()->route('items.index')->with('success', '商品を出品しました！');
     }
 
