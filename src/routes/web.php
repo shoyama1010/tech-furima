@@ -51,7 +51,6 @@ Route::middleware(['auth'])->group(function () {
 
     // プロフィール更新処理
     Route::put('/user/profile', [UserController::class, 'update'])->name('user-profile-information.update');
-
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     
     // 購入画面表示
@@ -61,18 +60,14 @@ Route::middleware(['auth'])->group(function () {
     // 購入履歴の表示
     Route::get('/mypage/history', [PurchaseController::class, 'history'])->name('purchase.history');
     Route::get('/purchase/success/{id}', [PurchaseController::class, 'success'])->name('purchase.success');
-
     // 配送先変更画面
     Route::get('/purchase/address/{id}', [PurchaseController::class, 'editAddress'])->name('purchase.address.edit');
     Route::post('/purchase/address/{id}', [PurchaseController::class, 'updateAddress'])->name('purchase.address.update');
-
     // 商品出品
     Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
-    Route::post('/items', [ItemController::class, 'store'])->name('items.store');
-    
+    Route::post('/items', [ItemController::class, 'store'])->name('items.store'); 
     // いいね機能
     Route::post('/items/{id}/like', [ItemController::class, 'like'])->name('items.like');
-
 });
 
 Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');

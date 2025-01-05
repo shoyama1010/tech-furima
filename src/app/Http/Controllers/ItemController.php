@@ -11,6 +11,7 @@ use App\Models\Item;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 use App\Models\Like;
+use App\Models\Order;
 
 class ItemController extends Controller
 {
@@ -21,12 +22,13 @@ class ItemController extends Controller
 
         $status = $request->query('status', 'sell'); // 'sell'がデフォルト
         $viewType = $request->query('page', 'recommend'); // デフォルト:'recommend'
-        // $items = Item::all(); // データベースから商品全体を取得
 
         //「mylist」機能
-        if ($viewType === 'mylist' && $user) { // 認証済みかつ'mylist'が選択されている場合
-            // ユーザーが「いいね」した商品を取得
-            $items = $user->likes()->with('item')->get()->pluck('item');
+        if ($viewType === 'mylist' && $user) { // 認証済みかつ'mylist'が選択されている場合    
+            // ユーザーが「いいね」した,かつ出品済み（is_sold = 1）の商品を取得
+            $items = $user->likes()->with('item')->get()->pluck('item')->filter(function ($item) {
+                return $item !== null && $item->is_sold == 1; // nullを除外し、is_soldが1の商品のみを取得
+            });    
         } else {
             // 商品一覧の取得
             $items = Item::where('status', '!=', 'draft') // 下書き商品を除外
@@ -36,19 +38,10 @@ class ItemController extends Controller
                     if (!is_null($userId)) { // ログイン済みの場合のみ除外処理を適用
                         $query->where('user_id', '!=', $userId);
                     }
-                })
-                ->get();
+                })->get();
         }
-        // ビューにデータを渡して表示
-        return view(
-            'items.index',
-            [
-                'items' => $items,
-                'viewType' => $viewType, // 現在の表示タイプ
-            ]
-        );
+        return view('items.index',['items' => $items,'viewType' => $viewType] );
     }
-
     // 検索機能    
     public function search(Request $request)
     {
@@ -63,7 +56,6 @@ class ItemController extends Controller
 
         return view('search', compact('items', 'keyword'));
     }
-
     public function mypage()
     {
         $user = Auth::user(); // ログインユーザー情報を取得
@@ -77,9 +69,11 @@ class ItemController extends Controller
     public function show($id)
     {
         // 商品情報を取得
-        $item = Item::with(['likes', 'category', 'comments.user'])->findOrFail($id);
+        $item = Item::with(['likes', 'category', 'comments.user', 'images'])->findOrFail($id);
+        // この商品が購入済みかどうかを確認
+        $isSold = Order::where('item_id', $item->id)->exists();
 
-        return view('items.detail', compact('item'));
+        return view('items.detail', compact('item', 'isSold'));
     }
 
     // 商品カテゴリー
@@ -93,17 +87,22 @@ class ItemController extends Controller
     {
         $validatedData = $request->validated();
 
-        // 画像アップロード処理
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('item_images', 'public');
-            $validatedData['image_url'] = $path;
-        }
-
         // 商品データーを保存
         $validatedData['user_id'] = auth()->id();
         $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
         $item = Item::create($validatedData);
 
+        // 画像アップロード処理
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $image) {
+                $path = $image->store('item_images', 'public');
+                
+                // item_images テーブルに画像パスを保存
+                $item->images()->create([
+                    'image_url' => $path,
+                ]);
+            }
+        }
         return redirect()->route('items.index')->with('success', '商品を出品しました！');
     }
 

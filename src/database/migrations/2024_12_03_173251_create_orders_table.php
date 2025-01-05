@@ -18,9 +18,9 @@ class CreateOrdersTable extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('item_id')->constrained()->onDelete('cascade');
             $table->foreignId('address_id')->nullable()->constrained()->onDelete('set null');
-            $table->integer('quantity');
+            $table->integer('quantity')->default(1);
             $table->decimal('total_price', 8, 2);
-            $table->string('status')->default('pending');
+            $table->string('status')->default('completed');
             $table->timestamps();
         });
     }

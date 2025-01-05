@@ -19,7 +19,12 @@
                     <option value="カード支払い">カード支払い</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-primary mt-3">購入する</button>
+            <!-- <button type="submit" class="btn btn-primary mt-3">購入する</button> -->
+            @if(!$item->isSold())
+            <button type="submit" class="btn btn-primary">購入する</button>
+            @else
+            <button type="button" class="btn btn-secondary" disabled>購入済み</button>
+            @endif
         </form>
 
         <div class="mt-4">

@@ -2,7 +2,6 @@
 
 @section('main')
 <div class="container">
-
     <!-- 商品画像部分 -->
     <div class="image-container">
         <!-- <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" class="img-fluid"> -->
@@ -17,19 +16,16 @@
 
         <!-- いいね機能 -->
         <div class="like-section">
-            <!-- <p><strong>いいね数:</strong> {{ $item->likes_count ?? 0 }}</p> -->
             <strong>いいね数:</strong>
             <span id="like-count">{{ $item->likes->count() }}</span>
             <button id="like-button" class="btn btn-outline-secondary">
                 {{ $item->likes->contains('user_id', auth()->id()) ? '★' : '☆' }}
             </button>
         </div>
-
         <!-- コメント表示 -->
         <p><strong>コメント数:</strong> {{ $item->comments->count() }}</p>
         <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
         <p><strong>商品説明:</strong> {{ $item->description }}</p>
-
         <!-- カテゴリ表示 -->
         <p><strong>カテゴリ:</strong>
             @if ($item->category)
@@ -38,10 +34,8 @@
                 なし
             @endif
         </p>
-
         <!-- コンディション状態 -->
         <p><strong>状態:</strong> {{ $item->condition }}</p>
-
         <!-- コメント処理 -->
         <div class="comments-section">
             <!-- コメント履歴 -->

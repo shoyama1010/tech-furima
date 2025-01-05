@@ -8,35 +8,38 @@
         <div class="col text-center">
             <a href="{{ url('/?page=recommend') }}" class="btn btn-link active">おすすめ商品</a>
         </div>
-
         <div class="col text-center">
             <a href="{{ url('/?page=mylist') }}" class="btn btn-link">マイリスト</a>
         </div>
-
         <div class="items-container">
+            @if($items->isNotEmpty())
             @foreach ($items as $item)
-            <div class="item">
-                <a href="{{ route('items.detail',$item->id) }}">
 
+            <div class="item">
+                <!-- 商品画像 -->
+                <a href="{{ route('items.detail', $item->id) }}">
+                    @if ($item->images->isNotEmpty())
+                    <img src="{{ asset('storage/' . $item->images->first()->image_url) }}"
+                        class="card-img-top" alt="{{ $item->name }}">
+                    @else
                     <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+                    @endif
                 </a>
-                <h3>{{ $item->name }}</h3>
-                <p>{{ $item->description }}</p>
-                <p><strong>価格:</strong> ¥{{ number_format($item->price) }}</p>
-                <p><strong>状態:</strong> {{ $item->condition }}</p>
-                @if ($item->status == 'sell')
-                出品中
-                @elseif ($item->status == 'sold')
-                Sold
-                @endif
-                <!-- @if($item->is_sold)
-                <span class="badge bg-danger">SOLD</span>
-                @else -->
-                <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-primary">購入手続きへ</a>
-                @endif
+                <div class="item-details">
+                    <!-- 商品情報 -->
+                    <h5 class="item-title">{{ $item->name }}</h5>
+                    <p class="item-description">{{ Str::limit($item->description, 100) }}</p>
+                    <p class="item-price">価格: ¥{{ number_format($item->price) }}</p>
+                    <p class="item-status">状態: {{ $item->status === 'sell' ? '出品中' : 'SOLD' }}</p>
+                    <a href="{{ route('items.detail', $item->id) }}" class="btn btn-primary">詳細を見る</a>
+                </div>
             </div>
             @endforeach
+            @else
+            <p class="text-center">現在、表示する商品がありません。</p>
+            @endif
         </div>
+
     </div>
 </div>
 @endsection

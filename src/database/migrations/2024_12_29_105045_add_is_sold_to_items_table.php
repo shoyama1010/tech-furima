@@ -14,7 +14,7 @@ class AddIsSoldToItemsTable extends Migration
     public function up()
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->boolean('is_sold')->default(false); // 初期値は未販売
+            $table->boolean('is_sold')->default(0); // 初期値は未販売
         });
     }
 

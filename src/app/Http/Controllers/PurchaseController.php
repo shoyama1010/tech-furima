@@ -13,10 +13,10 @@ class PurchaseController extends Controller
     public function buyitem($id){
         // 商品データを取得
 
-        $item = Item::findOrFail($id);
+        $item = Item::where('id', $id)->where('is_sold', 0)->firstOrFail();
         // ログインユーザーの住所情報を取得
-        $user = auth()->user();
-        $address = Address::where('user_id', $user->id)->first();
+        // $user = auth()->user();
+        $address = Address::where('user_id', auth()->id())->first();
 
         // 購入画面を表示
         return view('purchase.show', compact('item', 'address'));
@@ -43,6 +43,10 @@ class PurchaseController extends Controller
             'success_url' => route('purchase.success', $id), // 成功後のリダイレクト先
             'cancel_url' => route('purchase.show', $id),
         ]);
+
+        // 商品を "sold" に更新
+        $item->update(['status' => 'sold', 'is_sold' => 1]);
+
         // 購入完了後のロジック
         $order = \App\Models\Order::create([
             'user_id' => auth()->id(),
@@ -51,16 +55,22 @@ class PurchaseController extends Controller
             'total_price' => $item->price,
             'status' => 'completed',
         ]);
+
         // 商品を "sold" 状態に変更
-        $item->update(['is_sold' => true]);
+        // $item->update(['is_sold' => true]);
+        $item->update([
+            'is_sold' => 1, // is_sold を 1 に設定
+            'status' => 'sold', // 商品ステータスも 'sold' に更新
+        ]);
         return redirect($session->url);
     }
+
     public function success($id){
         // 商品の購入成功後の処理
         $item = Item::findOrFail($id);
 
         // 商品を "sold" 状態に変更
-        $item->update(['is_sold' => true]);
+        $item->update(['is_sold' => 1]);
 
         // Order にデータを保存
         $order = \App\Models\Order::create([

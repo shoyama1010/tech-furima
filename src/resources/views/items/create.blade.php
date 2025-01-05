@@ -44,8 +44,8 @@
 
         <div class="form-group mb-3">
             <label for="category_id">カテゴリー</label>
-            <!-- <select id="category_id" name="category_id" class="form-control" required> -->
-            <select name="categories[]" id="categories" class="form-control" required>
+            <select id="category_id" name="category_id" class="form-control" required>
+            <!-- <select name="categories[]" id="categories" class="form-control" required> -->
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
