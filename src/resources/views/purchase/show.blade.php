@@ -20,7 +20,7 @@
                 </select>
             </div>
             <!-- <button type="submit" class="btn btn-primary mt-3">購入する</button> -->
-            @if(!$item->isSold())
+            @if(!$item->is_sold)
             <button type="submit" class="btn btn-primary">購入する</button>
             @else
             <button type="button" class="btn btn-secondary" disabled>購入済み</button>

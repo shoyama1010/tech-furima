@@ -51,6 +51,7 @@ Route::middleware(['auth'])->group(function () {
 
     // プロフィール更新処理
     Route::put('/user/profile', [UserController::class, 'update'])->name('user-profile-information.update');
+    // コメント処理
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     
     // 購入画面表示

@@ -41,9 +41,11 @@ class UserController extends Controller
         // プロフィール画像の処理
         if ($request->hasFile('profile_image')) {
             if ($user->profile_image) {
-                Storage::delete($user->profile_image);
+                Storage::delete('public/' . $user->profile_image); // 古い画像を削除
             }
+            // 新しい画像の保存処理
             $path = $request->file('profile_image')->store('profile_images', 'public');
+            // dd($path);
             $validated['profile_image'] = $path;
         }
 

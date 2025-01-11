@@ -1,7 +1,10 @@
 @extends('layouts.app')
 
-@section('main')
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/items.css') }}">
+@endsection
 
+@section('main')
 <div class="container">
     <div class="row mb-4">
         <!-- タブ切り替え -->
@@ -14,11 +17,11 @@
         <div class="items-container">
             @if($items->isNotEmpty())
             @foreach ($items as $item)
-
             <div class="item">
                 <!-- 商品画像 -->
                 <a href="{{ route('items.detail', $item->id) }}">
-                    @if ($item->images->isNotEmpty())
+
+                    @if ($item->images && $item->images->isNotEmpty())
                     <img src="{{ asset('storage/' . $item->images->first()->image_url) }}"
                         class="card-img-top" alt="{{ $item->name }}">
                     @else
@@ -28,9 +31,15 @@
                 <div class="item-details">
                     <!-- 商品情報 -->
                     <h5 class="item-title">{{ $item->name }}</h5>
+
                     <p class="item-description">{{ Str::limit($item->description, 100) }}</p>
+
                     <p class="item-price">価格: ¥{{ number_format($item->price) }}</p>
-                    <p class="item-status">状態: {{ $item->status === 'sell' ? '出品中' : 'SOLD' }}</p>
+
+                    <p class="item-status">
+                        状態: {{ $item->is_sold ? 'SOLD' : '出品中' }}
+                    </p>
+
                     <a href="{{ route('items.detail', $item->id) }}" class="btn btn-primary">詳細を見る</a>
                 </div>
             </div>
@@ -39,7 +48,6 @@
             <p class="text-center">現在、表示する商品がありません。</p>
             @endif
         </div>
-
     </div>
 </div>
 @endsection

@@ -20,9 +20,9 @@
 
     <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="image">商品画像</label>
-            <input type="file" name="image" id="image" class="form-control" accept="image/*">
+            <input type="file" name="images[]" id="images" class="form-control" accept="image/*" multiple>
 
             <!-- プレビュー -->
             @if(isset($item) && $item->image_url)
@@ -34,18 +34,17 @@
 
         <div class="form-group mb-3">
             <label for="name">商品名</label>
-            <input type="text" id="name" name="name" class="form-control" required>
+            <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
         </div>
 
         <div class="form-group mb-3">
             <label for="description">商品の説明</label>
-            <textarea id="description" name="description" class="form-control" rows="5" required></textarea>
+            <textarea id="description" name="description" class="form-control" rows="5" required>{{ old('description') }}</textarea>
         </div>
 
         <div class="form-group mb-3">
             <label for="category_id">カテゴリー</label>
             <select id="category_id" name="category_id" class="form-control" required>
-            <!-- <select name="categories[]" id="categories" class="form-control" required> -->
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
@@ -55,10 +54,10 @@
         <div class="form-group mb-3">
             <label for="condition">商品の状態</label>
             <select id="condition" name="condition" class="form-control" required>
-                <option value="new">良好</option>
-                <option value="new">目立ったキズなし</option>
-                <option value="used">ややキズあり</option>
-                <option value="used">状態が悪い</option>
+                <option value="good">良好</option>
+                <option value="used_good">目立ったキズなし</option>
+                <option value="used_fair">ややキズあり</option>
+                <option value="used_bad">状態が悪い</option>
             </select>
         </div>
 
@@ -70,4 +69,29 @@
         <button type="submit" class="btn btn-primary w-100">出品する</button>
     </form>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.getElementById('images').addEventListener('change', function(event) {
+        const previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = ''; // プレビューコンテナをリセット
+        const files = event.target.files;
+
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = 'Preview';
+                img.style.width = '100px';
+                img.style.height = '100px';
+                img.style.marginRight = '10px';
+                img.style.marginBottom = '10px';
+                previewContainer.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
 @endsection

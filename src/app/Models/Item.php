@@ -9,7 +9,7 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name','description','price',
+    protected $fillable = ['is_sold','name','description','price',
         'image_url','user_id','category_id','condition',
     ];
 
@@ -34,7 +34,7 @@ class Item extends Model
     }
     public function images()
     {
-        return $this->hasMany(ItemImage::class, 'item_id');
+        return $this->hasMany(ItemImage::class, 'item_id','id');
     }
 
     public function orders()

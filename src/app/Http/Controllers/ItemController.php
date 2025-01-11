@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 use App\Models\Like;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
 
 class ItemController extends Controller
 {
@@ -26,9 +27,10 @@ class ItemController extends Controller
         //「mylist」機能
         if ($viewType === 'mylist' && $user) { // 認証済みかつ'mylist'が選択されている場合    
             // ユーザーが「いいね」した,かつ出品済み（is_sold = 1）の商品を取得
-            $items = $user->likes()->with('item')->get()->pluck('item')->filter(function ($item) {
-                return $item !== null && $item->is_sold == 1; // nullを除外し、is_soldが1の商品のみを取得
-            });    
+            $items = $user->likes()->with('item')->whereHas('item', function ($query) {
+                $query->where('is_sold', 1); // is_soldが1の商品を取得
+            })->get()->pluck('item');
+              
         } else {
             // 商品一覧の取得
             $items = Item::where('status', '!=', 'draft') // 下書き商品を除外
@@ -96,14 +98,13 @@ class ItemController extends Controller
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
                 $path = $image->store('item_images', 'public');
-                
                 // item_images テーブルに画像パスを保存
-                $item->images()->create([
-                    'image_url' => $path,
-                ]);
+
+                $item->images()->create(['image_url' => $path,]);
             }
+
+            return redirect()->route('items.index')->with('success', '商品を出品しました！');
         }
-        return redirect()->route('items.index')->with('success', '商品を出品しました！');
     }
 
     public function like(Request $request, $id)

@@ -37,7 +37,7 @@
         <div class="items-container d-flex flex-wrap">
 
             @forelse ($itemsPurchased as $item)
-            <div class="item-card border m-2 p-2" style="width: 45%;">
+            <div class="item-card border m-2 p-2" style="width: 35%;">
                 <img src="{{ $item->image_url }}" alt="{{ $item->name }}" class="img-fluid">
                 <h4 class="mt-2">{{ $item->name }}</h4>
                 <p><strong>価格:</strong> ¥{{ number_format($item->price) }}</p>

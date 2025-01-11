@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\Order;
+use App\Models\Payment;
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 use App\Models\Address;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseController extends Controller
 {
@@ -23,10 +26,18 @@ class PurchaseController extends Controller
     }
 
     public function purchase($id){
-        $item = Item::findOrFail($id);
+
+        // $item = Item::findOrFail($id);
+        DB::beginTransaction();
+        try {
+            $item = Item::lockForUpdate()->findOrFail($id);
+
+        if ($item->is_sold) {
+                throw new \Exception('商品は既に購入済みです');
+        }
+
         // Stripe設定
         Stripe::setApiKey(config('services.stripe.secret'));
-
         $session = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [
@@ -43,12 +54,9 @@ class PurchaseController extends Controller
             'success_url' => route('purchase.success', $id), // 成功後のリダイレクト先
             'cancel_url' => route('purchase.show', $id),
         ]);
-
-        // 商品を "sold" に更新
-        $item->update(['status' => 'sold', 'is_sold' => 1]);
-
+       
         // 購入完了後のロジック
-        $order = \App\Models\Order::create([
+        Order::create([
             'user_id' => auth()->id(),
             'item_id' => $item->id,
             'quantity' => 1,
@@ -57,12 +65,18 @@ class PurchaseController extends Controller
         ]);
 
         // 商品を "sold" 状態に変更
-        // $item->update(['is_sold' => true]);
-        $item->update([
-            'is_sold' => 1, // is_sold を 1 に設定
-            'status' => 'sold', // 商品ステータスも 'sold' に更新
-        ]);
-        return redirect($session->url);
+        $item->update(['is_sold' => 1, 'status' => 'sold', ]);
+
+            DB::commit();
+            return redirect($session->url);
+           
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            logger()->error('購入処理エラー: ' . $e->getMessage());
+
+            return redirect()->route('items.detail', $id)->with('error', '購入処理中にエラーが発生しました。');
+        }  
     }
 
     public function success($id){
@@ -70,17 +84,20 @@ class PurchaseController extends Controller
         $item = Item::findOrFail($id);
 
         // 商品を "sold" 状態に変更
-        $item->update(['is_sold' => 1]);
+        // $item->update(['is_sold' => 1]);
+        if (!$item->is_sold) {
+            return redirect()->route('mypage')->with('error', 'この商品はまだ購入されていません。');
+        }
 
         // Order にデータを保存
-        $order = \App\Models\Order::create([
+        $order = Order::create([
             'user_id' => auth()->id(),
             'item_id' => $item->id,
             'quantity' => 1,
             'total_price' => $item->price,
             'status' => 'completed',
         ]);
-        \App\Models\Payment::create([
+        Payment::create([
             'user_id' => auth()->id(), // 購入者のID
             'order_id' => $order->id, // 関連する注文のID
             'payment_method' => 'stripe', // 支払い方法（例: stripe）
@@ -89,9 +106,10 @@ class PurchaseController extends Controller
         ]);
         return redirect()->route('mypage')->with('success', '購入が完了しました。');
     }
+    
 
     public function history() {
-        $orders = \App\Models\Order::where('user_id', auth()->id())->get();
+        $orders = Order::where('user_id', auth()->id())->get();
 
         return view('purchase.history', compact('orders'));
     }

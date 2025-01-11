@@ -16,12 +16,12 @@
 }
 
 
-.item-img {
+.item img {
     max-width: 100%;
     height: auto;
     margin-bottom: 10px;
     border-radius: 5px;
-        /* 画像の角を少し丸めます */
+    object-fit: cover;
 }
 
 
@@ -32,6 +32,7 @@
     width: 280px;
     background-color: #f9f9f9;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .items-container {

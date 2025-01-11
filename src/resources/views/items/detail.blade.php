@@ -4,7 +4,6 @@
 <div class="container">
     <!-- 商品画像部分 -->
     <div class="image-container">
-        <!-- <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" class="img-fluid"> -->
         <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
     </div>
 
@@ -36,6 +35,7 @@
         </p>
         <!-- コンディション状態 -->
         <p><strong>状態:</strong> {{ $item->condition }}</p>
+
         <!-- コメント処理 -->
         <div class="comments-section">
             <!-- コメント履歴 -->
@@ -59,8 +59,6 @@
         </div>
     </div>
 </div>
-
-
 
 <script>
     document.getElementById('like-button').addEventListener('click', function() {
