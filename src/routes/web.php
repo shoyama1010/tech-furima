@@ -46,11 +46,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     // マイページ関連のルート
     Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
+
     Route::get('/mypage/profile', [UserController::class, 'edit'])->name('profile.edit');
     Route::post('/mypage/profile', [UserController::class, 'updateProfile'])->name('profile.update');
-
     // プロフィール更新処理
     Route::put('/user/profile', [UserController::class, 'update'])->name('user-profile-information.update');
+    
+
+
     // コメント処理
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
     

@@ -19,7 +19,6 @@
                     <option value="カード支払い">カード支払い</option>
                 </select>
             </div>
-            <!-- <button type="submit" class="btn btn-primary mt-3">購入する</button> -->
             @if(!$item->is_sold)
             <button type="submit" class="btn btn-primary">購入する</button>
             @else
@@ -44,4 +43,13 @@
         </div>
     </div>
 </div>
+
+<!-- JavaScriptでボタン無効化 -->
+<script>
+    document.getElementById('purchase-form').addEventListener('submit', function(event) {
+        const submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true; // ボタンを無効化
+        submitButton.textContent = '処理中...'; // ボタンのテキストを変更
+    });
+</script>
 @endsection

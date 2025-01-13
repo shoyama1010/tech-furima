@@ -22,7 +22,7 @@
         @csrf
         <div class="form-group mb-3">
             <label for="image">商品画像</label>
-            <input type="file" name="images[]" id="images" class="form-control" accept="image/*" multiple>
+            <input type="file" name="image[]" id="image" class="form-control" accept="image/*" multiple>
 
             <!-- プレビュー -->
             @if(isset($item) && $item->image_url)

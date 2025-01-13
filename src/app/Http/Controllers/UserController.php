@@ -35,21 +35,35 @@ class UserController extends Controller
     public function update(ProfileRequest $request)
     {
         $user = Auth::user();
+        // プロフィール画像の保存
+        $validatedData['profile_image'] = $path;
 
-        $validated = $request->validated();
-
-        // プロフィール画像の処理
         if ($request->hasFile('profile_image')) {
+            
+            $profileImage = $request->file('profile_image');
+            
+            // 既存の画像があれば削除
             if ($user->profile_image) {
-                Storage::delete('public/' . $user->profile_image); // 古い画像を削除
+                Storage::delete('public/' . $user->profile_image);
             }
-            // 新しい画像の保存処理
-            $path = $request->file('profile_image')->store('profile_images', 'public');
-            // dd($path);
-            $validated['profile_image'] = $path;
+            // 新しい画像を保存
+            $path = $profileImage->store('profile_images', 'public');
+            $user->profile_image = $path;
+    
+            // users テーブルの profile_image カラムにパスを保存
+            $user->update([
+                'profile_image' => $path, // ここで画像パスを設定
+                
+                'name' => $request->input('name'), // 他のフィールドも更新
+                'postal_code' => $request->input('postal_code'),
+                'address' => $request->input('address'),
+                'building' => $request->input('building'),
+            ]);
+            
+        } else {
+            // プロフィール画像以外の更新
+            $user->update($request->only('name', 'postal_code', 'address', 'building'));
         }
-
-        $user->update($validated);
 
         return redirect()->route('mypage')->with('success', 'プロフィールを更新しました。');
     }

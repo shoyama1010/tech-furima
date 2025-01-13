@@ -25,17 +25,17 @@
             <!-- 電話番号 -->
             <div class="form-group">
                 <label for="postal_code">郵便番号</label>
-                <input type="text" name="postal_code" id="postal_code" class="form-control" value="{{ old('postal_code', $user->postal_code) }}">
+                <input type="text" name="postal_code" id="postal_code" class="form-control" value="{{ old('postal_code', $user->postal_code) }}" required>
             </div>
             <!-- 住所 -->
             <div class="form-group">
                 <label for="address">住所</label>
-                <input type="text" name="address" id="address" class="form-control" value="{{ old('address', $user->address) }}">
+                <input type="text" name="address" id="address" class="form-control" value="{{ old('address', $user->address) }}" required>
             </div>
             <!-- 建物 -->
             <div class="form-group">
                 <label for="building">建物名</label>
-                <input type="text" name="building" id="building" class="form-control" value="{{ old('building', $user->building) }}">
+                <input type="text" name="building" id="building" class="form-control" value="{{ old('building', $user->building) }}" required>
             </div>
             <!-- 保存ボタン -->
             <button type="submit" class="btn btn-primary mt-3">更新する</button>

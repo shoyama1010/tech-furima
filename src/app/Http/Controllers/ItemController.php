@@ -30,7 +30,6 @@ class ItemController extends Controller
             $items = $user->likes()->with('item')->whereHas('item', function ($query) {
                 $query->where('is_sold', 1); // is_soldが1の商品を取得
             })->get()->pluck('item');
-              
         } else {
             // 商品一覧の取得
             $items = Item::where('status', '!=', 'draft') // 下書き商品を除外
@@ -42,7 +41,7 @@ class ItemController extends Controller
                     }
                 })->get();
         }
-        return view('items.index',['items' => $items,'viewType' => $viewType] );
+        return view('items.index', ['items' => $items, 'viewType' => $viewType]);
     }
     // 検索機能    
     public function search(Request $request)
@@ -63,9 +62,11 @@ class ItemController extends Controller
         $user = Auth::user(); // ログインユーザー情報を取得
         $itemsSold = $user->items; // ユーザーが出品した商品
         // ユーザーが出品した商品
-        $itemsPurchased = []; // 購入した商品（必要に応じて実装）
+        // $itemsPurchased = []; // 購入した商品（必要に応じて実装）
+        $itemsPurchased = $user->purchasedItems;
 
-        return view('profile.mypage', compact('user', 'itemsSold', 'itemsPurchased'));
+        return view('mypage.mypage', compact('user', 'itemsSold', 'itemsPurchased'));
+        // ユーザーが購入した商品のリストを格納するための変数
     }
 
     public function show($id)
@@ -74,7 +75,6 @@ class ItemController extends Controller
         $item = Item::with(['likes', 'category', 'comments.user', 'images'])->findOrFail($id);
         // この商品が購入済みかどうかを確認
         $isSold = Order::where('item_id', $item->id)->exists();
-
         return view('items.detail', compact('item', 'isSold'));
     }
 
@@ -92,19 +92,31 @@ class ItemController extends Controller
         // 商品データーを保存
         $validatedData['user_id'] = auth()->id();
         $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
+        
+        $validatedData['image_url'] = $path;
         $item = Item::create($validatedData);
 
         // 画像アップロード処理
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
                 $path = $image->store('item_images', 'public');
-                // item_images テーブルに画像パスを保存
-
-                $item->images()->create(['image_url' => $path,]);
+                
+                $item->images()->create([
+                    'image_url' => $path,
+                    'item_id' => $item->id,
+                ]);
+                
             }
+
+            // 商品データーを保存
+            // $validatedData['user_id'] = auth()->id();
+            // $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
+            // $validatedData['image_url'] = $path;
+            // $item = Item::create($validatedData);
 
             return redirect()->route('items.index')->with('success', '商品を出品しました！');
         }
+
     }
 
     public function like(Request $request, $id)
