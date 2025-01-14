@@ -8,6 +8,7 @@ use App\Http\Requests\ExhibitionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
+use App\Models\ItemImage;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 use App\Models\Like;
@@ -90,18 +91,22 @@ class ItemController extends Controller
         $validatedData = $request->validated();
 
         // 商品データーを保存
-        $validatedData['user_id'] = auth()->id();
-        $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
-        
-        $validatedData['image_url'] = $path;
-        $item = Item::create($validatedData);
+        // $validatedData['user_id'] = auth()->id();
+        // $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
+        // $validatedData['image_url'] = $path;
+        // $item = Item::create($validatedData);
 
         // 画像アップロード処理
         if ($request->hasFile('image')) {
             foreach ($request->file('image') as $image) {
                 $path = $image->store('item_images', 'public');
-                
-                $item->images()->create([
+                // $item->images()->create([
+                //     'image_url' => $path,
+                //     'item_id' => $item->id,
+                // ]);
+
+                //ItemImageはitem_imagesテーブルのモデル名
+                ItemImage::create([
                     'image_url' => $path,
                     'item_id' => $item->id,
                 ]);
@@ -109,10 +114,10 @@ class ItemController extends Controller
             }
 
             // 商品データーを保存
-            // $validatedData['user_id'] = auth()->id();
-            // $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
-            // $validatedData['image_url'] = $path;
-            // $item = Item::create($validatedData);
+            $validatedData['user_id'] = auth()->id();
+            $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
+            $validatedData['image_url'] = $path;
+            $item = Item::create($validatedData);
 
             return redirect()->route('items.index')->with('success', '商品を出品しました！');
         }

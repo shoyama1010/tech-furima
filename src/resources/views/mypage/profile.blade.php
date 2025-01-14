@@ -9,7 +9,9 @@
     <h2 class="text-center mb-4">プロフィール設定</h2>
     <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
+        @method('PUT') <!-- プロフィール情報更新なのでPUTメソッドを使用 -->
+
+        <!-- プロフィール画像 -->
         <div class=" form-group mb-3">
             <img id="profile_image_preview"
                 src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : '/images/default-profile.png' }}"

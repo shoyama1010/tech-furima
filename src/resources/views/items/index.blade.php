@@ -19,15 +19,14 @@
             @foreach ($items as $item)
             <div class="item">
                 <!-- 商品画像 -->
-                <a href="{{ route('items.detail', $item->id) }}">
-
+                <!-- <a href="{{ route('items.detail', $item->id) }}"> -->
                     @if ($item->images && $item->images->isNotEmpty())
                     <img src="{{ asset('storage/' . $item->images->first()->image_url) }}"
                         class="card-img-top" alt="{{ $item->name }}">
                     @else
                     <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
                     @endif
-                </a>
+                <!-- </a> -->
                 <div class="item-details">
                     <!-- 商品情報 -->
                     <h5 class="item-title">{{ $item->name }}</h5>

@@ -3,8 +3,7 @@
 @section('main')
 <div class="container">
     <!-- ユーザー情報セクション -->
-    <div class="user-info text-center mb-4">
-        
+    <div class="user-info text-center mb-4">    
         <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : '/images/default-profile.png' }}" alt="プロフィール画像" class="rounded-circle" width="100" height="100">
         <h1>ユーザー名</h1>
         <p>{{ $user->name }}</p>

@@ -26,8 +26,8 @@ class ProfileRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'postal_code' => 'nullable|string|max:10', // 郵便番号
+            // 'email' => 'required|email|max:255',
+            'postal_code' => 'nullable|string|max:8', // 郵便番号
             'building' => 'nullable|string|max:255',  // 建物名
             'address' => 'nullable|string|max:255',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
