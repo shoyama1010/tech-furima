@@ -8,7 +8,6 @@
             <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
             <p>価格: ¥{{ number_format($item->price) }}</p>
         </div>
-
         <!-- 支払い方法選択フォーム -->
         <form method="POST" action="{{ route('purchase.process', $item->id) }}">
             @csrf

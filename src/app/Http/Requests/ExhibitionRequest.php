@@ -28,9 +28,12 @@ class ExhibitionRequest extends FormRequest
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:1000',
+            'category_id.*' => 'exists:categories,id',
+            
             'category_id' => 'required|exists:categories,id',
             // 'condition' => 'required|in:new,used',
             'condition' => 'required|string|max:255',
+
             'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',// 画像のバリデーション
         ];
     }

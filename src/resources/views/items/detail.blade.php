@@ -24,13 +24,17 @@
         <!-- コメント表示 -->
         <p><strong>コメント数:</strong> {{ $item->comments->count() }}</p>
         <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
+
         <p><strong>商品説明:</strong> {{ $item->description }}</p>
         <!-- カテゴリ表示 -->
         <p><strong>カテゴリ:</strong>
-            @if ($item->category)
-                <span class="badge bg-primary">{{ $item->category->name }}</span>
+            
+            @if ($item->category->isNotEmpty())
+            @foreach ($item->category as $category)
+            <span class="badge bg-primary">{{ $category->name }}</span>
+            @endforeach
             @else
-                なし
+            <span class="badge bg-secondary">カテゴリ未設定</span>
             @endif
         </p>
         <!-- コンディション状態 -->

@@ -22,7 +22,7 @@
         @csrf
         <div class="form-group mb-3">
             <label for="image">商品画像</label>
-            <input type="file" name="image[]" id="image" class="form-control" accept="image/*" multiple>
+            <input type="file" name="image" id="image" class="form-control" accept="image/*" multiple>
 
             <!-- プレビュー -->
             @if(isset($item) && $item->image_url)
@@ -44,7 +44,8 @@
 
         <div class="form-group mb-3">
             <label for="category_id">カテゴリー</label>
-            <select id="category_id" name="category_id" class="form-control" required>
+            <!-- <select id="category_id" name="category_id" class="form-control" required> -->
+            <select id="category_id" name="category_ids[]" class="form-control" multiple>
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach

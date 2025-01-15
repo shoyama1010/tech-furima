@@ -16,7 +16,6 @@ class PurchaseController extends Controller
     public function buyitem($id)
     {
         // 商品データを取得
-
         $item = Item::where('id', $id)->where('is_sold', 0)->firstOrFail();
         // ログインユーザーの住所情報を取得
         // $user = auth()->user();
@@ -29,6 +28,8 @@ class PurchaseController extends Controller
     public function purchase($id)
     {
         try {
+            $session = null;
+
             DB::transaction(function () use ($id, &$session) {
                 // 商品をロックして取得
                 $item = Item::lockForUpdate()->findOrFail($id);
@@ -36,6 +37,9 @@ class PurchaseController extends Controller
                 if ($item->is_sold) {
                     throw new \Exception('商品は既に購入済みです');
                 }
+
+                // 商品を "sold" 状態に変更
+                $item->update(['is_sold' => 1, 'status' => 'sold',]);
 
                 // 購入完了後のロジック
                 Order::create([
@@ -45,9 +49,7 @@ class PurchaseController extends Controller
                     'total_price' => $item->price,
                     'status' => 'completed',
                 ]);
-                // 商品を "sold" 状態に変更
-                $item->update(['is_sold' => 1, 'status' => 'sold',]);
-
+                
                 // Stripe設定
                 Stripe::setApiKey(config('services.stripe.secret'));
                 $session = Session::create([
@@ -71,7 +73,7 @@ class PurchaseController extends Controller
             return redirect($session->url);
 
         } catch (\Exception $e) {
-            DB::rollBack();
+            // DB::rollBack();
             logger()->error('購入処理エラー: ' . $e->getMessage());
 
             return redirect()->route('items.detail', $id)->with('error', '購入処理中にエラーが発生しました。');
@@ -84,7 +86,6 @@ class PurchaseController extends Controller
         $item = Item::findOrFail($id);
 
         // 商品を "sold" 状態に変更
-        // $item->update(['is_sold' => 1]);
         if (!$item->is_sold) {
             return redirect()->route('mypage')->with('error', 'この商品はまだ購入されていません。');
         }

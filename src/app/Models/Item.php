@@ -20,7 +20,8 @@ class Item extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        // return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class, 'category_item', 'item_id', 'category_id');
     }
 
     public function comments()
@@ -32,10 +33,7 @@ class Item extends Model
     {
         return $this->hasMany(Like::class); //１対多
     }
-    public function images()
-    {
-        return $this->hasMany(ItemImage::class, 'item_id','id');
-    }
+    
 
     public function orders()
     {
