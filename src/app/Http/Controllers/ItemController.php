@@ -14,6 +14,7 @@ use App\Models\Category;
 use App\Models\Like;
 use App\Models\Order;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -63,7 +64,7 @@ class ItemController extends Controller
         $user = Auth::user(); // ログインユーザー情報を取得
         $itemsSold = $user->items; // ユーザーが出品した商品
         // ユーザーが出品した商品
-        // $itemsPurchased = []; // 購入した商品（必要に応じて実装）
+       
         $itemsPurchased = $user->purchasedItems;
 
         return view('mypage.mypage', compact('user', 'itemsSold', 'itemsPurchased'));
@@ -73,7 +74,7 @@ class ItemController extends Controller
     public function show($id)
     {
         // 商品情報を取得
-        $item = Item::with(['likes', 'category', 'comments.user'])->findOrFail($id);
+        $item = Item::with(['likes', 'categories', 'comments.user'])->findOrFail($id);
         // この商品が購入済みかどうかを確認
         $isSold = Order::where('item_id', $item->id)->exists();
         return view('items.detail', compact('item', 'isSold'));
@@ -90,29 +91,48 @@ class ItemController extends Controller
     {
         $validatedData = $request->validated();
 
+        DB::beginTransaction(); // トランザクション開始
+
+        try {
         // 商品データーを保存
         $validatedData['user_id'] = auth()->id();
         $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
-        // $validatedData['image_url'] = $path;
         $item = Item::create($validatedData);
 
+            
         // 画像アップロード処理
-        if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $image) {
-
-                $imageFile = $request->file('image');
-                // 画像を保存
-                $path = $image->store('item_images', 'public');
-
-                // 保存した画像のパスを `items` テーブルの `image_url` に保存
-                $item->update(['image_url' => $path]);
+            if ($request->hasFile('image')) {
+                $images = $request->file('image');
+                foreach ($images as $key => $image) {         
+                    // 画像を保存
+                    $path = $image->store('item_images', 'public');
+                    // 最初の画像を `image_url` カラムに設定
+                    if ($key === 0) {
+                        $item->update(['image_url' => $path]);
+                        $item->save(); // 保存を確実に実行
+                    }
+                }
             }
-            // 中間テーブル (category_item) にデータを保存
-            if ($request->has('category_id')) {
-                $item->categories()->attach($validatedData['category_id']);
-            }
+            
+            // カテゴリの紐付け
+            if ($request->has('categories')) {
+                // $item->categories()->sync($request->input('categories'));
+                $categories = $request->input('categories');
+                $item->categories()->syncWithPivotValues($categories, [
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            } 
+
+            DB::commit(); // トランザクション確定
 
             return redirect()->route('items.index')->with('success', '商品を出品しました！');
+
+        } catch (\Exception $e) {
+            DB::rollBack(); // トランザクションをロールバック
+            // エラーメッセージを表示
+            return back()->withErrors(['error' => '商品の登録中にエラーが発生しました: ' . $e->getMessage()]);
+
         }
     }
 

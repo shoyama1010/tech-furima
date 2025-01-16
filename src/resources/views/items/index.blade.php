@@ -22,16 +22,13 @@
             <div class="item">
                 <!-- 商品画像 -->
                 <a href="{{ route('items.detail', $item->id) }}">
-                    @if (!empty($item->image_url)) <!-- image_urlの存在をチェック -->
-                    <!-- <img src="{{ asset('storage/' . $item->image_url) }}"
-                        class="card-img-top" alt="{{ $item->name }}"> -->
-                    <img src="{{ $item->image_url }}"
-                        class="card-img-top" alt="{{ $item->name }}">
+                    <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" class="card-img-top" alt="{{ $item->name }}">
+                    <!-- @if (!empty($item->image_url)) 
+                   
+                    <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
                     @else
-                    <!-- <img src="{{ $item->image_url }}" alt="{{ $item->name }}"> -->
-                    <img src="{{ asset('images/no-image.png') }}" alt="No Image">
-                    <!-- デフォルト画像 -->
-                    @endif
+                    <img src="{{ asset('images/no-image.png') }}" alt="No Image">  
+                    @endif -->
                 </a>
 
                 <div class="item-details">

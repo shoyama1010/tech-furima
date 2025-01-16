@@ -18,9 +18,8 @@ class Item extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category()
+    public function categories()
     {
-        // return $this->belongsTo(Category::class);
         return $this->belongsToMany(Category::class, 'category_item', 'item_id', 'category_id');
     }
 
@@ -45,5 +44,14 @@ class Item extends Model
     {
         // return $this->orders()->exists();
         return $this->is_sold === 1; // is_sold カラムが 1 の場合、購入済み
+    }
+
+    // 画像アップロード統一処理
+    public function getImageUrlAttribute($value)
+    {
+        if (strpos($value, 'http') === 0) {
+            return $value; // フルURLの場合はそのまま返す
+        }
+        return asset('storage/' . $value); // ローカルストレージの場合
     }
 }

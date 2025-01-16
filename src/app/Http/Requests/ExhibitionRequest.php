@@ -28,13 +28,11 @@ class ExhibitionRequest extends FormRequest
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:1000',
-            'category_id.*' => 'exists:categories,id',
-            
-            'category_id' => 'required|exists:categories,id',
-            // 'condition' => 'required|in:new,used',
+            'categories.*' => 'exists:categories,id',// 配列の各値がcategoriesテーブルに存在するかチェック
+            'categories' => 'required|array', // 配列として受け取る
             'condition' => 'required|string|max:255',
 
-            'image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',// 画像のバリデーション
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',// 画像のバリデーション
         ];
     }
 }

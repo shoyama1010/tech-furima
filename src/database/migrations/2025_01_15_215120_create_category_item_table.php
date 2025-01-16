@@ -22,6 +22,7 @@ class CreateCategoryItemTable extends Migration
             // / 外部キー制約
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
+            $table->timestamps(); // タイムスタンプを追加
         });
     }
 

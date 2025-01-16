@@ -44,12 +44,18 @@
 
         <div class="form-group mb-3">
             <label for="category_id">カテゴリー</label>
-            <!-- <select id="category_id" name="category_id" class="form-control" required> -->
-            <select id="category_id" name="category_ids[]" class="form-control" multiple>
+            <div id="categories-container">
                 @foreach ($categories as $category)
-                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                <div class="form-check form-check-inline">
+
+                    <input class="form-check-input" type="checkbox" id="category_{{ $category->id }}" name="categories[]" value="{{ $category->id }}">
+                    <label class="form-check-label btn btn-outline-primary" for="category_{{ $category->id }}">
+                        {{ $category->name }}
+                    </label>
+                </div>
                 @endforeach
-            </select>
+                </select>
+            </div>
         </div>
 
         <div class="form-group mb-3">
@@ -69,30 +75,30 @@
 
         <button type="submit" class="btn btn-primary w-100">出品する</button>
     </form>
-</div>
-@endsection
+    </div>
+    @endsection
 
-@section('scripts')
-<script>
-    document.getElementById('images').addEventListener('change', function(event) {
-        const previewContainer = document.getElementById('image-preview-container');
-        previewContainer.innerHTML = ''; // プレビューコンテナをリセット
-        const files = event.target.files;
+    @section('scripts')
+    <script>
+        document.getElementById('images').addEventListener('change', function(event) {
+            const previewContainer = document.getElementById('image-preview-container');
+            previewContainer.innerHTML = ''; // プレビューコンテナをリセット
+            const files = event.target.files;
 
-        Array.from(files).forEach(file => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.alt = 'Preview';
-                img.style.width = '100px';
-                img.style.height = '100px';
-                img.style.marginRight = '10px';
-                img.style.marginBottom = '10px';
-                previewContainer.appendChild(img);
-            };
-            reader.readAsDataURL(file);
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'Preview';
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.marginRight = '10px';
+                    img.style.marginBottom = '10px';
+                    previewContainer.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
         });
-    });
-</script>
-@endsection
+    </script>
+    @endsection

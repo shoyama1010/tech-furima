@@ -28,9 +28,9 @@
         <p><strong>商品説明:</strong> {{ $item->description }}</p>
         <!-- カテゴリ表示 -->
         <p><strong>カテゴリ:</strong>
-            
-            @if ($item->category->isNotEmpty())
-            @foreach ($item->category as $category)
+
+            @if ($item->categories->isNotEmpty())
+            @foreach ($item->categories as $category)
             <span class="badge bg-primary">{{ $category->name }}</span>
             @endforeach
             @else
