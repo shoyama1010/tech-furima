@@ -18,6 +18,7 @@
                 alt="プロフィール画像"
                 class="rounded-circle"
                 width="100" height="100">
+                
             <input type="file" name="profile_image" id="profile_image" class="form-control" accept="image/*" onchange="previewImage(event)">
         </div>
 

@@ -20,7 +20,8 @@ class Item extends Model
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'category_item', 'item_id', 'category_id');
+        // <!-- <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" class="card-img-top" alt="{{ $item->name }}"> -->
+        return $this->belongsToMany(Category::class, 'category_item')->withTimestamps();
     }
 
     public function comments()
@@ -49,9 +50,12 @@ class Item extends Model
     // 画像アップロード統一処理
     public function getImageUrlAttribute($value)
     {
-        if (strpos($value, 'http') === 0) {
-            return $value; // フルURLの場合はそのまま返す
+        if ($value && strpos($value, 'http') === 0) {
+            return $value; // フルURLの場合そのまま返す
         }
-        return asset('storage/' . $value); // ローカルストレージの場合
+        return $value 
+        ? asset('storage/' . $value) : asset('images/no-image.png');
+        
     }
+
 }

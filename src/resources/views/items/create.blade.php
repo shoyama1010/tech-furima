@@ -17,19 +17,19 @@
         </ul>
     </div>
     @endif
-
     <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        <!-- 出品画像 -->
         <div class="form-group mb-3">
             <label for="image">商品画像</label>
-            <input type="file" name="image" id="image" class="form-control" accept="image/*" multiple>
 
-            <!-- プレビュー -->
-            @if(isset($item) && $item->image_url)
-            <div class="mt-3">
-                <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}" class="img-fluid">
-            </div>
-            @endif
+            <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" alt="{{ $item->name }}" class="card-img-top">
+
+            <!-- <img src="{{ $item->image_url ? asset('storage/' . $item->image_url) : asset('images/no-image.png') }}" alt="{{ $item->name }}" class="card-img-top"> -->
+
+            <input type="file" name="image" id="image" class="form-control" accept="image/*" multiple onchange="previewImages(event)">
+
+            <div id="image-preview-container" class="mt-3"></div>
         </div>
 
         <div class="form-group mb-3">
@@ -45,16 +45,14 @@
         <div class="form-group mb-3">
             <label for="category_id">カテゴリー</label>
             <div id="categories-container">
+
                 @foreach ($categories as $category)
                 <div class="form-check form-check-inline">
-
                     <input class="form-check-input" type="checkbox" id="category_{{ $category->id }}" name="categories[]" value="{{ $category->id }}">
-                    <label class="form-check-label btn btn-outline-primary" for="category_{{ $category->id }}">
-                        {{ $category->name }}
+                    <label class="form-check-label btn btn-outline-primary" for="category_{{ $category->id }}"> {{ $category->name }}
                     </label>
                 </div>
                 @endforeach
-                </select>
             </div>
         </div>
 
@@ -69,36 +67,36 @@
         </div>
 
         <div class="form-group mb-3">
-            <label for="condition">商品の価格</label>
+            <label for="price">商品の価格</label>
             <input type="number" name="price" id="price" class="form-control" value="{{ old('price') }}" required>
         </div>
 
         <button type="submit" class="btn btn-primary w-100">出品する</button>
     </form>
-    </div>
-    @endsection
+</div>
+@endsection
 
-    @section('scripts')
-    <script>
-        document.getElementById('images').addEventListener('change', function(event) {
-            const previewContainer = document.getElementById('image-preview-container');
-            previewContainer.innerHTML = ''; // プレビューコンテナをリセット
-            const files = event.target.files;
 
-            Array.from(files).forEach(file => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.alt = 'Preview';
-                    img.style.width = '100px';
-                    img.style.height = '100px';
-                    img.style.marginRight = '10px';
-                    img.style.marginBottom = '10px';
-                    previewContainer.appendChild(img);
-                };
-                reader.readAsDataURL(file);
-            });
+@section('scripts')
+<script>
+    function previewImages(event) {
+        const previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = '';
+        const files = event.target.files;
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = 'Preview';
+                img.style.width = '100px';
+                img.style.height = '100px';
+                img.style.marginRight = '10px';
+                img.style.marginBottom = '10px';
+                previewContainer.appendChild(img);
+            };
+            reader.readAsDataURL(file);
         });
-    </script>
-    @endsection
+    }
+</script>
+@endsection

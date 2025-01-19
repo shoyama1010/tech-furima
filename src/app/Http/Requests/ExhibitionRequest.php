@@ -29,7 +29,7 @@ class ExhibitionRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'description' => 'required|string|max:1000',
             'categories.*' => 'exists:categories,id',// 配列の各値がcategoriesテーブルに存在するかチェック
-            'categories' => 'required|array', // 配列として受け取る
+            'categories' => 'required|array|min:1', // 配列として受け取る
             'condition' => 'required|string|max:255',
 
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',// 画像のバリデーション

@@ -28,6 +28,7 @@
     <div id="app">
         <!-- ヘッダーコンポーネント -->
         @component('components.header')
+        
         @endcomponent
         <!-- メインコンテンツ -->
         <main class="py-4">

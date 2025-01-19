@@ -8,7 +8,6 @@ use App\Http\Requests\ExhibitionRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Item;
-use App\Models\ItemImage;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
 use App\Models\Like;
@@ -64,7 +63,7 @@ class ItemController extends Controller
         $user = Auth::user(); // ログインユーザー情報を取得
         $itemsSold = $user->items; // ユーザーが出品した商品
         // ユーザーが出品した商品
-       
+
         $itemsPurchased = $user->purchasedItems;
 
         return view('mypage.mypage', compact('user', 'itemsSold', 'itemsPurchased'));
@@ -84,55 +83,51 @@ class ItemController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('items.create', compact('categories'));
+        $item = new Item(); // 空の Item オブジェクトを渡す
+        return view('items.create', compact('categories', 'item'));
     }
 
     public function store(ExhibitionRequest $request)
     {
         $validatedData = $request->validated();
-
         DB::beginTransaction(); // トランザクション開始
 
         try {
-        // 商品データーを保存
-        $validatedData['user_id'] = auth()->id();
-        $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
-        $item = Item::create($validatedData);
+            // 商品データーを保存
+            $validatedData['user_id'] = auth()->id();
+            $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
+            // $validatedData['image_url'] = $path ?? 'images/no-image.png';
+            $item = Item::create($validatedData);
 
-            
-        // 画像アップロード処理
+            // 画像アップロード処理
             if ($request->hasFile('image')) {
-                $images = $request->file('image');
-                foreach ($images as $key => $image) {         
-                    // 画像を保存
-                    $path = $image->store('item_images', 'public');
-                    // 最初の画像を `image_url` カラムに設定
-                    if ($key === 0) {
-                        $item->update(['image_url' => $path]);
-                        $item->save(); // 保存を確実に実行
-                    }
-                }
+                $image = $request->file('image'); // 複数ではなく1つ目を取得
+                $path = $image->store('item_images', 'public');
+                $item->update(['image_url' => $path]);
+                // foreach ($images as $key => $image) {     //     // 画像を保存          
+                // $path = $image->store('item_images', 'public'); // デバッグ: 保存したパスを確認
+                //     if ($key === 0) { //     // 最初の画像を `image_url` カラムに設定
+                //         $item->update(['image_url' => $path]);
+                //     }
+                // }
+            } else { // 画像がない場合、デフォルト画像を設定
+                $item->update(['image_url' => 'images/no-image.png']);
             }
-            
             // カテゴリの紐付け
             if ($request->has('categories')) {
-                // $item->categories()->sync($request->input('categories'));
                 $categories = $request->input('categories');
                 $item->categories()->syncWithPivotValues($categories, [
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
-            } 
-
+            }
             DB::commit(); // トランザクション確定
 
             return redirect()->route('items.index')->with('success', '商品を出品しました！');
-
         } catch (\Exception $e) {
             DB::rollBack(); // トランザクションをロールバック
             // エラーメッセージを表示
             return back()->withErrors(['error' => '商品の登録中にエラーが発生しました: ' . $e->getMessage()]);
-
         }
     }
 

@@ -17,18 +17,11 @@
         <div class="items-container">
             @if($items->isNotEmpty())
             @foreach ($items as $item)
-            @if ($item) <!-- nullチェックを追加 -->
-
             <div class="item">
                 <!-- 商品画像 -->
                 <a href="{{ route('items.detail', $item->id) }}">
                     <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" class="card-img-top" alt="{{ $item->name }}">
-                    <!-- @if (!empty($item->image_url)) 
-                   
-                    <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}">
-                    @else
-                    <img src="{{ asset('images/no-image.png') }}" alt="No Image">  
-                    @endif -->
+                    <!-- <img src="{{ $item->image_url }}" class="card-img-top" alt="{{$item->name }}"> -->
                 </a>
 
                 <div class="item-details">
@@ -46,7 +39,6 @@
                     <a href="{{ route('items.detail', $item->id) }}" class="btn btn-primary">詳細を見る</a>
                 </div>
             </div>
-            @endif
             @endforeach
             @else
             <p class="text-center">現在、表示する商品がありません。</p>
