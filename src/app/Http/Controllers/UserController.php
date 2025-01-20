@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage; // ストレージ用の名前空間も追加
 use App\Http\Requests\ProfileRequest;
+use App\Models\Item;
 
 class UserController extends Controller
 {
@@ -17,11 +18,15 @@ class UserController extends Controller
     public function mypage()
     {
         $user = auth()->user();
-
         // ユーザーが出品した商品
-        $itemsSold = $user->items()->where('is_sold', true)->get();
+        // $itemsSold = $user->items()->where('is_sold', true)->get();
+        $itemsSold = Item::where('user_id', $user->id)->get();
+
         // ユーザーが購入した商品
-        $itemsPurchased = $user->purchasedItems;
+        // $itemsPurchased = $user->purchasedItems;
+        $itemsPurchased = Item::whereHas('orders',function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+        })->get(); // 購入した商品    
 
         return view('mypage.mypage', compact('user', 'itemsSold', 'itemsPurchased'));
     }

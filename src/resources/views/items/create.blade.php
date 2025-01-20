@@ -23,10 +23,8 @@
         <div class="form-group mb-3">
             <label for="image">商品画像</label>
 
-            <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" alt="{{ $item->name }}" class="card-img-top">
-
+            <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" alt="{{ $item->name }}" class="card-img-top" style="max-width: 200px; display: block;">
             <!-- <img src="{{ $item->image_url ? asset('storage/' . $item->image_url) : asset('images/no-image.png') }}" alt="{{ $item->name }}" class="card-img-top"> -->
-
             <input type="file" name="image" id="image" class="form-control" accept="image/*" multiple onchange="previewImages(event)">
 
             <div id="image-preview-container" class="mt-3"></div>

@@ -3,25 +3,36 @@ header {
     /* ヘッダーの背景を黒に設定 */
     color: #fff;
     /* テキストを白に設定 */
-    /* padding: 5px 0; */
-    padding: 5px 20px;
+    /* padding: 10px 20px; */
+    width: 100%;
+    /* (1/20追加) */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* コンテナ内の余白調整 */
 .header-container {
-    /* margin-top: 10px; */
-    background-color: #000 !important;
+    position: fixed;
+    /* 固定配置 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    /* 他の要素より上に配置 */
+    padding: 10px 20px;
+    background-color: #000;
     display: flex;
     justify-content: space-between;
-    /* 追加 */
     align-items: center;
-    gap: 20px; 
-    /* 各要素間に適度な隙間 */
     /* margin: 0 auto; */
-    max-width: 1200px;
+    /* max-width: 1200px; */
 }
 
 header a {
-    color: #fff !important;
+    color: #fff;
     /* ヘッダー内リンクの色を白に設定 */
     text-decoration: none;
     /* リンク下線を削除 */
@@ -30,7 +41,7 @@ header a {
 .navbar a {
     color: #fff;
     text-decoration: none;
-    margin: 0 15px;
+    /* margin: 0 10px; */
     /* 追加 */
     font-weight: bold;
 }
@@ -39,53 +50,62 @@ header a {
     color: #f15b5b;
 }
 
-/* 追加 */
+/* 検索ボタンのセンター配置 */
 .search-container {
-    /* flex-grow: 1; */
-    flex-basis: 60%; /* 横幅を60%に設定 */
-    max-width: 500px; /* （追加）最大幅を設定 */
+    flex-grow: 1;
+    max-width: 500px;
+    /* （1/20追加）最大幅を設定 */
     /* display: flex; */
     /* justify-content: center; */
-    justify-content: space-between;
-    /* margin: 0 20px; */
+    margin: 0 20px;
 }
 
-.navbar-brand,
-.logout {
-    flex-shrink: 0;
-    /* 横幅が縮まらないようにする */
-}
-
-/* 追加 */
+/* 追加 (1/19) */
 .search-container input {
     width: 100%;
-    max-width: 600px;
+    max-width: 700px;
     padding: 8px 12px;
     border-radius: 4px;
     border: 1px solid #ccc;
 }
 
+
 .logout {
-    display: flex;
-    justify-content: flex-end !important;/* 右揃え */
+    display: flex ;
+    /* justify-content: flex-end !important; */
+    /* 右揃え */
+    /* align-items: center; */
     gap: 10px;
-    /* ボタン間の隙間 */
 }
 
-/* 追加 */
 .logout .btn {
     border-radius: 4px;
     font-weight: bold;/
 }
 
+/* ロゴの配置を左端に固定 */
 .navbar-brand {
     flex-shrink: 0;
     /* ロゴのサイズを固定 */
+    margin-right: auto;
+    /* 左端に固定する */
 }
+
+/* ロゴ設定 */
+.navbar-brand img {
+    max-height: 50px;
+}
+
 .navbar {
-    padding: 10px;
-    background-color: #000 !important;
+    padding: 30px;
+    background-color: #000;
     /* max-width: 1200px; */
+    /* (1/20削除) */
+
+    /* (1/20追加) */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .navbar-brand,
@@ -95,32 +115,16 @@ header a {
     padding: 0;
 }
 
-/* .btn-link.active {
-    font-weight: bold;
-    text-decoration: underline;
-} */
-
 /* 出品ボタンのスタイル */
 .btn-sell {
     background-color: #28a745;
-    color: #fff !important;
+    color: #fff;
     border: none;
     padding: 8px 12px;
     border-radius: 4px;
     font-weight: bold;
 }
-/* .btn-sell { */
-    /* background-color: #fff; */
-    /* 背景色を白 */
-    /* color: #000 !important; */
-    /* 文字色を黒 */
-    /* border: 1px solid #fff; */
-    /* 枠線を白 */
-    /* padding: 8px 12px; */
-    /* border-radius: 4px; */
-/* } */
 
-/* 追加 */
 .btn-sell:hover {
     background-color: #218838;
 }
@@ -137,4 +141,36 @@ header a {
 .btn-primary:hover {
     background-color: #0056b3;
     /* ログアウトボタンホバー時の色 */
+}
+
+/* メディアクエリを追加 */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        /* 縦方向に配置 */
+        align-items: center;
+        /* 中央揃え */
+    }
+
+    .search-container {
+        width: 100%;
+        /* 検索バーの幅を100%に */
+        max-width: 100%;
+        margin-top: 10px;
+    }
+
+    .logout {
+        /* flex-direction: column; */
+        /* ボタンを縦に配置 */
+        /* align-items: center; */
+        /* gap: 5px; */
+        /* ボタン間のスペース */
+        justify-content: center;
+    }
+
+    /* .btn {
+        width: 100%;
+        /* ボタンの幅を100%に */
+    /* }  */
+
 }

@@ -104,12 +104,8 @@ class ItemController extends Controller
                 $image = $request->file('image'); // 複数ではなく1つ目を取得
                 $path = $image->store('item_images', 'public');
                 $item->update(['image_url' => $path]);
-                // foreach ($images as $key => $image) {     //     // 画像を保存          
-                // $path = $image->store('item_images', 'public'); // デバッグ: 保存したパスを確認
-                //     if ($key === 0) { //     // 最初の画像を `image_url` カラムに設定
-                //         $item->update(['image_url' => $path]);
-                //     }
-                // }
+          
+                
             } else { // 画像がない場合、デフォルト画像を設定
                 $item->update(['image_url' => 'images/no-image.png']);
             }

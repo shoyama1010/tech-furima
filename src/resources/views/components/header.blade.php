@@ -1,4 +1,5 @@
 <header>
+    <!-- <header class="navbar navbar-expand-md navbar-light bg-white shadow-sm"> -->
     <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
 
         <div class="header-container">
@@ -10,7 +11,6 @@
             <!-- 登録ユーザーのみ認証チェック -->
             @if(Auth::check())
             <!-- 検索バー -->
-            <!-- <div class="mx-3 flex-grow-1"> -->
             <div class="search-container">
                 <form action="{{ route('items.search') }}" method="GET">
                     @csrf
@@ -27,7 +27,6 @@
                 <a href="{{ route('mypage')}}" class="btn btn-secondary">マイページ</a>
                 <a href="{{ url('/items/create') }}" class="btn btn-sell">出品</a>
             </div>
-
             @endif
         </div>
     </nav>

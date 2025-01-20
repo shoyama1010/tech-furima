@@ -35,7 +35,6 @@
                     <p class="item-status">
                         状態: {{ $item->is_sold ? 'SOLD' : '出品中' }}
                     </p>
-
                     <a href="{{ route('items.detail', $item->id) }}" class="btn btn-primary">詳細を見る</a>
                 </div>
             </div>

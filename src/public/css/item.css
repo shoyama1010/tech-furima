@@ -1,11 +1,13 @@
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    padding-top: 100px;
+    /* ヘッダー高さ分の余白を追加 */
 }
 
 .row.mb-4 {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     /* 左右に余裕を持たせる */
     align-items: center;
     margin-bottom: 20px;
@@ -13,6 +15,7 @@
     /* 中央揃え */
     /* gap: 20px; */
     /* 間隔を調整 */
+    margin-top: 50px;
 }
 
 
@@ -96,4 +99,3 @@
 .item-primary:hover {
     background-color: #0056b3;
 }
-

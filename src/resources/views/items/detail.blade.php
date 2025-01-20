@@ -22,7 +22,7 @@
             </button>
         </div>
         <!-- コメント表示 -->
-        <p><strong>コメント数:</strong> {{ $item->comments->count() }}</p>
+        <p><strong>コメント💭:</strong> {{ $item->comments->count() }}</p>
         <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
 
         <p><strong>商品説明:</strong> {{ $item->description }}</p>
