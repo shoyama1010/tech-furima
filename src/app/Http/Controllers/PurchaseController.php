@@ -49,7 +49,7 @@ class PurchaseController extends Controller
                     'total_price' => $item->price,
                     'status' => 'completed',
                 ]);
-                
+
                 // Stripe設定
                 Stripe::setApiKey(config('services.stripe.secret'));
                 $session = Session::create([
@@ -71,7 +71,6 @@ class PurchaseController extends Controller
             });
             // トランザクション外でリダイレクトを実行
             return redirect($session->url);
-
         } catch (\Exception $e) {
             // DB::rollBack();
             logger()->error('購入処理エラー: ' . $e->getMessage());
@@ -90,21 +89,25 @@ class PurchaseController extends Controller
             return redirect()->route('mypage')->with('error', 'この商品はまだ購入されていません。');
         }
 
-        // Order にデータを保存
-        $order = Order::create([
-            'user_id' => auth()->id(),
-            'item_id' => $item->id,
-            'quantity' => 1,
-            'total_price' => $item->price,
-            'status' => 'completed',
-        ]);
-        Payment::create([
-            'user_id' => auth()->id(), // 購入者のID
-            'order_id' => $order->id, // 関連する注文のID
-            'payment_method' => 'stripe', // 支払い方法（例: stripe）
-            'amount' => $item->price, // 支払い金額
-            'status' => 'completed', // ステータス
-        ]);
+        $existingOrder = Order::where('user_id', auth()->id())->where('item_id', $item->id)->first();
+        if (!$existingOrder) {
+            // Order にデータを保存
+            $order = Order::create([
+                'user_id' => auth()->id(),
+                'item_id' => $item->id,
+                'quantity' => 1,
+                'total_price' => $item->price,
+                'status' => 'completed',
+            ]);
+
+            Payment::create([
+                'user_id' => auth()->id(), // 購入者のID
+                'order_id' => $order->id, // 関連する注文のID
+                'payment_method' => 'stripe', // 支払い方法（例: stripe）
+                'amount' => $item->price, // 支払い金額
+                'status' => 'completed', // ステータス
+            ]);
+        }
         return redirect()->route('mypage')->with('success', '購入が完了しました。');
     }
 

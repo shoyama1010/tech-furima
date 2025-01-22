@@ -19,13 +19,11 @@ class UserController extends Controller
     {
         $user = auth()->user();
         // ユーザーが出品した商品
-        // $itemsSold = $user->items()->where('is_sold', true)->get();
-        $itemsSold = Item::where('user_id', $user->id)->get();
+        $itemsSold = Item::where('user_id', $user->id)->where('is_sold', false)->get();
 
         // ユーザーが購入した商品
-        // $itemsPurchased = $user->purchasedItems;
-        $itemsPurchased = Item::whereHas('orders',function ($query) use ($user) {
-                $query->where('user_id', $user->id);
+        $itemsPurchased = Item::whereHas('orders', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
         })->get(); // 購入した商品    
 
         return view('mypage.mypage', compact('user', 'itemsSold', 'itemsPurchased'));

@@ -69,10 +69,8 @@ header a {
     border: 1px solid #ccc;
 }
 
-
 .logout {
     display: flex;
-   
     gap: 20px;
 }
 
@@ -158,22 +156,12 @@ header a {
     .search-container {
         width: 100%;
         /* 検索バーの幅を100%に */
-        max-width: 100%;
+        /* max-width: 100%; */
         margin-top: 10px;
     }
 
     .logout {
-        /* flex-direction: column; */
-        /* ボタンを縦に配置 */
-        /* align-items: center; */
-        /* gap: 5px; */
-        /* ボタン間のスペース */
         justify-content: center;
     }
-
-    /* .btn {
-        width: 100%;
-        /* ボタンの幅を100%に */
-    /* }  */
 
 }
