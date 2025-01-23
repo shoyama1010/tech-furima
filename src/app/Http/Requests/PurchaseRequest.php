@@ -28,7 +28,8 @@ class PurchaseRequest extends FormRequest
             'item_id' => 'required|exists:items,id',
             'quantity' => 'required|integer|min:1',
             'address'  => 'required|string|max:255',
-            'payment_method' => 'required|in:credit_card,bank_transfer,cash_on_delivery',
+            // 'payment_method' => 'required|in:credit_card,bank_transfer,cash_on_delivery',
+            'payment_method' => 'required|string|in:card,bank_transfer',
         ];
     }
 

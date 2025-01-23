@@ -96,7 +96,9 @@ class ItemController extends Controller
             // 商品データーを保存
             $validatedData['user_id'] = auth()->id();
             $validatedData['status'] = 'sell'; // 初期状態を'sell'に設定
-            // $validatedData['image_url'] = $path ?? 'images/no-image.png';
+            // デフォルト画像を設定(1/23更新)
+            $validatedData['image_url'] = $path ?? 'images/no-image.png';
+            // 商品データを作成
             $item = Item::create($validatedData);
 
             // 画像アップロード処理
@@ -105,7 +107,7 @@ class ItemController extends Controller
                 $path = $image->store('item_images', 'public');
                 $item->update(['image_url' => $path]);
           
-                
+
             } else { // 画像がない場合、デフォルト画像を設定
                 $item->update(['image_url' => 'images/no-image.png']);
             }

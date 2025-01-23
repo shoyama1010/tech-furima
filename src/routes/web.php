@@ -57,10 +57,10 @@ Route::middleware(['auth'])->group(function () {
     
     // 購入画面表示
     Route::get('/purchase/{id}', [PurchaseController::class, 'buyitem'])->name('purchase.show');
-    // Route::post('/purchase/{id}', [PurchaseController::class, 'purchase'])->name('purchase.store');
+
     // 購入処理
     Route::post('/purchase/{id}', [PurchaseController::class, 'purchase'])->name('purchase.process');
-    
+    // Route::post('/purchase/{id}', [PurchaseController::class, 'purchase'])->name('purchase');
     // 購入履歴の表示
     Route::get('/mypage/history', [PurchaseController::class, 'history'])->name('purchase.history');
     // 購入成功後のリダイレクト
