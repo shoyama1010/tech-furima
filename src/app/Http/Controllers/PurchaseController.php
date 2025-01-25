@@ -17,57 +17,50 @@ class PurchaseController extends Controller
     public function buyitem($id)
     {
         // 商品データを取得
-        $item = Item::where('id', $id)->where('is_sold', 0)->firstOrFail();
+        $item = Item::where('id', $id)->firstOrFail();
+        // $item = Item::where('id', $id)->where('is_sold', 0)->firstOrFail();
         // ログインユーザーの住所情報を取得
-        // $user = auth()->user();
         $address = Address::where('user_id', auth()->id())->first();
-
         // 購入画面を表示
         return view('purchase.show', compact('item', 'address'));
     }
 
-    public function purchase($id)
-    // public function purchase(PurchaseRequest $request, $id)
+    // public function purchase($id)
+    public function purchase(PurchaseRequest $request, $id)
     {
         try {
+            // Stripe設定
+            Stripe::setApiKey(config('services.stripe.secret'));
             $session = null;
-
-            DB::transaction(function () use ($id, &$session ) {
+            DB::transaction(function () use ($id, &$session, $request) {
                 // 商品をロックして取得
                 $item = Item::lockForUpdate()->findOrFail($id);
-
                 if ($item->is_sold) {
                     throw new \Exception('商品は既に購入済みです');
                 }
                 // 商品を "sold" 状態に変更
                 $item->update(['is_sold' => 1, 'status' => 'sold',]);
-
-                // 既存のオーダーがあるか確認し、なければ作成（1/22更新)
+                // 既存のオーダーがあるか確認し、なければ作成
                 $existingOrder = Order::where('user_id', auth()->id())
                     ->where('item_id', $item->id)
                     ->exists();
-
                 if (!$existingOrder) {
                     // 購入完了後のロジック
                     Order::create([
                         'user_id' => auth()->id(),
                         'item_id' => $item->id,
                         'quantity' => 1,
-                        'total_price' => $item->price,
-                        'status' => 'completed',
-                        // 'status' => 'pending', // ステータスを "pending" に設定
+                        'total_price' => $item->price, // 'status' => 'completed',
+                        'status' => 'pending', // ステータスを "pending" に設定
                     ]);
                 }
-
-                // Stripe設定
-                Stripe::setApiKey(config('services.stripe.secret'));
+                // Stripe 決済セッション作成
                 $session = Session::create([
                     'payment_method_types' => ['card'],
                     'line_items' => [
                         [
                             'price_data' => [
-                                'currency' => 'jpy',
-                                'product_data' => ['name' => $item->name],
+                                'currency' => 'jpy','product_data' => ['name' => $item->name],
                                 'unit_amount' => $item->price * 100, // 円をセントに変換
                             ],
                             'quantity' => 1,
@@ -81,9 +74,11 @@ class PurchaseController extends Controller
             // トランザクション外でリダイレクトを実行
             return redirect($session->url);
         } catch (\Exception $e) {
-            // DB::rollBack();
-            logger()->error('購入処理エラー: ' . $e->getMessage());
-
+            logger()->error('購入処理エラー: ' . $e->getMessage(), [
+                'user_id' => auth()->id(),
+                'item_id' => $id,
+                'trace' => $e->getTraceAsString(),
+            ]);
             return redirect()->route('items.detail', $id)->with('error', '購入処理中にエラーが発生しました。');
         }
     }
@@ -98,7 +93,7 @@ class PurchaseController extends Controller
             return redirect()->route('mypage')->with('error', 'この商品はまだ購入済です。');
         }
 
-        // 既に注文済みか確認（1/23）
+        // 既に注文済みか確認
         $order = Order::where('user_id', auth()->id())
             ->where('item_id', $item->id)
             ->where('status', 'pending')
@@ -118,7 +113,7 @@ class PurchaseController extends Controller
                     'status' => 'completed',
                 ]
             );
-            
+
             return redirect()->route('mypage')->with('success', '購入が完了しました。');
         }
         return redirect()->route('mypage')->with('error', '注文が見つかりませんでした。');

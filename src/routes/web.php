@@ -65,6 +65,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mypage/history', [PurchaseController::class, 'history'])->name('purchase.history');
     // 購入成功後のリダイレクト
     Route::get('/purchase/success/{id}', [PurchaseController::class, 'success'])->name('purchase.success');
+    
     // 配送先変更画面
     Route::get('/purchase/address/{id}', [PurchaseController::class, 'editAddress'])->name('purchase.address.edit');
     Route::post('/purchase/address/{id}', [PurchaseController::class, 'updateAddress'])->name('purchase.address.update');

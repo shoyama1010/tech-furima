@@ -9,17 +9,32 @@
             <p>価格: ¥{{ number_format($item->price) }}</p>
         </div>
         <!-- 支払い方法選択フォーム -->
-        <form method="POST" action="{{ route('purchase.process', $item->id) }}">
+        <form id="purchase-form" method="POST" action="{{ route('purchase.process', $item->id) }}">
             @csrf
+
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <div class="payment-container">
                 <label for="payment_method">支払い方法</label>
+
                 <select name="payment_method" id="payment_method" class="form-control">
-                    <option value="コンビニ払い">コンビニ払い</option>
-                    <option value="カード支払い">カード支払い</option>
+                    <option value="convenience_store">コンビニ支払い</option>
+                    <option value="credit_card">カード支払い</option>
+                    
+                    <!-- <option value="コンビニ払い">コンビニ払い</option>
+                    <option value="カード支払い">カード支払い</option> -->
                 </select>
             </div>
             @if(!$item->is_sold)
-            <button type="submit" class="btn btn-primary">購入する</button>
+            <button type="submit" id="submit-button" class="btn btn-primary">購入する</button>
             @else
             <button type="button" class="btn btn-secondary" disabled>購入済み</button>
             @endif
@@ -49,6 +64,11 @@
         const submitButton = document.getElementById('submit-button');
         submitButton.disabled = true; // ボタンを無効化
         submitButton.textContent = '処理中...'; // ボタンのテキストを変更
+
+        setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.textContent = '購入する';
+        }, 5000); // 5秒後に再有効化（エラー対策）
     });
 </script>
 @endsection

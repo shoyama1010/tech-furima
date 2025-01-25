@@ -13,8 +13,8 @@ class PurchaseRequest extends FormRequest
      */
     public function authorize()
     {
-        // return false;
-        return true;
+        // return true;
+        return auth()->check();
     }
 
     /**
@@ -25,11 +25,13 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            'item_id' => 'required|exists:items,id',
-            'quantity' => 'required|integer|min:1',
-            'address'  => 'required|string|max:255',
+            // 'id' => 'required|exists:items,id',
+            // 'item_id' => 'required|exists:items,id',
+            // 'quantity' => 'required|integer|min:1',
+            // 'address'  => 'required|string|max:255',
             // 'payment_method' => 'required|in:credit_card,bank_transfer,cash_on_delivery',
-            'payment_method' => 'required|string|in:card,bank_transfer',
+            // 'payment_method' => 'required|string|in:card,bank_transfer',
+            'payment_method' => 'required|in:convenience_store,credit_card',
         ];
     }
 

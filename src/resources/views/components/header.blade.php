@@ -1,6 +1,6 @@
-<header>
-    <!-- <header class="navbar navbar-expand-md navbar-light bg-white shadow-sm"> -->
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+<!-- <header> -->
+    <header class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <!-- <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm"> -->
 
         <div class="header-container">
             <!-- ロゴ -->
