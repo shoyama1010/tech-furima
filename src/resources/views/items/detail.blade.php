@@ -2,68 +2,82 @@
 
 @section('main')
 <div class="container">
-    <!-- 商品画像部分 -->
-    <div class="image-container">
-        <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
-    </div>
+    <div class="product-detail">
 
-    <!-- 商品情報 -->
-    <div class="details-container">
-        <h2>{{ $item->name }}</h2>
-        <p><strong>ブランド名:</strong> {{ $item->brand }}</p>
-        <p><strong>価格:</strong> ¥{{ number_format($item->price) }}</p>
-
-        <!-- いいね機能 -->
-        <div class="like-section">
-            <strong>いいね数:</strong>
-            <span id="like-count">{{ $item->likes->count() }}</span>
-            <button id="like-button" class="btn btn-outline-secondary">
-                {{ $item->likes->contains('user_id', auth()->id()) ? '★' : '☆' }}
-            </button>
+        <!-- 商品画像部分 -->
+        <div class="image-container">
+            <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
         </div>
-        <!-- コメント表示 -->
-        <p><strong>コメント💭:</strong> {{ $item->comments->count() }}</p>
-        <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
+        <!-- 商品情報 -->
+        <div class="details-container">
+            <h2>{{ $item->name }}</h2>
+            <p><strong>ブランド名:</strong> {{ $item->brand }}</p>
+            <p><strong>価格:</strong> ¥{{ number_format($item->price) }}</p>
 
-        <p><strong>商品説明:</strong> {{ $item->description }}</p>
-        <!-- カテゴリ表示 -->
-        <p><strong>カテゴリ:</strong>
+            <!-- いいね機能 -->
+            <div class="like-section">
+                <strong>いいね数:</strong>
+                <span id="like-count">{{ $item->likes->count() }}</span>
+                <button id="like-button" class="btn btn-outline-secondary">
+                    {{ $item->likes->contains('user_id', auth()->id()) ? '★' : '☆' }}
+                </button>
+            </div>
+            <!-- コメント表示 -->
+            <p><strong>コメント💭:</strong> {{ $item->comments->count() }}</p>
+            <div class="purchase-btn">
+                <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
+            </div>
 
-            @if ($item->categories->isNotEmpty())
-            @foreach ($item->categories as $category)
-            <span class="badge bg-primary">{{ $category->name }}</span>
-            @endforeach
-            @else
-            <span class="badge bg-secondary">カテゴリ未設定</span>
-            @endif
-        </p>
-        <!-- コンディション状態 -->
-        <p><strong>状態:</strong> {{ $item->condition }}</p>
+            <div class="product-info">
+                <h3>商品説明</h3>
+                <p>{{ $item->description }}</p>
 
-        <!-- コメント処理 -->
-        <div class="comments-section">
-            <!-- コメント履歴 -->
-            <div class="comments-list">
+                <!-- カテゴリ表示 -->
+                <h4>カテゴリ:</h4>
+                @if ($item->categories->isNotEmpty())
+                @foreach ($item->categories as $category)
+                <span class="badge bg-primary">{{ $category->name }}</span>
+                @endforeach
+                @else
+                <span class="badge bg-secondary">カテゴリ未設定</span>
+                @endif
+
+                <!-- コンディション状態 -->
+                <h4>商品の状態:</h4>
+                <p>{{ $item->condition }}</p>
+            </div>
+
+            <!-- コメント処理 -->
+            <div class="comments-section">
+                <!-- コメント履歴 -->
                 <h3>コメント ({{ $item->comments->count() }})</h3>
                 @foreach ($item->comments as $comment)
                 <div class="comment">
+                    <span class="user-icon">{{ substr($comment->user->name, 0, 1) }}</span>
                     <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}</p>
                     <p class="text-muted"><small>{{ $comment->created_at->format('Y-m-d H:i') }}</small></p>
+                    <!-- <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}</p>
+                        <p class="text-muted"><small>{{ $comment->created_at->format('Y-m-d H:i') }}</small></p> -->
                 </div>
                 @endforeach
-            </div>
 
-            <h3>商品へのコメント</h3>
-            <form action="{{ route('comments.store') }}" method="POST">
-                @csrf
-                <input type="hidden" name="item_id" value="{{ $item->id }}">
-                <textarea name="content" class="form-control" placeholder="コメントを入力"></textarea>
-                <button type="submit" class="btn btn-primary mt-2">コメントを送信する</button>
-            </form>
+                <h3>商品へのコメント</h3>
+                <form action="{{ route('comments.store') }}" method="POST">
+                    @csrf
+                    <div class="content">
+                        <input type="hidden" name="item_id" value="{{ $item->id }}">
+                        <textarea name="content" class="comment-input" placeholder="コメントを入力"></textarea>
+                        <button type="submit" class="btn btn-primary mt-2">コメントを送信する</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 </div>
+<!-- @endsection -->
 
+<!-- @section('scripts') -->
 <script>
     document.getElementById('like-button').addEventListener('click', function() {
         fetch(`/items/{{ $item->id }}/toggle-like`, {
@@ -79,32 +93,4 @@
             });
     });
 </script>
-
-<style>
-    .category-badge {
-        display: inline-block;
-        margin-right: 10px;
-        padding: 5px 10px;
-        background-color: #f0f0f0;
-        border-radius: 5px;
-        font-size: 14px;
-        color: #333;
-    }
-
-    .like-section {
-        margin-bottom: 10px;
-    }
-
-    .like-section button {
-        font-size: 20px;
-        color: #f15b5b;
-        background: none;
-        border: none;
-        cursor: pointer;
-    }
-
-    .like-section button:focus {
-        outline: none;
-    }
-</style>
 @endsection

@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage; // ストレージ用の名前空間も追加
+use Illuminate\Support\Facades\Storage; 
 use App\Http\Requests\ProfileRequest;
 use App\Models\Item;
-
 class UserController extends Controller
 {
     public function show()
