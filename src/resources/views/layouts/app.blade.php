@@ -36,6 +36,7 @@
         <!-- ヘッダーコンポーネント -->
         @component('components.header')
         @endcomponent
+   
         <!-- メインコンテンツ -->
         <main class="py-4">
             @yield('main')

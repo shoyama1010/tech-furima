@@ -1,6 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Laravel\Fortify\Http\Controllers\EmailVerificationPromptController;
+use Laravel\Fortify\Http\Controllers\EmailVerificationNotificationController;
+
+// use Laravel\Fortify\Http\Controllers\VerifyEmailController;
+use Illuminate\Http\Request;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
@@ -18,6 +26,17 @@ use App\Http\Controllers\UserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// 認証ルート
+// Auth::routes(['verify' => true]);
+
+// 認証済みユーザーのみアクセスできるルート
+Route::get('/mypage', [UserController::class, 'mypage'])
+    ->middleware(['auth', 'verified'])
+    ->name('mypage');
+// Route::middleware('auth')->group(function () {
+//     Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
+// });
 
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
@@ -83,3 +102,36 @@ Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail')
 
 Route::post('/items/{item}/toggle-like', [LikeController::class, 'toggle'])->name('items.toggle-like');
 
+
+// メール確認のプロンプト（未確認のユーザー向け）
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+// Route::get('/email/verify', [EmailVerificationPromptController::class, '__invoke'])
+//     ->middleware(['auth'])
+//     ->name('verification.notice');
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/email/verify', [EmailVerificationPromptController::class, 'show'])
+//         ->name('verification.notice');
+// });
+
+// メール内リンククリック時の処理
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/home')->with('verified', true);
+})->middleware(['auth', 'signed'])->name('verification.verify');
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill();
+//     return redirect('/mypage')->with('message', 'メール認証が完了しました！');
+// })->middleware(['auth', 'signed'])->name('verification.verify');
+
+
+// メール確認の再送信
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', '認証メールを再送しました。');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+// Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+//     ->middleware(['auth', 'throttle:6,1'])
+//     ->name('verification.send');

@@ -2,6 +2,20 @@
 
 @section('main')
 <div class="container">
+    <!-- メール認証 -->
+    @if (Route::has('verification.notice') && !auth()->user()->hasVerifiedEmail())
+    <div class="alert alert-warning text-center">
+        メール認証が必要です。確認メールをご確認ください。
+        <!-- <a href="{{ route('verification.notice') }}" class="btn btn-primary btn-sm">確認ページへ</a> -->
+        <a href="{{ url('/email/verify') }}" class="btn btn-primary btn-sm">確認ページへ</a>
+    </div>
+    <!-- @endif 確認用のメッセージ -->
+    @if (session('message'))
+    <div class="alert alert-success">
+        {{ session('message') }}
+    </div>
+    @endif
+
     <!-- ユーザー情報セクション -->
     <div class="user-info text-center mb-4">
         <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : '/images/default-profile.png' }}" alt="プロフィール画像" class="rounded-circle" width="100" height="100">

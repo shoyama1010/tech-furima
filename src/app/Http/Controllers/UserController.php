@@ -64,4 +64,10 @@ class UserController extends Controller
             return redirect()->route('mypage')->with('success', 'プロフィールを更新しました。');
         }
     }
+    // メール認証用
+    public function home()
+    {
+        $user = auth()->user();
+        return view('home', compact('user'));
+    }
 }

@@ -2,6 +2,7 @@
 
 use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
+use Laravel\Fortify\Fortify;
 
 return [
 
@@ -133,6 +134,7 @@ return [
     */
 
     'views' => true,
+    // メール認証ページの設定
 
     /*
     |--------------------------------------------------------------------------
@@ -148,7 +150,9 @@ return [
     'features' => [
         Features::registration(),
         Features::resetPasswords(),
-        // Features::emailVerification(),
+
+        Features::emailVerification(),
+        // メール認証機能が有効
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         Features::twoFactorAuthentication([
