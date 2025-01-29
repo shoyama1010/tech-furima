@@ -5,11 +5,10 @@
 <div class="container">
     <h1>メールアドレス認証</h1>
     <p>確認メールが送信されました。メールを確認して認証リンクをクリックしてください。</p>
-    <p>メールを確認し、アカウントを有効化してください。</p>
-
-    @if (session('message'))
+   
+    @if (session('success'))
     <div class="alert alert-success">
-        {{ session('message') }}
+        {{ session('success') }}
     </div>
     @endif
 

@@ -14,6 +14,7 @@
         <div class="col text-center">
             <a href="{{ url('/?page=mylist') }}" class="btn btn-link">マイリスト</a>
         </div>
+        
         <div class="items-container">
             @if($items->isNotEmpty())
             @foreach ($items as $item)

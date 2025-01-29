@@ -9,7 +9,9 @@
         <!-- <a href="{{ route('verification.notice') }}" class="btn btn-primary btn-sm">確認ページへ</a> -->
         <a href="{{ url('/email/verify') }}" class="btn btn-primary btn-sm">確認ページへ</a>
     </div>
-    <!-- @endif 確認用のメッセージ -->
+    @endif 
+
+     <!-- 確認用のメッセージ  -->
     @if (session('message'))
     <div class="alert alert-success">
         {{ session('message') }}

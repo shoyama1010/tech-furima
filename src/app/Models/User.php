@@ -2,22 +2,19 @@
 
 namespace App\Models;
 
-use App\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
-// use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Models\Item;
 
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -27,7 +24,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'name','email','password','postal_code',
         'address','profile_image','building',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -41,7 +37,15 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<string, string>
      */
-    protected $casts = ['email_verified_at' => 'datetime',];
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail);
+    }
+
     public function items()
     {
         return $this->hasMany(Item::class);
@@ -67,10 +71,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function purchasedItems()
     {
         return $this->hasManyThrough(Item::class, Order::class, 'user_id', 'id', 'id', 'item_id');
-    }
-
-    public function sendEmailVerificationNotification()
-    {
-        $this->notify(new VerifyEmail);
     }
 }

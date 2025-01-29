@@ -1,5 +1,5 @@
 header {
-    background-color: #000 !important;
+    background-color: #000 ;
     /* ヘッダーの背景を黒に設定 */
     color: #fff;
     /* テキストを白に設定 */
@@ -28,8 +28,6 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* margin: 0 auto; */
-    /* max-width: 1200px; */
 }
 
 header a {
@@ -56,12 +54,9 @@ header a {
     flex-grow: 1;
     max-width: 450px;
     /* （1/20追加）最大幅を設定 */
-    /* display: flex; */
-    /* justify-content: center; */
     margin: 0 10px;
 }
 
-/* 追加 (1/19) */
 .search-container input {
     width: 100%;
     max-width: 100%;
@@ -73,16 +68,18 @@ header a {
 .logout {
     display: flex;
     gap: 20px;
+    /* （1/27更新）↓ */
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 .logout .btn {
-    border-radius: 4px;
-    font-weight: bold;
-    padding: 5px 15px;
-    /* ボタンのサイズを小さく */
+    padding: 8px 20px;
+    /* （1/27更新）↓ */
+    font-size: 14px;
 }
 
-/* ロゴの配置を左端に固定 */
 .navbar-brand {
     flex-shrink: 0;
     /* ロゴのサイズを固定 */
@@ -113,15 +110,13 @@ header a {
 
 /* 出品ボタンのスタイル */
 .btn-sell {
-    /* background-color: #28a745; */
     background-color: #fff;
-    /* color: #fff; */
-    color: #000;
-    /* border: none; */
-    padding: 15px 25px;
-    border-radius: 10px;
-    /* font-weight: bold; */
-    margin: 10px;
+    color: #000 !important;
+    /* Bootstrapのデフォルトスタイル対策↑ */
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .btn-secondary {
@@ -137,10 +132,6 @@ header a {
     padding: 5px 15px;
     border-radius: 4px;
 }
-
-/* .btn-sell:hover {
-    background-color: #218838;
-} */
 
 .btn-primary:hover {
     background-color: #0056b3;
@@ -165,6 +156,15 @@ header a {
 
     .logout {
         justify-content: center;
+        /* （1/27更新）↓ */
+        flex-direction: column;
+        /* 縦配置に変更 */
+    }
+
+    /* （1/27更新）↓ */
+    .logout .btn {
+        width: 100%;
+        text-align: center;
     }
 
 }
