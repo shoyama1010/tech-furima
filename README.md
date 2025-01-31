@@ -65,6 +65,21 @@ DB_DATABASE=laravel_db
 
 DB_USERNAME=laravel_user
 
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=noreply@example.com 
+MAIL_FROM_NAME="laravel"
+
+.envファイルの最後に追加
+
+STRIPE_KEY=stripeで取得した公開キー
+
+STRIPE_SECRET=stripeで取得したシークレットキー
+
 DB_PASSWORD=laravel_pass
 
 認証：fortifyパッケージ追加
@@ -73,8 +88,32 @@ DB_PASSWORD=laravel_pass
 
 .envファイルの最後に追加
 
+5 テーブルの作成
+docker-compose exec php bash
+
+でPHPコンテナにログインし(ログインしたままであれば上記コマンドは実行しなくて良いです。)
+
+php artisan migrate
+
+6 ダミーデータ作成
+PHPコンテナにログインした状態で
+
+php artisan db:seed
+
+7 アプリケーション起動キーの作成
+PHPコンテナにログインした状態で
+
+php artisan key:generate
+
+8 シンボリックリンクの作成
+PHPコンテナにログインした状態で
+
+php artisan storage:link
+
 # 各種機能について
 
 メール認証機能
 ・基本、①会員登録後、②登録時に「認証用メール」を送信　③（mailhogでの）認証リンクのクリック　④ユーザーが受信したメール内のリンクをクリックとなってますが、
 メールが送信された「お知らせ」は、今回「マイページ」にて表示させてます。（ユーザー向けに、プロフィールも続けてやって貰えるように）
+
+
