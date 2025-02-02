@@ -36,7 +36,7 @@ http://localhost
 ・storage
 
 # テーブル設計
-
+https://github.com/shoyama1010/tech-furima/issues/1#issue-2825654868
 
 # ER図
 
