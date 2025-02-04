@@ -130,6 +130,7 @@ php artisan storage:link
 
 決済機能
 ・実際に購入ボタンから、PAY.JPに登録して、そこからsripeの決済画面に接続されて、はじめて「購入」となります。
+![Image](https://github.com/user-attachments/assets/2cde985b-219f-41f4-ac65-9be4d968da07)
 
 いいね機能
 ・☆印を押して、「いいね」することができ、解除することもできます。
