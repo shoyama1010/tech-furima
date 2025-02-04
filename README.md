@@ -130,6 +130,8 @@ php artisan storage:link
 
 ## 商品購入機能
 ・商品を１つ選択してオーダーできます。購入方法は「支払い方法選択」にて、決済にておこないます。
+![Image](https://github.com/user-attachments/assets/e2711372-f370-406c-96f3-28743e6fc4cd)
+![Image](https://github.com/user-attachments/assets/14a19ba9-2e89-4e16-8e72-e1f769888145)
 
 ##決済機能
 ・実際に購入ボタンから、PAY.JPに登録して、そこからsripeの決済画面に接続されて、はじめて「購入」となります。
