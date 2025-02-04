@@ -60,22 +60,22 @@ https://github.com/shoyama1010/tech-furima/issues/1#issue-2825654868
 https://app.diagrams.net/?src=about#W5b3a97a76e9aeee3%2F5B3A97A76E9AEEE3!163095#%7B%22pageId%22%3A%22R2lEEEUBdFMjLlhIrx00%22%7D
 
 # 環境構築
-1 Gitファイルをクローンする
+## 1 Gitファイルをクローンする
 
 git clone https://github.com/shoyama1010/tech-furima.git
 
-2 Dockerコンテナを作成する
+## 2 Dockerコンテナを作成する
 
 docker-compose up -d --build
 
-3 Laravelパッケージをインストールする
+## 3 Laravelパッケージをインストールする
 
 docker-compose exec php bash
 でPHPコンテナにログインし
 
 composer install
 
-4 .envファイルを作成する
+## 4 .envファイルを作成する
 
 PHPコンテナにログインした状態で
 
@@ -119,8 +119,7 @@ DB_PASSWORD=laravel_pass
 
 .envファイルの最後に追加
 
-
-5 テーブルの作成
+## 5 テーブルの作成
 
 docker-compose exec php bash
 
@@ -128,19 +127,19 @@ docker-compose exec php bash
 
 php artisan migrate
 
-6 ダミーデータ作成
+## 6 ダミーデータ作成
 
 PHPコンテナにログインした状態で
 
 php artisan db:seed
 
-7 アプリケーション起動キーの作成
+## 7 アプリケーション起動キーの作成
 
 PHPコンテナにログインした状態で
 
 php artisan key:generate
 
-8 シンボリックリンクの作成
+## 8 シンボリックリンクの作成
 
 PHPコンテナにログインした状態で
 
