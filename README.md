@@ -132,8 +132,10 @@ php artisan storage:link
 
 ## 商品購入機能
 ・商品を１つ選択してオーダーできます。購入方法は「支払い方法選択」にて、決済にておこないます。
+購入された商品は、「マイリスト」に登録されます。
 ![Image](https://github.com/user-attachments/assets/e2711372-f370-406c-96f3-28743e6fc4cd)
 ![Image](https://github.com/user-attachments/assets/14a19ba9-2e89-4e16-8e72-e1f769888145)
+![Image](https://github.com/user-attachments/assets/7cc37d61-2a95-41e1-9ac0-ff4c9b6bce61)
 
 ##決済機能
 ・実際に購入ボタンから、PAY.JPに登録して、そこからsripeの決済画面に接続されて、はじめて「購入」となります。
@@ -144,6 +146,8 @@ php artisan storage:link
 
 ## 出品商品情報登録機能
 ・.商品出品画面にて必要な情報（商品名、画像、カテゴリ、状態、商品説明）を登録できます。
+出品された商品は、「マイリスト」に登録されます。
+![Image](https://github.com/user-attachments/assets/a2fc4450-6faa-4884-ad99-2cf21a635686)
 
 ## 画像アップロード機能
 ・出品画面から出品されるときに、商品画像（ローカル画像）を、ユーザー自身の画像（縮小済）からアップロードできます。
