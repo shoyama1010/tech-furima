@@ -124,7 +124,8 @@ php artisan storage:link
 
 ## ユーザー情報変更機能
 ・プロフィール編集画面にて、ユーザー情報が編集画面上で変更されてから、マイページにて表示されます。
-![Image](https://github.com/user-attachments/assets/c513ca13-e0d1-4f76-9ac4-cebee5b14102)
+![Image](https://github.com/user-attachments/assets/4c170314-f1c1-4656-a750-56da05570ad9)
+![Image](https://github.com/user-attachments/assets/310d1d96-600b-49a1-aada-f02aa9133113)
 
 ## 商品検索機能
 ・検索欄では「商品名」を入れると、部分一致検索で商品が出てきます。
