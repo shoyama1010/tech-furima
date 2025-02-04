@@ -19,23 +19,38 @@ http://localhost
 ・コメント送信機能
 
 ・ユーザー情報変更機能
+
 ・商品検索機能
+
 ・商品購入機能
+
 ・決済機能
+
 ・いいね機能
+
 ・画像アップロード機能
+
 ・出品商品情報登録機能
+
 
 # 使用技術
 ・Laravel 8
+
 ・nginx 1.21.1
+
 ・php 7.4.9
+
 ・html
 ・css
+
 ・mysql 8.0.26
+
 ・メール認証：mailhog
+
 ・stripe
-・storage
+
+・storage（シンボリックリンク）
+
 
 # テーブル設計
 https://github.com/shoyama1010/tech-furima/issues/1#issue-2825654868
