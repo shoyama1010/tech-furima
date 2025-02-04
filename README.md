@@ -115,6 +115,9 @@ php artisan storage:link
 ## メール認証機能
 ・基本、①会員登録後、②登録時に「認証用メール」を送信　③（mailhogでの）認証リンクのクリック　④ユーザーが受信したメール内のリンクをクリックとなってますが、
 メールが送信された「お知らせ」は、今回「マイページ」にて表示させてます。（ユーザー向けに、プロフィールも続けてやって貰えるように）
+![Image](https://github.com/user-attachments/assets/7a3a40a3-327b-4ccc-9962-a8a9ab3008dd)
+![Image](https://github.com/user-attachments/assets/73fea3b2-1361-4de2-a95b-f38564e20765)
+![Image](https://github.com/user-attachments/assets/47affcc8-abb5-43dc-9bcd-7452ff1a388f)
 
 ## コメント送信機能
 ・ユーザーがログインしている時のみ商品詳細ページの下部に表示されます。
