@@ -154,6 +154,7 @@ php artisan storage:link
 ![Image](https://github.com/user-attachments/assets/7a3a40a3-327b-4ccc-9962-a8a9ab3008dd)
 ![Image](https://github.com/user-attachments/assets/73fea3b2-1361-4de2-a95b-f38564e20765)
 ![Image](https://github.com/user-attachments/assets/47affcc8-abb5-43dc-9bcd-7452ff1a388f)
+ローカル環境：http://localhost:8025
 
 ## コメント送信機能
 ・ユーザーがログインしている時のみ商品詳細ページの下部に表示されます。
@@ -191,6 +192,7 @@ php artisan storage:link
 
 ## 画像アップロード機能
 ・出品画面から出品されるときに、商品画像（ローカル画像）を、ユーザー自身の画像（縮小済）からアップロードできます。
+＊新規画像では、storage/app/public/item_imagesにてシンボリックリンクされております。
 
 
 
