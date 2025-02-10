@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddConditionColumnToItemsTable extends Migration
+class AddNameToItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddConditionColumnToItemsTable extends Migration
     public function up()
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->string('condition')->nullable()->after('image_url');
+            $table->string('name')->after('id');
         });
     }
 
@@ -26,7 +26,7 @@ class AddConditionColumnToItemsTable extends Migration
     public function down()
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->dropColumn('condition');
+            $table->dropColumn('name');
         });
     }
 }

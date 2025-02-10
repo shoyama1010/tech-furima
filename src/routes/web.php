@@ -24,10 +24,6 @@ use App\Http\Controllers\UserController;
 |
 */
 
-// 認証済みユーザーのみアクセスできるルート
-// Route::get('/mypage', [UserController::class, 'mypage'])
-//     ->middleware(['auth', 'verified'])
-//     ->name('mypage');
 
 Route::get('/', [ItemController::class, 'index'])->name('items.index');
 
@@ -84,15 +80,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
     Route::post('/items', [ItemController::class, 'store'])->name('items.store');
-    // いいね機能
+    // // いいね機能
     Route::post('/items/{id}/like', [ItemController::class, 'like'])->name('items.like');
 });
 
-Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');
-Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
-
+// いいね機能
 Route::post('/items/{item}/toggle-like', [LikeController::class, 'toggle'])->name('items.toggle-like');
 
+Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');
+
+Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
 
 // メール確認のプロンプト（未確認のユーザー向け）
 Route::get('/email/verify', function () {

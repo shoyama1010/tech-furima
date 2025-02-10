@@ -32,7 +32,8 @@ class ExhibitionRequest extends FormRequest
             'categories' => 'required|array|min:1', // 配列として受け取る
             'condition' => 'required|string|max:255',
 
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',// 画像のバリデーション
+            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像のバリデーション
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 }

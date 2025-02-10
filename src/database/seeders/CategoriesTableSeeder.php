@@ -23,7 +23,7 @@ class CategoriesTableSeeder extends Seeder
             'コスメ',
             '本',
             'ゲーム',
-            'スポーツ',
+            'スポーツ'
             'キッチン',
             'ハンドメイド',
             'アクセサリー',

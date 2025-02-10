@@ -18,11 +18,10 @@ class CreateCategoryItemTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('item_id');
             $table->timestamps();
-
             // / 外部キー制約
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
-            $table->timestamps(); // タイムスタンプを追加
+
         });
     }
 

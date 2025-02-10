@@ -51,7 +51,7 @@
     font-size: 28px;
     margin-bottom: 10px;
 
-    font-weight: bold; 
+    font-weight: bold;
     /* 追加（1/25） */
 }
 
@@ -105,7 +105,8 @@
 }
 
 /* いいねボタン */
-.btn-like {
+/* .btn-like { */
+.like-btn {
     font-size: 24px;
     color: #f15b5b;
     background: none;
@@ -113,7 +114,13 @@
     cursor: pointer;
 }
 
-.btn-like:focus {
+.like-btn.liked {
+    color: #ff0000;
+    /* いいね済みのときの色 */
+}
+
+/* .btn-like:focus { */
+.like-btn:focus {
     outline: none;
 }
 
@@ -180,6 +187,3 @@
 .btn-submit:hover {
     background-color: #0056b3;
 }
-
-
-

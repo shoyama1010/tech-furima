@@ -14,7 +14,7 @@ class AddStatusToItemsTable extends Migration
     public function up()
     {
         Schema::table('items', function (Blueprint $table) {
-            $table->string('status')->default('sell')->after('description');
+            $table->string('status')->default('available')->after('is_sold');
         });
     }
 

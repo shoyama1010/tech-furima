@@ -11,7 +11,7 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = ['is_sold','name','description','price',
-        'image_url','user_id','category_id','condition',
+        'status','user_id','category_id','condition',
     ];
 
     public function user()
@@ -22,7 +22,7 @@ class Item extends Model
     public function categories()
     {
         // <!-- <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" class="card-img-top" alt="{{ $item->name }}"> -->
-        return $this->belongsToMany(Category::class, 'category_item')->withTimestamps();
+        return $this->belongsToMany(Category::class, 'category_item', 'item_id', 'category_id');
     }
 
     public function comments()
@@ -32,7 +32,7 @@ class Item extends Model
 
     public function likes()
     {
-        return $this->hasMany(Like::class); //１対多
+        return $this->hasMany(Like::class, 'item_id', 'id'); //１対多
     }
     
 

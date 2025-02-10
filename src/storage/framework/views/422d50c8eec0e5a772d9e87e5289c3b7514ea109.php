@@ -1,72 +1,71 @@
-@extends('layouts.app')
-
-@section('main')
+<?php $__env->startSection('main'); ?>
 <div class="container">
     <div class="product-detail">
 
         <!-- 商品画像部分 -->
         <div class="image-container">
-            <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
+            <img src="<?php echo e($item->image_url); ?>" alt="<?php echo e($item->name); ?>">
         </div>
         <!-- 商品情報 -->
         <div class="details-container">
-            <h2>{{ $item->name }}</h2>
-            <p><strong>ブランド名:</strong> {{ $item->brand }}</p>
-            <p><strong>価格(税込):</strong> ¥{{ number_format($item->price) }}</p>
+            <h2><?php echo e($item->name); ?></h2>
+            <p><strong>ブランド名:</strong> <?php echo e($item->brand); ?></p>
+            <p><strong>価格(税込):</strong> ¥<?php echo e(number_format($item->price)); ?></p>
 
             <!-- いいね機能 -->
             <div class="like-section">
                 <strong>いいね数:</strong>
-                <span id="like-count-{{ $item->id }}">{{ $item->likes->count() }}</span>
-                <button class="like-btn" data-id="{{ $item->id }}">
-                    <!-- {{ $item->likes->contains('user_id', auth()->id()) ? '★' : '☆' }} -->
-                    {{ $item->likes()->where('user_id', auth()->id())->exists() ? '★' : '☆' }}
+                <span id="like-count-<?php echo e($item->id); ?>"><?php echo e($item->likes->count()); ?></span>
+                <button class="like-btn" data-id="<?php echo e($item->id); ?>">
+                    <!-- <?php echo e($item->likes->contains('user_id', auth()->id()) ? '★' : '☆'); ?> -->
+                    <?php echo e($item->likes()->where('user_id', auth()->id())->exists() ? '★' : '☆'); ?>
+
                 </button>
             </div>
 
             <!-- コメント表示 -->
-            <p><strong>コメント💭:</strong> {{ $item->comments->count() ?? 0 }}</p>
+            <p><strong>コメント💭:</strong> <?php echo e($item->comments->count() ?? 0); ?></p>
             <div class="purchase-btn">
-                <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
+                <a href="<?php echo e(route('purchase.show', $item->id)); ?>" class="btn btn-danger">購入手続きへ</a>
             </div>
 
             <div class="product-info">
                 <h3>商品説明</h3>
-                <p>{{ $item->description }}</p>
+                <p><?php echo e($item->description); ?></p>
 
                 <!-- カテゴリ表示 -->
                 <h4>カテゴリ:</h4>
-                @if ($item->categories->isNotEmpty())
-                @foreach ($item->categories as $category)
-                <span class="badge bg-primary">{{ $category->name }}</span>
-                @endforeach
-                @else
+                <?php if($item->categories->isNotEmpty()): ?>
+                <?php $__currentLoopData = $item->categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <span class="badge bg-primary"><?php echo e($category->name); ?></span>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php else: ?>
                 <span class="badge bg-secondary">カテゴリ未設定</span>
-                @endif
+                <?php endif; ?>
 
                 <!-- コンディション状態 -->
                 <h4>商品の状態:</h4>
-                <p>{{ $item->condition }}</p>
+                <p><?php echo e($item->condition); ?></p>
             </div>
 
             <!-- コメント処理 -->
             <div class="comments-section">
                 <!-- コメント履歴 -->
-                <h3>コメント ({{ $item->comments->count() }})</h3>
-                @foreach ($item->comments as $comment)
+                <h3>コメント (<?php echo e($item->comments->count()); ?>)</h3>
+                <?php $__currentLoopData = $item->comments; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $comment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="comment">
-                    <span class="user-icon">{{ substr($comment->user->name, 0, 1) }}</span>
-                    <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}</p>
-                    <p class="text-muted"><small>{{ $comment->created_at->format('Y-m-d H:i') }}</small></p>
+                    <span class="user-icon"><?php echo e(substr($comment->user->name, 0, 1)); ?></span>
+                    <p><strong><?php echo e($comment->user->name); ?></strong>: <?php echo e($comment->content); ?></p>
+                    <p class="text-muted"><small><?php echo e($comment->created_at->format('Y-m-d H:i')); ?></small></p>
 
                 </div>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                 <h3>商品へのコメント</h3>
-                <form action="{{ route('comments.store') }}" method="POST">
-                    @csrf
+                <form action="<?php echo e(route('comments.store')); ?>" method="POST">
+                    <?php echo csrf_field(); ?>
                     <div class="content">
-                        <input type="hidden" name="item_id" value="{{ $item->id }}">
+                        <input type="hidden" name="item_id" value="<?php echo e($item->id); ?>">
                         <textarea name="content" class="comment-input" placeholder="コメントを入力"></textarea>
                         <button type="submit" class="btn btn-primary mt-2">コメントを送信する</button>
                     </div>
@@ -76,9 +75,9 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('scripts')
+<?php $__env->startSection('scripts'); ?>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll(".like-btn").forEach(button => {
@@ -126,4 +125,6 @@
         });
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH /var/www/resources/views/items/detail.blade.php ENDPATH**/ ?>

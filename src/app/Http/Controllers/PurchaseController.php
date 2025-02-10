@@ -52,7 +52,8 @@ class PurchaseController extends Controller
                         'user_id' => auth()->id(),
                         'item_id' => $item->id,
                         'quantity' => 1,
-                        'total_price' => $item->price, // 'status' => 'completed',
+                        'total_price' => $item->price, 
+                        // 'status' => 'completed',
                         'status' => 'pending', // ステータスを "pending" に設定
                     ]);
                 }

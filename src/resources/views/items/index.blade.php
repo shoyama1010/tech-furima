@@ -6,6 +6,7 @@
 
 @section('main')
 <div class="container">
+
     <div class="row mb-4">
         <!-- タブ切り替え -->
         <div class="col text-center">
@@ -14,15 +15,22 @@
         <div class="col text-center">
             <a href="{{ url('/?page=mylist') }}" class="btn btn-link">マイリスト</a>
         </div>
-        
+
         <div class="items-container">
             @if($items->isNotEmpty())
             @foreach ($items as $item)
             <div class="item">
                 <!-- 商品画像 -->
                 <a href="{{ route('items.detail', $item->id) }}">
-                    <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" class="card-img-top" alt="{{ $item->name }}">
-                    <!-- <img src="{{ $item->image_url }}" class="card-img-top" alt="{{$item->name }}"> -->
+
+                    <img src="{{ asset($item->image_url ?? 'images/no-image.png') }}"
+                        class="card-img-top"
+                        alt="{{ $item->name }}">
+                    <!-- <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" class="card-img-top" alt="{{ $item->name }}"> -->
+
+                    <!-- <img src="{{ asset('storage/' . $item->image_url) ?? asset('images/no-image.png') }}"
+                    class="card-img-top"
+                    alt="{{ $item->name }}"> -->
                 </a>
 
                 <div class="item-details">

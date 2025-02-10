@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddNameColumnToItemsTable extends Migration
+class RemoveRatingFromCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddNameColumnToItemsTable extends Migration
      */
     public function up()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->string('name')->after('id');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropColumn('rating');
         });
     }
 
@@ -25,8 +25,8 @@ class AddNameColumnToItemsTable extends Migration
      */
     public function down()
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->dropColumn('name');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->integer('rating')->nullable();
         });
     }
 }

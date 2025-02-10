@@ -17,33 +17,32 @@
         </ul>
     </div>
     @endif
+
     <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <!-- 出品画像 -->
         <div class="form-group mb-3">
             <label for="image">商品画像</label>
+            <img src="{{ Storage::url($item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
+            <!-- <img src="{{ $item->image_url ? asset($item->image_url) : asset('storage/item_images/no-image.png') }}"
+                class="card-img-top" alt="{{ $item->name }}"> -->
+            <!-- <img src="{{ $item->image_url }}" class="card-img-top" alt="{{ $item->name }}"> -->
+            <!-- <img src="{{ asset($item->image_url) }}" class="img-fluid" alt="{{ $item->name }}"> -->
 
-            <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" alt="{{ $item->name }}" class="card-img-top" style="max-width: 100px; display: block;">
-            <!-- <img src="{{ $item->image_url ? asset('storage/' . $item->image_url) : asset('images/no-image.png') }}" alt="{{ $item->name }}" class="card-img-top"> -->
             <input type="file" name="image" id="image" class="form-control" accept="image/*" multiple onchange="previewImages(event)">
-
             <div id="image-preview-container" class="mt-3"></div>
         </div>
-
         <div class="form-group mb-3">
             <label for="name">商品名</label>
             <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
         </div>
-
         <div class="form-group mb-3">
             <label for="description">商品の説明</label>
             <textarea id="description" name="description" class="form-control" rows="5" required>{{ old('description') }}</textarea>
         </div>
-
         <div class="form-group mb-3">
             <label for="category_id">カテゴリー</label>
             <div id="categories-container">
-
                 @foreach ($categories as $category)
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="category_{{ $category->id }}" name="categories[]" value="{{ $category->id }}">
@@ -74,12 +73,12 @@
 </div>
 @endsection
 
-
 @section('scripts')
 <script>
     function previewImages(event) {
         const previewContainer = document.getElementById('image-preview-container');
         previewContainer.innerHTML = '';
+
         const files = event.target.files;
         Array.from(files).forEach(file => {
             const reader = new FileReader();
