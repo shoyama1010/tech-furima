@@ -122,13 +122,14 @@ class ItemController extends Controller
             // 画像アップロード処理
             if ($request->hasFile('image')) {
                 $image = $request->file('image'); // 複数ではなく1つ目を取得
-                $path = $image->store('public/item_images');
+                $path = $image->store('public/item_images');               
                 $item->update(['image_url' => str_replace('public/', 'storage/', $path)]);
+
                 // $item->update(['image_url' => 'storage/' . $path]);
                 // $item->update(['image_url' => "storage/$path"]);
                 // $path = str_replace('public/', 'storage/', $path); // パスを変換
                 // $item->update(['image_url' => $path]); // DBに保存
-            } else {                 
+            } else {
                 $item->update(['image_url' => 'storage/item_images/no-image.png']);        
             }
             // カテゴリの紐付け

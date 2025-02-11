@@ -751,3 +751,4 @@
 #52 /var/www/public/index.php(52): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
 #53 {main}
 "} 
+[2025-02-11 09:19:20] local.ERROR: test:errormessege!  
