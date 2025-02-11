@@ -15,7 +15,7 @@ class CommentController extends Controller
         // コメントを保存
         Comment::create([
             'user_id' => Auth::id(),
-            'item_id' => $request->validated()['item_id'], // validated()でバリデーション済みデータを取得
+            'item_id' => $request->validated()['item_id'], 
             'content' => $request->validated()['content'],
         ]);
 
@@ -25,6 +25,7 @@ class CommentController extends Controller
     public function show($id)
     {
         $item = Item::with('comments.user')->findOrFail($id); 
+        
         // 商品に紐づくコメントとユーザー情報を取得
         return view('items.detail', compact('item'));
     }

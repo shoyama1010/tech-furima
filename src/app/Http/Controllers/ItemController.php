@@ -40,7 +40,6 @@ class ItemController extends Controller
 
         } else {
             // 商品一覧の取得
-            // $items = Item::where('status', 'sell')
             $items = Item::where('status', '!=', 'draft')
                 ->where(function ($query) use ($userId) {
 
@@ -76,7 +75,6 @@ class ItemController extends Controller
         $itemsPurchased = $user->purchasedItems;
 
         return view('mypage.mypage', compact('user', 'itemsSold', 'itemsPurchased'));
-        // ユーザーが購入した商品のリストを格納するための変数
     }
 
     public function show($id)
@@ -122,13 +120,10 @@ class ItemController extends Controller
             // 画像アップロード処理
             if ($request->hasFile('image')) {
                 $image = $request->file('image'); // 複数ではなく1つ目を取得
-                $path = $image->store('public/item_images');               
+                $path = $image->store('public/item_images');
                 $item->update(['image_url' => str_replace('public/', 'storage/', $path)]);
-
-                // $item->update(['image_url' => 'storage/' . $path]);
-                // $item->update(['image_url' => "storage/$path"]);
-                // $path = str_replace('public/', 'storage/', $path); // パスを変換
-                // $item->update(['image_url' => $path]); // DBに保存
+                // $path = str_replace('public/', '', $path); // 「storage/」をつけずに保存
+                // $item->update(['image_url' => "storage/{$path}"]); // 正しいURLにする
             } else {
                 $item->update(['image_url' => 'storage/item_images/no-image.png']);        
             }
