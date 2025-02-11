@@ -103,3 +103,7 @@ body .auth-container input {
     max-width: 400px;
     /* 上書き防止 */
 }
+
+.email {
+    display: flex;
+}
