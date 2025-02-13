@@ -151,7 +151,8 @@ php artisan storage:link
 ## メール認証機能
 ・①会員登録後、②登録時に「認証用メール」を送信　③（mailhogでの）認証リンクのクリック　④ユーザーが受信したメール内のリンクをクリックとなってますが、
 メールが送信された「お知らせ」は、今回「マイページ」にて表示させてます。（ユーザー向けに、プロフィール情報も続けて入力して貰えるように）
-https://github.com/shoyama1010/tech-furima/issues/6#issue-2845467050
+
+画面設計図：　https://github.com/shoyama1010/tech-furima/issues/6#issue-2845467050
 
 ローカル環境：http://localhost:8025
 
