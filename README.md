@@ -122,8 +122,7 @@ DB_PASSWORD=laravel_pass
 ## 5 テーブルの作成
 
 docker-compose exec php bash
-
-でPHPコンテナにログインし(ログインしたままであれば上記コマンドは実行しなくて良いです。)
+- PHPコンテナにログインし(ログインしたままであれば上記コマンドは実行しなくて良いです)
 
 php artisan migrate
 
