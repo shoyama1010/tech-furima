@@ -27,7 +27,7 @@
                         class="card-img-top"
                         alt="{{ $item->name }}">
                     <!-- <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" class="card-img-top" alt="{{ $item->name }}"> -->
-
+                     
                     <!-- <img src="{{ asset('storage/' . $item->image_url) ?? asset('images/no-image.png') }}"
                     class="card-img-top"
                     alt="{{ $item->name }}"> -->

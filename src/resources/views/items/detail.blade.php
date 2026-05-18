@@ -26,6 +26,7 @@
 
             <!-- コメント表示 -->
             <p><strong>コメント💭:</strong> {{ $item->comments->count() ?? 0 }}</p>
+            
             <div class="purchase-btn">
                 <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
             </div>

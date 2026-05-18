@@ -121,6 +121,7 @@ class ItemController extends Controller
             if ($request->hasFile('image')) {
                 $image = $request->file('image'); // 複数ではなく1つ目を取得
                 $path = $image->store('public/item_images');
+
                 $item->update(['image_url' => str_replace('public/', 'storage/', $path)]);
                 // $path = str_replace('public/', '', $path); // 「storage/」をつけずに保存
                 // $item->update(['image_url' => "storage/{$path}"]); // 正しいURLにする
@@ -135,6 +136,7 @@ class ItemController extends Controller
 
             DB::commit(); // トランザクション確定
             return redirect()->route('items.index')->with('success', '商品を出品しました！');
+            
         } catch (\Exception $e) {
             DB::rollBack(); // トランザクションをロールバック
 

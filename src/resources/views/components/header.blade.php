@@ -27,6 +27,7 @@
                 <button type="submit" class="btn btn-primary">ログアウト</button>
             </form>
             <a href="{{ route('mypage')}}" class="btn btn-secondary">マイページ</a>
+            
             <a href="{{ url('/items/create') }}" class="btn btn-sell">出品</a>
         </div>
         @endif

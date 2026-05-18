@@ -30,6 +30,7 @@
             <input type="file" name="image" id="image" class="form-control" accept="image/*" multiple onchange="previewImages(event)">
             <div id="image-preview-container" class="mt-3"></div>
         </div>
+        
         <div class="form-group mb-3">
             <label for="name">商品名</label>
             <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>

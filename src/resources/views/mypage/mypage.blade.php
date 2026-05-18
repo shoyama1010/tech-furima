@@ -6,7 +6,6 @@
     @if (Route::has('verification.notice') && !auth()->user()->hasVerifiedEmail())
     <div class="alert alert-warning text-center">
         メール認証が必要です。確認メールをご確認ください。
-        <!-- <a href="{{ route('verification.notice') }}" class="btn btn-primary btn-sm">確認ページへ</a> -->
         <a href="{{ url('/email/verify') }}" class="btn btn-primary btn-sm">確認ページへ</a>
     </div>
     @endif 

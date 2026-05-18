@@ -91,6 +91,7 @@ Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.d
 
 Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
 
+
 // メール確認のプロンプト（未確認のユーザー向け）
 Route::get('/email/verify', function () {
     return view('auth.verify-email');

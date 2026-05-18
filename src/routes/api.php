@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Fortify;
+use App\Http\Controllers\Api\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,5 @@ Fortify::loginView(function () {
 Fortify::registerView(function () {
     return view('auth.register');
 });
+
+Route::get('/items', [ItemController::class, 'index']);
