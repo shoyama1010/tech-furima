@@ -53,7 +53,11 @@ http://localhost
 
 
 # テーブル設計
-https://github.com/shoyama1010/tech-furima/issues/1#issue-2825654868
+![Image](https://github.com/user-attachments/assets/87df9928-f44d-4ce9-8684-85df3658eef8)
+
+![Image](https://github.com/user-attachments/assets/8cc6c5e8-4cb3-40f2-906e-10153395ad60)
+
+![Image](https://github.com/user-attachments/assets/40918133-0891-4935-9706-226072d6ba64)
 
 # ER図
 
