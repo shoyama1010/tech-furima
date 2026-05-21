@@ -61,7 +61,8 @@ http://localhost
 
 # ER図
 
-https://github.com/shoyama1010/tech-furima/issues/7#issue-2845566259
+![Image](https://github.com/user-attachments/assets/f4168643-0bee-4211-ba6a-98725a6b484f)
+
 
 # 環境構築
 ## 1 Gitファイルをクローンする
