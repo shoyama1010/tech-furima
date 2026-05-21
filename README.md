@@ -156,7 +156,15 @@ php artisan storage:link
 ・①会員登録後、②登録時に「認証用メール」を送信　③（mailhogでの）認証リンクのクリック　④ユーザーが受信したメール内のリンクをクリックとなってますが、
 メールが送信された「お知らせ」は、今回「マイページ」にて表示させてます。（ユーザー向けに、プロフィール情報も続けて入力して貰えるように）
 
-画面設計図：　https://github.com/shoyama1010/tech-furima/issues/6#issue-2845467050
+- 画面遷移図
+![Image](https://github.com/user-attachments/assets/f6b5b3a7-3db9-4717-b090-178215e1947d)
+
+![Image](https://github.com/user-attachments/assets/1414af7e-2d49-422d-a64c-990cb4a0837f)
+
+![Image](https://github.com/user-attachments/assets/a74ed594-11a9-4214-82cc-910035582ac3)
+
+![Image](https://github.com/user-attachments/assets/f45ebe6c-c0d7-4be2-b11f-d3f3e3339641)
+
 
 ローカル環境：http://localhost:8025
 
