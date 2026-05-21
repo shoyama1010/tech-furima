@@ -119,6 +119,14 @@
     /* いいね済みのときの色 */
 }
 
+.like-button {
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
 /* .btn-like:focus { */
 .like-btn:focus {
     outline: none;

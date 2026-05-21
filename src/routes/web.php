@@ -52,7 +52,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     // マイページ関連のルート
     Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
-
     Route::get('/mypage/profile', [UserController::class, 'edit'])->name('profile.edit');
     Route::post('/mypage/profile', [UserController::class, 'updateProfile'])->name('profile.update');
     // プロフィール更新処理
@@ -78,9 +77,12 @@ Route::middleware(['auth'])->group(function () {
 
     // 商品出品
     Route::get('/items/create', [ItemController::class, 'create'])->name('items.create');
+
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
+
     Route::post('/items', [ItemController::class, 'store'])->name('items.store');
-    // // いいね機能
+    Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
+
     Route::post('/items/{id}/like', [ItemController::class, 'like'])->name('items.like');
 });
 

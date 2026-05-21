@@ -17,16 +17,66 @@
             <!-- いいね機能 -->
             <div class="like-section">
                 <strong>いいね数:</strong>
-                <span id="like-count-{{ $item->id }}">{{ $item->likes->count() }}</span>
-                <button class="like-btn" data-id="{{ $item->id }}">
-                    <!-- {{ $item->likes->contains('user_id', auth()->id()) ? '★' : '☆' }} -->
-                    {{ $item->likes()->where('user_id', auth()->id())->exists() ? '★' : '☆' }}
+                <span id="like-count">{{ $item->likes_count }}</span>
+
+                <button
+                    type="button"
+                    id="like-button"
+                    data-item-id="{{ $item->id }}"
+                    data-liked="{{ ($likedByMe ?? false) ? '1' : '0' }}"
+                    class="like-button">
+                    {{ ($likedByMe ?? false) ? '★' : '☆' }}
                 </button>
             </div>
 
             <!-- コメント表示 -->
-            <p><strong>コメント💭:</strong> {{ $item->comments->count() ?? 0 }}</p>
-            
+            <p><strong>コメント💭:</strong> {{ $item->comments->count() }}</p>
+
+            @push('scripts')
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const likeButton = document.getElementById('like-button');
+                    const likeCount = document.getElementById('like-count');
+
+                    if (!likeButton || !likeCount) {
+                        return;
+                    }
+
+                    likeButton.addEventListener('click', async function() {
+                        const itemId = likeButton.dataset.itemId;
+
+                        try {
+                            const response = await fetch(`/items/${itemId}/like`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    'Accept': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                },
+                            });
+
+                            if (response.status === 401) {
+                                alert('ログインが必要です');
+                                return;
+                            }
+
+                            if (!response.ok) {
+                                throw new Error('いいねの更新に失敗しました');
+                            }
+
+                            const data = await response.json();
+
+                            likeButton.dataset.liked = data.liked ? '1' : '0';
+                            likeButton.textContent = data.liked ? '★' : '☆';
+                            likeCount.textContent = data.likes_count;
+                        } catch (error) {
+                            alert(error.message);
+                        }
+                    });
+                });
+            </script>
+            @endpush
+
             <div class="purchase-btn">
                 <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
             </div>
@@ -79,52 +129,3 @@
 </div>
 @endsection
 
-@section('scripts')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.querySelectorAll(".like-btn").forEach(button => {
-            button.addEventListener("click", function() {
-                let itemId = this.dataset.itemId;
-                console.log("クリックした商品ID:", itemId); // ★デバッグ用
-
-                fetch(`/items/${itemId}/toggle-like`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        credentials: "same-origin",
-                        body: JSON.stringify({})
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.text().then(text => {
-                                throw new Error(text);
-                            });
-                        }
-                        return response.json();
-                    })
-
-                    .then(data => {
-                        console.log("レスポンス:", data); // ★デバッグ用
-
-                        let likeCountElement = document.getElementById(`like-count-${itemId}`);
-
-                        if (data.liked) { // いいねが追加された
-                            button.classList.add("liked");
-                            button.innerHTML = `いいね: ${data.like_count} ★`;
-                        } else { // いいねが解除された
-                            button.classList.remove("liked");
-                            button.innerHTML = `いいね: ${data.like_count} ☆`;
-                        }
-
-                        if (likeCountElement) {
-                            likeCountElement.innerText = data.like_count;
-                        }
-                    })
-                    .catch(error => console.error("エラー:", error));
-            });
-        });
-    });
-</script>
-@endsection

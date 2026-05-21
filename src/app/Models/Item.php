@@ -15,6 +15,10 @@ class Item extends Model
         'image_url'
     ];
 
+    protected $appends = [
+        'image_full_url',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -22,7 +26,6 @@ class Item extends Model
 
     public function categories()
     {
-        // <!-- <img src="{{ $item->image_url ?? asset('images/no-image.png') }}" class="card-img-top" alt="{{ $item->name }}"> -->
         return $this->belongsToMany(Category::class, 'category_item', 'item_id', 'category_id');
     }
 
@@ -43,21 +46,25 @@ class Item extends Model
     }
 
     // 購入済みチェックメソッド
-    public function isSold()
+    public function isSold(): bool
     {
-        // return $this->orders()->exists();
-        return $this->is_sold === 1; // is_sold カラムが 1 の場合、購入済み
+        return (bool) $this->is_sold || $this->orders()->exists();
+        // return $this->is_sold === 1; // is_sold カラムが 1 の場合、購入済み
     }
 
     // 画像アップロード統一処理
-    public function getImageUrlAttribute($value)
+    public function getImageUrlAttribute($value): string
     {
-        if ($value && strpos($value, 'http') === 0) {
-            return $value; // フルURLの場合そのまま返す
+        // $value = $this->image_url;
+        if (blank($value)) {
+            return asset('images/no-image.png');
         }
-        return $value 
-        ? asset('storage/' . $value) : asset('images/no-image.png');
         
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
+        }
+
+        return asset('storage/' . ltrim($value, '/'));
     }
 
 }

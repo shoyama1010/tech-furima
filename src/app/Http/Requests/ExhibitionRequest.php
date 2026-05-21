@@ -31,9 +31,18 @@ class ExhibitionRequest extends FormRequest
             'categories.*' => 'exists:categories,id',// 配列の各値がcategoriesテーブルに存在するかチェック
             'categories' => 'required|array|min:1', // 配列として受け取る
             'condition' => 'required|string|max:255',
+            // 'image' => ['nullable', 'image', 'max:2048'],
+            'image' => ['nullable', 'image', 'max:3072'],
+        ];
+    }
 
-            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 画像のバリデーション
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    public function messages()
+    {
+        return [
+            'image.image' => '画像ファイルを選択してください。',
+            'image.max' => '画像サイズは3MB以下にしてください。',
+            'categories.required' => 'カテゴリを1つ以上選択してください。',
+            'categories.min' => 'カテゴリを1つ以上選択してください。',
         ];
     }
 }

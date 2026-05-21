@@ -9,6 +9,8 @@ class Like extends Model
 {
     use HasFactory;
 
+    // public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'item_id',

@@ -42,7 +42,8 @@
     <!-- BootstrapのJS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    @yield('scripts')
+    <!-- @yield('scripts') -->
+    @stack('scripts')
 </body>
 
 </html>

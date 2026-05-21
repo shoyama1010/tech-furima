@@ -23,34 +23,47 @@ class ItemController extends Controller
     {
         $user = Auth::user();
         $userId = $user ? $user->id : null;
-        // $status = $request->query('status', 'sell');
         $viewType = $request->query('page', 'recommend');
+        $keyword = $request->query('keyword');
 
         //「mylist」機能
         if ($viewType === 'mylist' && $user) {
-            $items = $user->likes()
-                // ->with('item')
-                ->with(['item' => function ($query) {
-                    $query->where('is_sold', 1) // is_soldが1の商品を取得
+            $items = Like::with([
+                'item' => function ($query) use ($keyword) {
+                    $query->where('status', '!=', 'draft')
+                        ->when($keyword, function ($q, $keyword) {
+                            $q->where('name', 'like', '%' . $keyword . '%');
+                            //   ->orWhere('description', 'LIKE', "%{$keyword}%");
+                        })
                         ->withCount('likes'); // いいね数を取得
-                }])
-                ->whereHas('item', function ($query) {
-                    $query->where('is_sold', 1); // is_soldが1の商品を取得
-                })->get()->pluck('item');
-
+                }
+            ])
+                ->where('user_id', $user->id)
+                // ->whereHas('item', function ($query) {
+                ->get()
+                ->pluck('item')
+                ->filter();
         } else {
             // 商品一覧の取得
-            $items = Item::where('status', '!=', 'draft')
-                ->where(function ($query) use ($userId) {
-
-                    if (!is_null($userId)) { // ログイン済みの場合のみ除外処理を適用
-                        $query->where('user_id', '!=', $userId);
-                    }
+            $items = Item::query()
+                ->where('status', '!=', 'draft')
+                ->when(!is_null($userId), function ($query) use ($userId) {
+                    $query->where('user_id', '!=', $userId);
                 })
-                ->withCount('likes') // いいね数を取得
+
+                ->when($keyword, function ($query, $keyword) {
+                    $query->where('name', 'like', '%' . $keyword . '%');
+                })
+                ->withCount('likes')
                 ->get();
         }
-        return view('items.index', ['items' => $items, 'viewType' => $viewType]);
+
+        return view('items.index', [
+            'items' => $items,
+            'viewType' => $viewType,
+            'keyword' => $keyword,
+        ]);
+        // return view('items.index', ['items' => $items, 'viewType' => $viewType]);
     }
 
     // 検索機能    
@@ -80,14 +93,22 @@ class ItemController extends Controller
     public function show($id)
     {
         // 商品情報を取得
-        $item = Item::with(['likes', 'categories', 'comments.user'])->findOrFail($id)->fresh();
+        $item = Item::with([
+            'categories',
+            'comments.user',
+            'likes',
+        ])->withCount([
+            'likes',
+            'comments',
+        ])->findOrFail($id);
 
-        // 追加: likes を明示的にロード
-        $item->load('likes');
+        $isSold = $item->isSold();
 
-        // この商品が購入済みかどうかを確認
-        $isSold = Order::where('item_id', $item->id)->exists();
-        return view('items.detail', compact('item', 'isSold'));
+        $likedByMe = Auth::check()
+            ? $item->likes->contains('user_id', Auth::id())
+            : false;
+
+        return view('items.detail', compact('item', 'isSold', 'likedByMe'));
     }
 
     // 商品カテゴリー
@@ -107,6 +128,7 @@ class ItemController extends Controller
             // 商品データーを保存
             $validatedData['user_id'] = auth()->id();
             $validatedData['status'] = 'available';
+            $validatedData['is_sold'] = false;
 
             // カテゴリIDを取得（最初の1つを `category_id` に設定）
             if ($request->has('categories')) {
@@ -114,33 +136,32 @@ class ItemController extends Controller
                 $validatedData['category_id'] = is_array($categories) ? $categories[0] : null;
             }
 
+            // 画像アップロード処理
+            if ($request->hasFile('image')) {
+                $validatedData['image_url'] = $request->file('image')->store('item_images', 'public');
+            } else {
+                $validatedData['image_url'] = null;
+            }
+
             // 商品データを作成
             $item = Item::create($validatedData);
 
-            // 画像アップロード処理
-            if ($request->hasFile('image')) {
-                $image = $request->file('image'); // 複数ではなく1つ目を取得
-                $path = $image->store('public/item_images');
-
-                $item->update(['image_url' => str_replace('public/', 'storage/', $path)]);
-                // $path = str_replace('public/', '', $path); // 「storage/」をつけずに保存
-                // $item->update(['image_url' => "storage/{$path}"]); // 正しいURLにする
-            } else {
-                $item->update(['image_url' => 'storage/item_images/no-image.png']);        
-            }
             // カテゴリの紐付け
             if ($request->has('categories')) {
-                $categories = $request->input('categories');
                 $item->categories()->sync($categories);
             }
 
             DB::commit(); // トランザクション確定
             return redirect()->route('items.index')->with('success', '商品を出品しました！');
-            
+            // } catch (\Exception $e) {
+            //     DB::rollBack(); // トランザクションをロールバック
+
+            //     return back()->withErrors(['error' => '商品の登録中にエラーが発生しました: ' . $e->getMessage()]);
+            // }
         } catch (\Exception $e) {
             DB::rollBack(); // トランザクションをロールバック
-
-            return back()->withErrors(['error' => '商品の登録中にエラーが発生しました: ' . $e->getMessage()]);
+            Log::error('商品の登録中にエラーが発生しました: ' . $e->getMessage());
+            dd($e->getMessage());
         }
     }
 
@@ -152,24 +173,33 @@ class ItemController extends Controller
             return response()->json(['error' => 'ログインが必要です'], 401);
         }
 
-        $like = Like::where('user_id', $user->id)->where('item_id', $id)->first();
+        $item = Item::findOrFail($id);
 
-        if ($like) {
-            // いいねを解除
+        $like = Like::where('user_id', $user->id)
+            ->where('item_id', $id)
+            ->first();
+
+        if ($like) {  // いいねを解除
             $like->delete();
-            return response()->json(['message' => 'いいねを解除しました', 'liked' => false]);
-        } else {
-            // いいねを登録
-            Like::create([
-                // 'user_id' => $userId,
-                'user_id' => $user->id,
-                'item_id' => $id,
-            ]);
 
             return response()->json([
-                'message' => 'いいねしました',
-                'liked' => true
+                'message' => 'いいねを解除しました',
+                'liked' => false,
+                'likes_count' => $item->likes()->count(), //いいね数を返す
             ]);
         }
+
+        // いいねを登録
+        Like::create([
+            // 'user_id' => $userId,
+            'user_id' => $user->id,
+            'item_id' => $id,
+        ]);
+
+        return response()->json([
+            'message' => 'いいねしました',
+            'liked' => true,
+            'likes_count' => $item->likes()->count(),
+        ]);
     }
 }

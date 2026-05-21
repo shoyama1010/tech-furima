@@ -23,14 +23,17 @@
         <!-- 出品画像 -->
         <div class="form-group mb-3">
             <label for="image">商品画像</label>
+            <p class="text-muted">※ アップロードできる画像は3MB以下です。</p>
+            <img src="{{ $item->image_url ? Storage::url($item->image_url) : asset('images/no-image.png') }}"
+                class="card-img-top"
+                alt="{{ $item->name ?? 'no-image' }}">
             <!-- <img src="{{ Storage::url($item->image_url) }}" class="card-img-top" alt="{{ $item->name }}"> -->
 
-            <img src="{{ asset($item->image_url) }}" class="card-img-top" alt="{{ $item->name }}">
+            <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="previewImages(event)">
 
-            <input type="file" name="image" id="image" class="form-control" accept="image/*" multiple onchange="previewImages(event)">
             <div id="image-preview-container" class="mt-3"></div>
         </div>
-        
+
         <div class="form-group mb-3">
             <label for="name">商品名</label>
             <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
@@ -42,13 +45,22 @@
         <div class="form-group mb-3">
             <label for="category_id">カテゴリー</label>
             <div id="categories-container">
+
                 @foreach ($categories as $category)
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="category_{{ $category->id }}" name="categories[]" value="{{ $category->id }}">
-                    <label class="form-check-label btn btn-outline-primary" for="category_{{ $category->id }}"> {{ $category->name }}
+                    <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="category_{{ $category->id }}"
+                        name="categories[]"
+                        value="{{ $category->id }}"
+                        {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}>
+                    <label class="form-check-label" for="category_{{ $category->id }}">
+                        {{ $category->name }}
                     </label>
                 </div>
                 @endforeach
+
             </div>
         </div>
 
