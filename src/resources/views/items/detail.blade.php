@@ -1,131 +1,172 @@
+// src/resources/views/items/detail.blade.php
 @extends('layouts.app')
 
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/detail.css') }}">
+@endsection
+
 @section('main')
-<div class="container">
-    <div class="product-detail">
-
-        <!-- 商品画像部分 -->
-        <div class="image-container">
-            <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
-        </div>
-        <!-- 商品情報 -->
-        <div class="details-container">
-            <h2>{{ $item->name }}</h2>
-            <p><strong>ブランド名:</strong> {{ $item->brand }}</p>
-            <p><strong>価格(税込):</strong> ¥{{ number_format($item->price) }}</p>
-
-            <!-- いいね機能 -->
-            <div class="like-section">
-                <strong>いいね数:</strong>
-                <span id="like-count">{{ $item->likes_count }}</span>
-
-                <button
-                    type="button"
-                    id="like-button"
-                    data-item-id="{{ $item->id }}"
-                    data-liked="{{ ($likedByMe ?? false) ? '1' : '0' }}"
-                    class="like-button">
-                    {{ ($likedByMe ?? false) ? '★' : '☆' }}
-                </button>
+<div class="item-detail-page">
+    <div class="item-detail-wrap">
+        <div class="item-detail-grid">
+            <div class="item-image-area">
+                <div class="item-image-box">
+                    <img
+                        src="{{ $item->image_url }}"
+                        alt="{{ $item->name }}"
+                        class="item-detail-image">
+                </div>
             </div>
 
-            <!-- コメント表示 -->
-            <p><strong>コメント💭:</strong> {{ $item->comments->count() }}</p>
+            <div class="item-info-area">
+                <h1 class="item-name">{{ $item->name }}</h1>
 
-            @push('scripts')
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    const likeButton = document.getElementById('like-button');
-                    const likeCount = document.getElementById('like-count');
-
-                    if (!likeButton || !likeCount) {
-                        return;
-                    }
-
-                    likeButton.addEventListener('click', async function() {
-                        const itemId = likeButton.dataset.itemId;
-
-                        try {
-                            const response = await fetch(`/items/${itemId}/like`, {
-                                method: 'POST',
-                                headers: {
-                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                                    'Accept': 'application/json',
-                                    'X-Requested-With': 'XMLHttpRequest',
-                                },
-                            });
-
-                            if (response.status === 401) {
-                                alert('ログインが必要です');
-                                return;
-                            }
-
-                            if (!response.ok) {
-                                throw new Error('いいねの更新に失敗しました');
-                            }
-
-                            const data = await response.json();
-
-                            likeButton.dataset.liked = data.liked ? '1' : '0';
-                            likeButton.textContent = data.liked ? '★' : '☆';
-                            likeCount.textContent = data.likes_count;
-                        } catch (error) {
-                            alert(error.message);
-                        }
-                    });
-                });
-            </script>
-            @endpush
-
-            <div class="purchase-btn">
-                <a href="{{ route('purchase.show', $item->id) }}" class="btn btn-danger">購入手続きへ</a>
-            </div>
-
-            <div class="product-info">
-                <h3>商品説明</h3>
-                <p>{{ $item->description }}</p>
-
-                <!-- カテゴリ表示 -->
-                <h4>カテゴリ:</h4>
-                @if ($item->categories->isNotEmpty())
-                @foreach ($item->categories as $category)
-                <span class="badge bg-primary">{{ $category->name }}</span>
-                @endforeach
-                @else
-                <span class="badge bg-secondary">カテゴリ未設定</span>
+                @if(!empty($item->brand))
+                <p class="item-brand">{{ $item->brand }}</p>
                 @endif
 
-                <!-- コンディション状態 -->
-                <h4>商品の状態:</h4>
-                <p>{{ $item->condition }}</p>
-            </div>
+                <p class="item-price">¥ {{ number_format($item->price) }}</p>
 
-            <!-- コメント処理 -->
-            <div class="comments-section">
-                <!-- コメント履歴 -->
-                <h3>コメント ({{ $item->comments->count() }})</h3>
-                @foreach ($item->comments as $comment)
-                <div class="comment">
-                    <span class="user-icon">{{ substr($comment->user->name, 0, 1) }}</span>
-                    <p><strong>{{ $comment->user->name }}</strong>: {{ $comment->content }}</p>
-                    <p class="text-muted"><small>{{ $comment->created_at->format('Y-m-d H:i') }}</small></p>
+                <div class="item-meta-icons">
+                    <button
+                        type="button"
+                        id="like-button"
+                        data-item-id="{{ $item->id }}"
+                        data-liked="{{ ($likedByMe ?? false) ? '1' : '0' }}"
+                        class="meta-icon-button like-button {{ ($likedByMe ?? false) ? 'is-liked' : '' }}">
+                        <span class="meta-icon">{{ ($likedByMe ?? false) ? '♥' : '♡' }}</span>
+                        <span id="like-count" class="meta-count">{{ $item->likes_count }}</span>
+                    </button>
 
+                    <div class="meta-icon-button comment-display">
+                        <span class="meta-icon">💬</span>
+                        <span class="meta-count">{{ $item->comments_count ?? $item->comments->count() }}</span>
+                    </div>
                 </div>
-                @endforeach
 
-                <h3>商品へのコメント</h3>
-                <form action="{{ route('comments.store') }}" method="POST">
-                    @csrf
-                    <div class="content">
-                        <input type="hidden" name="item_id" value="{{ $item->id }}">
-                        <textarea name="content" class="comment-input" placeholder="コメントを入力"></textarea>
-                        <button type="submit" class="btn btn-primary mt-2">コメントを送信する</button>
+                <div class="purchase-area">
+                    <a href="{{ route('purchase.show', $item->id) }}" class="purchase-button">
+                        購入手続きへ
+                    </a>
+                </div>
+
+                <section class="info-section">
+                    <h2 class="section-title">商品説明</h2>
+                    <p class="section-text">{{ $item->description }}</p>
+                </section>
+
+                <section class="info-section">
+                    <h2 class="section-title">商品の情報</h2>
+
+                    <div class="info-row">
+                        <div class="info-label">カテゴリー</div>
+                        <div class="info-value category-list">
+                            @if ($item->categories->isNotEmpty())
+                            @foreach ($item->categories as $category)
+                            <span class="category-badge">{{ $category->name }}</span>
+                            @endforeach
+                            @else
+                            <span class="category-badge">未設定</span>
+                            @endif
+                        </div>
                     </div>
 
-                </form>
+                    <div class="info-row">
+                        <div class="info-label">商品の状態</div>
+                        <div class="info-value">
+                            @php
+                            $conditionLabels = [
+                            'good' => '良好',
+                            'used_good' => '目立った傷や汚れなし',
+                            'used_fair' => 'やや傷や汚れあり',
+                            'used_bad' => '状態が悪い',
+                            ];
+                            @endphp
+                            {{ $conditionLabels[$item->condition] ?? $item->condition }}
+                        </div>
+                    </div>
+                </section>
+
+                <section class="comment-section">
+                    <h2 class="section-title">コメント ({{ $item->comments_count ?? $item->comments->count() }})</h2>
+
+                    <div class="comment-list">
+                        @forelse ($item->comments as $comment)
+                        <div class="comment-card">
+                            <div class="comment-user">
+                                <span class="comment-user-icon">{{ mb_substr($comment->user->name, 0, 1) }}</span>
+                                <span class="comment-user-name">{{ $comment->user->name }}</span>
+                            </div>
+                            <div class="comment-body">{{ $comment->content }}</div>
+                        </div>
+                        @empty
+                        <p class="empty-comment">まだコメントはありません。</p>
+                        @endforelse
+                    </div>
+
+                    <div class="comment-form-area">
+                        <h3 class="comment-form-title">商品へのコメント</h3>
+                        <form action="{{ route('comments.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="item_id" value="{{ $item->id }}">
+                            <textarea
+                                name="content"
+                                class="comment-textarea"
+                                placeholder="コメントを入力">{{ old('content') }}</textarea>
+                            <button type="submit" class="comment-submit-button">コメントを送信する</button>
+                        </form>
+                    </div>
+                </section>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const likeButton = document.getElementById('like-button');
+        const likeCount = document.getElementById('like-count');
+
+        if (!likeButton || !likeCount) {
+            return;
+        }
+
+        likeButton.addEventListener('click', async function() {
+            const itemId = likeButton.dataset.itemId;
+
+            try {
+                const response = await fetch(`/items/${itemId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                });
+
+                if (response.status === 401) {
+                    alert('ログインが必要です');
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error('いいねの更新に失敗しました');
+                }
+
+                const data = await response.json();
+
+                likeButton.dataset.liked = data.liked ? '1' : '0';
+                likeButton.classList.toggle('is-liked', !!data.liked);
+                likeButton.querySelector('.meta-icon').textContent = data.liked ? '♥' : '♡';
+                likeCount.textContent = data.likes_count;
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    });
+</script>
+@endpush
+
 

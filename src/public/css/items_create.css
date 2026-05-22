@@ -1,150 +1,220 @@
-/* コンテナ全体のスタイル */
-.container {
-    max-width: 800px;
-    /* margin: 50px auto; */
+.sell-page {
+    background: #f5f5f5;
+    min-height: calc(100vh - 80px);
+    padding: 40px 24px 72px;
+}
+
+.sell-container {
+    max-width: 760px;
     margin: 0 auto;
-    /* background-color: #fff; */
-    background-color: #f8f9fa;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    
 }
 
-/* タイトルのスタイル */
-h2.text-center{
-    /* text-align: center; */
-    /* margin-bottom: 20px; */
-    margin-top: 40px;
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #333;
+.sell-title {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 40px;
 }
 
-/* 入力フォームのスタイル */
-.form-group {
-    /* margin-bottom: 20px; */
-    margin-top: 40px;
+.sell-error-box {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    border: 1px solid #ff5555;
+    background: #fff5f5;
+    border-radius: 4px;
 }
 
-label {
-    font-weight: bold;
-    color: #555;
+.sell-error-list {
+    margin: 0;
+    padding-left: 20px;
+    color: #ff5555;
 }
 
-/* テキスト入力やセレクトボックスのスタイル */
-.form-control {
+.sell-section {
+    margin-bottom: 40px;
+}
+
+.sell-section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 12px;
+}
+
+.sell-note {
+    margin: 0 0 16px;
+    font-size: 14px;
+    color: #666666;
+}
+
+.sell-section-heading {
+    font-size: 28px;
+    font-weight: 700;
+    color: #5f5f5f;
+    margin: 0 0 24px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #5f5f5f;
+}
+
+.sell-image-upload-box {
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    background: #ffffff;
+    min-height: 180px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+}
+
+.sell-image-preview {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    max-width: 240px;
+    height: 150px;
+    object-fit: contain;
+    background: #fafafa;
+    border-radius: 4px;
+    display: block;
 }
 
+.sell-image-select-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 165px;
+    height: 46px;
+    padding: 0 20px;
+    border: 1px solid #ff5555;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #ff5555;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+}
 
-/* form input,
-form textarea,
-form select {
+.sell-file-input {
+    display: none;
+}
+
+.sell-form-group {
+    margin-bottom: 28px;
+}
+
+.sell-label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #111111;
+}
+
+.sell-input,
+.sell-textarea {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* ボタンのスタイル */
-/* button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-} */
-
-/* button:hover {
-    background-color: #0056b3;
-} */ 
-
-/* ファイル入力のスタイル */
-input[type="file"] {
-    border: none;
-    background-color: #fff;
-}
-
-/* プレビュー画像のスタイル */
-#image-preview-container img {
-    max-width: 100px;
-    max-height: 100px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin-right: 10px;
-    margin-bottom: 10px;
-}
-
-/* カテゴリー選択のボタンスタイル */
-.form-check-label.btn-outline-primary {
-    padding: 5px 15px;
-    border-radius: 5px;
-    border: 1px solid #007bff;
-    color: #007bff;
-    background-color: #fff;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.form-check-label.btn-outline-primary:hover {
-    background-color: #007bff;
-    color: #fff;
-}
-
-/* セレクトボックスのカスタムスタイル */
-select.form-control {
-    appearance: none;
-    background-image: url('../images/select-arrow.png');
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-}
-
-/* 出品ボタンのスタイル */
-.btn-primary {
-    background-color: #007bff;
-    color: #fff;
+    border: 1px solid #5f5f5f;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #111111;
     font-size: 18px;
-    font-weight: bold;
-    padding: 10px 0;
+    padding: 12px 16px;
+}
+
+.sell-input {
+    height: 46px;
+}
+
+.sell-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.sell-category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 12px;
+}
+
+.sell-category-item {
+    position: relative;
+}
+
+.sell-category-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sell-category-label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 4px 16px;
+    border: 1px solid #ff5555;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #ff5555;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.sell-category-input:checked+.sell-category-label {
+    background: #ff5555;
+    color: #ffffff;
+}
+
+.sell-submit-button {
+    width: 100%;
+    height: 56px;
     border: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
+    border-radius: 4px;
+    background: #ff5555;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-.btn-primary:hover {
-    background-color: #0056b3;
+.sell-submit-button:hover {
+    opacity: 0.92;
 }
 
-/* エラーメッセージのスタイル */
-.alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    border: 1px solid #f5c6cb;
-    border-radius: 5px;
-}
-
-/* レスポンシブ対応 */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
+    .sell-page {
+        padding: 24px 16px 48px;
     }
 
-    .form-check-label.btn-outline-primary {
-        display: block;
-        width: 100%;
-        text-align: center;
-        margin-bottom: 10px;
+    .sell-title {
+        font-size: 28px;
+        margin-bottom: 28px;
     }
 
-    .btn-primary {
-        font-size: 16px;
+    .sell-section-title {
+        font-size: 20px;
+    }
+
+    .sell-section-heading {
+        font-size: 24px;
+    }
+
+    .sell-label {
+        font-size: 20px;
+    }
+
+    .sell-image-select-button {
+        font-size: 18px;
+        min-width: 145px;
+        height: 42px;
+    }
+
+    .sell-submit-button {
+        font-size: 20px;
+        height: 50px;
     }
 }

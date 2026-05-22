@@ -5,104 +5,122 @@
 @endsection
 
 @section('main')
-<div class="container">
-    <h2 class="text-center mb-4">商品を出品する</h2>
-    <!-- エラーメッセージ -->
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
+<div class="sell-page">
+    <div class="sell-container">
+        <h1 class="sell-title">商品の出品</h1>
 
-    <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <!-- 出品画像 -->
-        <div class="form-group mb-3">
-            <label for="image">商品画像</label>
-            <p class="text-muted">※ アップロードできる画像は3MB以下です。</p>
-            <img src="{{ $item->image_url ? Storage::url($item->image_url) : asset('images/no-image.png') }}"
-                class="card-img-top"
-                alt="{{ $item->name ?? 'no-image' }}">
-            <!-- <img src="{{ Storage::url($item->image_url) }}" class="card-img-top" alt="{{ $item->name }}"> -->
-
-            <input type="file" name="image" id="image" class="form-control" accept="image/*" onchange="previewImages(event)">
-
-            <div id="image-preview-container" class="mt-3"></div>
-        </div>
-
-        <div class="form-group mb-3">
-            <label for="name">商品名</label>
-            <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" required>
-        </div>
-        <div class="form-group mb-3">
-            <label for="description">商品の説明</label>
-            <textarea id="description" name="description" class="form-control" rows="5" required>{{ old('description') }}</textarea>
-        </div>
-        <div class="form-group mb-3">
-            <label for="category_id">カテゴリー</label>
-            <div id="categories-container">
-
-                @foreach ($categories as $category)
-                <div class="form-check form-check-inline">
-                    <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="category_{{ $category->id }}"
-                        name="categories[]"
-                        value="{{ $category->id }}"
-                        {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="category_{{ $category->id }}">
-                        {{ $category->name }}
-                    </label>
-                </div>
+        @if ($errors->any())
+        <div class="sell-error-box">
+            <ul class="sell-error-list">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
                 @endforeach
-
-            </div>
+            </ul>
         </div>
+        @endif
 
-        <div class="form-group mb-3">
-            <label for="condition">商品の状態</label>
-            <select id="condition" name="condition" class="form-control" required>
-                <option value="good">良好</option>
-                <option value="used_good">目立ったキズなし</option>
-                <option value="used_fair">ややキズあり</option>
-                <option value="used_bad">状態が悪い</option>
-            </select>
-        </div>
+        <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-        <div class="form-group mb-3">
-            <label for="price">商品の価格</label>
-            <input type="number" name="price" id="price" class="form-control" value="{{ old('price') }}" required>
-        </div>
+            <section class="sell-section">
+                <h2 class="sell-section-title">商品画像</h2>
+                <p class="sell-note">※ アップロードできる画像は3MB以下です。</p>
 
-        <button type="submit" class="btn btn-primary w-100">出品する</button>
-    </form>
+                <div class="sell-image-upload-box">
+                    <img
+                        id="image-preview"
+                        src="{{ !empty($item->image_url) ? Storage::url($item->image_url) : asset('images/no-image.png') }}"
+                        alt="{{ $item->name ?? 'no-image' }}"
+                        class="sell-image-preview">
+
+                    <label for="image" class="sell-image-select-button">画像を選択する</label>
+                    <input
+                        type="file"
+                        name="image"
+                        id="image"
+                        class="sell-file-input"
+                        accept="image/*"
+                        onchange="previewImage(event)">
+                </div>
+            </section>
+
+            <section class="sell-section">
+                <h2 class="sell-section-heading">商品の詳細</h2>
+
+                <div class="sell-form-group">
+                    <label for="categories" class="sell-label">カテゴリー</label>
+                    <div class="sell-category-list">
+                        @foreach ($categories as $category)
+                        <div class="sell-category-item">
+                            <input
+                                class="sell-category-input"
+                                type="checkbox"
+                                id="category_{{ $category->id }}"
+                                name="categories[]"
+                                value="{{ $category->id }}"
+                                {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}>
+                            <label class="sell-category-label" for="category_{{ $category->id }}">
+                                {{ $category->name }}
+                            </label>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="sell-form-group">
+                    <label for="condition" class="sell-label">商品の状態</label>
+                    <select id="condition" name="condition" class="sell-input" required>
+                        <option value="">選択してください</option>
+                        <option value="good" {{ old('condition') === 'good' ? 'selected' : '' }}>良好</option>
+                        <option value="used_good" {{ old('condition') === 'used_good' ? 'selected' : '' }}>目立った傷や汚れなし</option>
+                        <option value="used_fair" {{ old('condition') === 'used_fair' ? 'selected' : '' }}>やや傷や汚れあり</option>
+                        <option value="used_bad" {{ old('condition') === 'used_bad' ? 'selected' : '' }}>状態が悪い</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="sell-section">
+                <h2 class="sell-section-heading">商品名と説明</h2>
+
+                <div class="sell-form-group">
+                    <label for="name" class="sell-label">商品名</label>
+                    <input type="text" id="name" name="name" class="sell-input" value="{{ old('name') }}" required>
+                </div>
+
+                <div class="sell-form-group">
+                    <label for="description" class="sell-label">商品の説明</label>
+                    <textarea id="description" name="description" class="sell-textarea" required>{{ old('description') }}</textarea>
+                </div>
+
+                <div class="sell-form-group">
+                    <label for="price" class="sell-label">販売価格</label>
+                    <input type="number" name="price" id="price" class="sell-input" value="{{ old('price') }}" required>
+                </div>
+            </section>
+
+            <button type="submit" class="sell-submit-button">出品する</button>
+        </form>
+    </div>
 </div>
+@endsection
 
+@push('scripts')
 <script>
-    function previewImages(event) {
-        const previewContainer = document.getElementById('image-preview-container');
-        previewContainer.innerHTML = '';
+    document.addEventListener('DOMContentLoaded', function() {
+        window.previewImage = function(event) {
+            const file = event.target.files && event.target.files[0];
+            const preview = document.getElementById('image-preview');
 
-        const files = event.target.files;
-        Array.from(files).forEach(file => {
+            if (!file || !preview) {
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function(e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.alt = 'Preview';
-                img.style.width = '100px';
-                img.style.height = '100px';
-                img.style.marginRight = '10px';
-                img.style.marginBottom = '10px';
-                previewContainer.appendChild(img);
+                preview.src = e.target.result;
             };
             reader.readAsDataURL(file);
-        });
-    }
+        };
+    });
 </script>
-@endsection
+@endpush
