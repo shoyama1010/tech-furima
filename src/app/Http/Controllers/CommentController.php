@@ -12,14 +12,18 @@ class CommentController extends Controller
 {  
     public function store(CommentRequest $request)
     {
+        $validated = $request->validated();
+        
         // コメントを保存
         Comment::create([
-            'user_id' => Auth::id(),
-            'item_id' => $request->validated()['item_id'], 
-            'content' => $request->validated()['content'],
+            'user_id' => auth()->id(),
+            'item_id' => $validated['item_id'],
+            'content' => $validated['content'],
         ]);
 
-        return redirect()->back()->with('success', 'コメントが投稿されました！');
+        return redirect()
+        ->route('items.detail', $validated['item_id'])
+        ->with('success', 'コメントが投稿されました！');
     }
 
     public function show($id)

@@ -9,6 +9,7 @@
                 <img src="{{ $item->image_url }}" alt="{{ $item->name }}">
                 <div class="mt-4">
                     <h5>配送先住所</h5>
+                    
                     @if ($address)
                     <!-- $address が存在するか確認 -->
                     <p>
@@ -21,6 +22,7 @@
                     @else
                     <p>配送先住所が未設定です。</p>
                     @endif
+
                     <a href="{{ route('purchase.address.edit', $item->id) }}" class="btn btn-link">変更する</a>
                 </div>
             </div>

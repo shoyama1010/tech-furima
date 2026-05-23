@@ -153,11 +153,7 @@ class ItemController extends Controller
 
             DB::commit(); // トランザクション確定
             return redirect()->route('items.index')->with('success', '商品を出品しました！');
-            // } catch (\Exception $e) {
-            //     DB::rollBack(); // トランザクションをロールバック
-
-            //     return back()->withErrors(['error' => '商品の登録中にエラーが発生しました: ' . $e->getMessage()]);
-            // }
+            
         } catch (\Exception $e) {
             DB::rollBack(); // トランザクションをロールバック
             Log::error('商品の登録中にエラーが発生しました: ' . $e->getMessage());

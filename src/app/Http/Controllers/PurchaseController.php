@@ -2,122 +2,178 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\PurchaseRequest;
+use App\Models\Address;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\Payment;
-use Stripe\Stripe;
-use Stripe\Checkout\Session;
-use App\Models\Address;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\PurchaseRequest;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
 
 class PurchaseController extends Controller
 {
     public function buyitem($id)
     {
-        // 商品データを取得
-        $item = Item::where('id', $id)->firstOrFail();
-        // $item = Item::where('id', $id)->where('is_sold', 0)->firstOrFail();
-        // ログインユーザーの住所情報を取得
+        $item = Item::findOrFail($id);
+        $user = auth()->user();
+
         $address = Address::where('user_id', auth()->id())->first();
-        // 購入画面を表示
+
+        if (!$address && ($user->postal_code || $user->address || $user->building)) {
+            $address = (object) [
+                'postal_code' => $user->postal_code,
+                'address' => $user->address,
+                'building' => $user->building,
+            ];
+        }
+
         return view('purchase.show', compact('item', 'address'));
     }
 
-    // public function purchase($id)
     public function purchase(PurchaseRequest $request, $id)
     {
         try {
-            // Stripe設定
             Stripe::setApiKey(config('services.stripe.secret'));
-            $session = null;
-            DB::transaction(function () use ($id, &$session, $request) {
-                // 商品をロックして取得
+
+            $item = null;
+            $order = null;
+
+            DB::transaction(function () use ($id, &$item, &$order) {
                 $item = Item::lockForUpdate()->findOrFail($id);
-                if ($item->is_sold) {
-                    throw new \Exception('商品は既に購入済みです');
+
+                if ($item->is_sold || $item->status === 'sold') {
+                    throw new \RuntimeException('商品は既に購入済みです。');
                 }
-                // 商品を "sold" 状態に変更
-                $item->update(['is_sold' => 1, 'status' => 'sold',]);
-                // 既存のオーダーがあるか確認し、なければ作成
-                $existingOrder = Order::where('user_id', auth()->id())
-                    ->where('item_id', $item->id)
-                    ->exists();
-                if (!$existingOrder) {
-                    // 購入完了後のロジック
-                    Order::create([
+
+                if ((int) $item->user_id === (int) auth()->id()) {
+                    throw new \RuntimeException('自分の商品は購入できません。');
+                }
+
+                $order = Order::firstOrCreate(
+                    [
                         'user_id' => auth()->id(),
                         'item_id' => $item->id,
-                        'quantity' => 1,
-                        'total_price' => $item->price, 
-                        // 'status' => 'completed',
-                        'status' => 'pending', // ステータスを "pending" に設定
-                    ]);
-                }
-                // Stripe 決済セッション作成
-                $session = Session::create([
-                    'payment_method_types' => ['card'],
-                    'line_items' => [
-                        [
-                            'price_data' => [
-                                'currency' => 'jpy','product_data' => ['name' => $item->name],
-                                'unit_amount' => $item->price * 100, // 円をセントに変換
-                            ],
-                            'quantity' => 1,
-                        ]
+                        'status' => 'pending',
                     ],
-                    'mode' => 'payment',
-                    'success_url' => route('purchase.success', $id), // 成功後のリダイレクト先
-                    'cancel_url' => route('purchase.show', $id),
-                ]);
+                    [
+                        'quantity' => 1,
+                        'total_price' => $item->price,
+                    ]
+                );
             });
-            // トランザクション外でリダイレクトを実行
+
+            $session = Session::create([
+                'payment_method_types' => ['card'],
+                'mode' => 'payment',
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'jpy',
+                        'product_data' => [
+                            'name' => $item->name,
+                        ],
+                        'unit_amount' => (int) $item->price,
+                    ],
+                    'quantity' => 1,
+                ]],
+                'metadata' => [
+                    'order_id' => (string) $order->id,
+                    'item_id' => (string) $item->id,
+                    'user_id' => (string) auth()->id(),
+                ],
+                'success_url' => route('purchase.success', ['id' => $item->id]) . '?session_id={CHECKOUT_SESSION_ID}',
+                'cancel_url' => route('purchase.show', ['id' => $item->id]),
+            ]);
+
+            $order->update([
+                'payment_session_id' => $session->id,
+            ]);
+
             return redirect($session->url);
-        } catch (\Exception $e) {
-            logger()->error('購入処理エラー: ' . $e->getMessage(), [
+        } catch (\Throwable $e) {
+            logger()->error('購入処理エラー', [
                 'user_id' => auth()->id(),
                 'item_id' => $id,
-                'trace' => $e->getTraceAsString(),
+                'message' => $e->getMessage(),
             ]);
-            return redirect()->route('items.detail', $id)->with('error', '購入処理中にエラーが発生しました。');
+
+            return redirect()
+                ->route('items.detail', $id)
+                ->with('error', '購入処理中にエラーが発生しました。');
         }
     }
 
-    public function success($id)
+    public function success(Request $request, $id)
     {
-        // 商品の購入成功後の処理
-        $item = Item::findOrFail($id);
+        try {
+            Stripe::setApiKey(config('services.stripe.secret'));
 
-        // 商品を "sold"(売り切れかどうか) 状態に変更
-        if (!$item->is_sold) {
-            return redirect()->route('mypage')->with('error', 'この商品はまだ購入済です。');
-        }
+            $sessionId = $request->query('session_id');
+            if (empty($sessionId)) {
+                return redirect()
+                    ->route('items.detail', $id)
+                    ->with('error', '決済セッションを確認できませんでした。');
+            }
 
-        // 既に注文済みか確認
-        $order = Order::where('user_id', auth()->id())
-            ->where('item_id', $item->id)
-            ->where('status', 'pending')
-            ->first();
+            $checkoutSession = Session::retrieve($sessionId);
 
-        if ($order) {
-            // 支払いが成功したので、注文ステータスを "completed" に変更
-            $order->update(['status' => 'completed']);
+            if ($checkoutSession->payment_status !== 'paid') {
+                return redirect()
+                    ->route('items.detail', $id)
+                    ->with('error', '決済が完了していません。');
+            }
 
-            // 支払い記録を保存（重複防止）
-            Payment::updateOrCreate(
-                ['order_id' => $order->id],
-                [
-                    'user_id' => auth()->id(),
-                    'payment_method' => 'stripe',
-                    'amount' => $item->price,
+            DB::transaction(function () use ($id, $sessionId) {
+                $item = Item::lockForUpdate()->findOrFail($id);
+
+                $order = Order::where('user_id', auth()->id())
+                    ->where('item_id', $item->id)
+                    ->where('status', 'pending')
+                    ->latest('id')
+                    ->first();
+
+                if (!$order) {
+                    throw new \RuntimeException('注文が見つかりませんでした。');
+                }
+
+                if (!$item->is_sold && $item->status !== 'sold') {
+                    $item->update([
+                        'is_sold' => true,
+                        'status' => 'sold',
+                    ]);
+                }
+
+                $order->update([
                     'status' => 'completed',
-                ]
-            );
+                    'payment_session_id' => $sessionId,
+                ]);
 
-            return redirect()->route('mypage')->with('success', '購入が完了しました。');
+                Payment::updateOrCreate(
+                    ['order_id' => $order->id],
+                    [
+                        'user_id' => auth()->id(),
+                        'payment_method' => 'stripe',
+                        'amount' => $item->price,
+                        'status' => 'completed',
+                    ]
+                );
+            });
+
+            return redirect()
+                ->route('mypage')
+                ->with('success', '購入が完了しました。');
+        } catch (\Throwable $e) {
+            logger()->error('購入完了処理エラー', [
+                'user_id' => auth()->id(),
+                'item_id' => $id,
+                'message' => $e->getMessage(),
+            ]);
+
+            return redirect()
+                ->route('items.detail', $id)
+                ->with('error', '購入完了処理中にエラーが発生しました。');
         }
-        return redirect()->route('mypage')->with('error', '注文が見つかりませんでした。');
     }
 
     public function history()
@@ -129,47 +185,65 @@ class PurchaseController extends Controller
 
     public function show($id)
     {
-        $item = Item::findOrFail($id); // 商品情報を取得
-        $user = auth()->user(); // ログインしているユーザーを取得
+        $item = Item::findOrFail($id);
+
+        $user = auth()->user();
 
         $address = Address::where('user_id', $user->id)->first();
+
+        if (!$address && ($user->postal_code || $user->address || $user->building)) {
+            $address = (object) [
+                'postal_code' => $user->postal_code,
+                'address' => $user->address,
+                'building' => $user->building,
+            ];
+        }
 
         return view('purchase.show', compact('item', 'address'));
     }
 
-    // 配送先住所編集画面の表示
     public function editAddress($id)
     {
         $item = Item::findOrFail($id);
-        $address = Address::where('user_id', auth()->id())->first() ?? new Address(); // ユーザーの住所情報
+        $user = auth()->user();
+
+        $address = Address::where('user_id', $user->id)->first();
+
+        if (!$address) {
+            $address = new Address();
+            $address->postal_code = $user->postal_code;
+            $address->address = $user->address;
+            $address->building = $user->building;
+        }
+        // $address = Address::where('user_id', auth()->id())->first() ?? new Address();
         return view('purchase.address_edit', compact('item', 'address'));
     }
 
-    // 配送先住所の更新処理
     public function updateAddress(Request $request, $id)
     {
         $request->validate([
             'postal_code' => 'required|string|max:8',
-            // 'postal_code' => 'required|regex:/^\d{3}-\d{4}$/',
             'address' => 'required|string|max:255',
+            'building' => 'nullable|string|max:255',
         ]);
 
-        // ログインしているユーザーの住所情報を取得、または新規作成
-        $address = Address::where('user_id', auth()->id())->firstOrNew([
-            'user_id' => auth()->id()
-        ]);
+        DB::transaction(function () use ($request) {
+            $user = auth()->user();
 
-        // 入力値を設定
-        $address->postal_code = $request->input('postal_code');
-        $address->address = $request->input('address');
-        $address->is_default = true;
+            $address = Address::where('user_id', auth()->id())->firstOrNew([
+                'user_id' => auth()->id(),
+            ]);
 
-        // デバッグ用にデータ確認
-        logger()->info('Address Data', $address->toArray());
+            $address->postal_code = $request->input('postal_code');
+            $address->address = $request->input('address');
+            $address->building = $request->input('building');
+            $address->is_default = true;
+            $address->save();
 
-        // 保存処理
-        $address->save();
+        });
 
-        return redirect()->route('purchase.show', $id)->with('success', '配送先住所が更新されました。');
+        return redirect()
+            ->route('purchase.show', $id)
+            ->with('success', '配送先住所が更新されました。');
     }
 }

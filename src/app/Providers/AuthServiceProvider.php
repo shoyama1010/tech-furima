@@ -28,8 +28,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         // ユーザー登録時にメール認証通知を送信するリスナーを設定
-        Event::listen(Registered::class, function ($event) {
-            $event->user->sendEmailVerificationNotification();
-        });
+        // Event::listen(Registered::class, function ($event) {
+        //     $event->user->sendEmailVerificationNotification();
+        // });
     }
 }

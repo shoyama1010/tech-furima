@@ -107,3 +107,11 @@ body .auth-container input {
 .email {
     display: flex;
 }
+
+.auth-error {
+    margin: 8px 0 0;
+    color: #ff5555;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.5;
+}

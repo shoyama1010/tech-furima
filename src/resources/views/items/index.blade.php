@@ -1,4 +1,3 @@
-// src/resources/views/items/index.blade.php
 @extends('layouts.app')
 
 @section('css')
@@ -28,7 +27,12 @@
                         src="{{ $item->image_url }}"
                         class="item-card-image"
                         alt="{{ $item->name }}">
+
+                    @if($item->isSold())
+                    <span class="item-card-sold">SOLD</span>
+                    @endif
                 </div>
+
                 <p class="item-card-name">{{ $item->name }}</p>
             </a>
             @endforeach

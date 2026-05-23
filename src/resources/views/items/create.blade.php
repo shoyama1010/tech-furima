@@ -8,8 +8,7 @@
 <div class="sell-page">
     <div class="sell-container">
         <h1 class="sell-title">商品の出品</h1>
-
-        @if ($errors->any())
+        <!-- @if ($errors->any())
         <div class="sell-error-box">
             <ul class="sell-error-list">
                 @foreach ($errors->all() as $error)
@@ -17,22 +16,18 @@
                 @endforeach
             </ul>
         </div>
-        @endif
-
-        <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
+        @endif -->
+        <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
-
             <section class="sell-section">
                 <h2 class="sell-section-title">商品画像</h2>
                 <p class="sell-note">※ アップロードできる画像は3MB以下です。</p>
-
-                <div class="sell-image-upload-box">
+                <div class="sell-image-upload-box @error('image') is-invalid @enderror">
                     <img
                         id="image-preview"
                         src="{{ !empty($item->image_url) ? Storage::url($item->image_url) : asset('images/no-image.png') }}"
                         alt="{{ $item->name ?? 'no-image' }}"
                         class="sell-image-preview">
-
                     <label for="image" class="sell-image-select-button">画像を選択する</label>
                     <input
                         type="file"
@@ -42,6 +37,9 @@
                         accept="image/*"
                         onchange="previewImage(event)">
                 </div>
+                @error('image')
+                <p class="sell-field-error">{{ $message }}</p>
+                @enderror
             </section>
 
             <section class="sell-section">
@@ -65,6 +63,13 @@
                         </div>
                         @endforeach
                     </div>
+
+                    @error('categories')
+                    <p class="sell-field-error">{{ $message }}</p>
+                    @enderror
+                    @error('categories.*')
+                    <p class="sell-field-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="sell-form-group">
@@ -76,25 +81,40 @@
                         <option value="used_fair" {{ old('condition') === 'used_fair' ? 'selected' : '' }}>やや傷や汚れあり</option>
                         <option value="used_bad" {{ old('condition') === 'used_bad' ? 'selected' : '' }}>状態が悪い</option>
                     </select>
+
+                    @error('condition')
+                    <p class="sell-field-error">{{ $message }}</p>
+                    @enderror
                 </div>
             </section>
 
             <section class="sell-section">
                 <h2 class="sell-section-heading">商品名と説明</h2>
-
                 <div class="sell-form-group">
                     <label for="name" class="sell-label">商品名</label>
                     <input type="text" id="name" name="name" class="sell-input" value="{{ old('name') }}" required>
+
+                    @error('name')
+                    <p class="sell-field-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="sell-form-group">
                     <label for="description" class="sell-label">商品の説明</label>
                     <textarea id="description" name="description" class="sell-textarea" required>{{ old('description') }}</textarea>
+
+                    @error('description')
+                    <p class="sell-field-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="sell-form-group">
                     <label for="price" class="sell-label">販売価格</label>
                     <input type="number" name="price" id="price" class="sell-input" value="{{ old('price') }}" required>
+
+                    @error('price')
+                    <p class="sell-field-error">{{ $message }}</p>
+                    @enderror
                 </div>
             </section>
 

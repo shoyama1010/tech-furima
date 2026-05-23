@@ -76,6 +76,30 @@
     margin: 80px 0;
 }
 
+.item-card-image-wrap {
+    position: relative;
+    overflow: hidden;
+}
+
+.item-card-sold {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: #ff5555;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    z-index: 2;
+}
+
 @media (max-width: 1200px) {
     .items-content {
         padding: 56px 24px 48px;

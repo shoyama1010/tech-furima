@@ -106,13 +106,28 @@
 
                     <div class="comment-form-area">
                         <h3 class="comment-form-title">商品へのコメント</h3>
+
+                        @if (session('success'))
+                        <p class="comment-success-message">{{ session('success') }}</p>
+                        @endif
+
                         <form action="{{ route('comments.store') }}" method="POST">
                             @csrf
                             <input type="hidden" name="item_id" value="{{ $item->id }}">
+
                             <textarea
                                 name="content"
                                 class="comment-textarea"
                                 placeholder="コメントを入力">{{ old('content') }}</textarea>
+
+                            @error('content')
+                            <p class="comment-error-message">{{ $message }}</p>
+                            @enderror
+
+                            @error('item_id')
+                            <p class="comment-error-message">{{ $message }}</p>
+                            @enderror
+
                             <button type="submit" class="comment-submit-button">コメントを送信する</button>
                         </form>
                     </div>
@@ -168,5 +183,3 @@
     });
 </script>
 @endpush
-
-

@@ -1,30 +1,40 @@
+{{-- src/resources/views/auth/verify-email.blade.php --}}
 @extends('layouts.app')
 
-
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/auth.css') }}">
+<link rel="stylesheet" href="{{ asset('css/email_verify.css') }}">
 @endsection
 
-<!-- @section('content') -->
 @section('main')
-<div class="container">
-    <div class="email">
-        <h1>メールアドレス認証</h1>
-        <p>確認メールが送信されました。メールを確認して認証リンクをクリックしてください。</p>
+<div class="verify-page">
+    <div class="verify-container">
+        <p class="verify-message">
+            登録していただいたメールアドレスに認証メールを送付しました。<br>
+            メール認証を完了してください。
+        </p>
 
-        <a href="http://localhost:8025" target="_blank" class="d-block text-center mt-3">認証リンクへ</a>
+        <div class="verify-action">
+            <a
+                href="http://localhost:8025"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="verify-mailhog-button">
+                認証はこちらから
+            </a>
+        </div>
+
+        @if (session('success'))
+        <p class="verify-success-message">
+            {{ session('success') }}
+        </p>
+        @endif
+
+        <form method="POST" action="{{ route('verification.send') }}" class="verify-resend-form">
+            @csrf
+            <button type="submit" class="verify-resend-button">
+                認証メールを再送する
+            </button>
+        </form>
     </div>
-
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    <form method="POST" action="{{ route('verification.send') }}">
-        @csrf
-        <p>メールが届かない場合は、以下のボタンをクリックして再送してください。</p>
-        <button type="submit" class="btn btn-primary">認証メールを再送する</button>
-    </form>
 </div>
 @endsection

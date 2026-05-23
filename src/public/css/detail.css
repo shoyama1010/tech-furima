@@ -312,3 +312,18 @@
         min-height: 140px;
     }
 }
+
+.comment-error-message {
+    margin: 8px 0 0;
+    color: #ff5555;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.comment-success-message {
+    margin: 0 0 12px;
+    color: #0073cc;
+    font-size: 14px;
+    font-weight: 700;
+}

@@ -11,15 +11,15 @@
         @csrf
         <div class="form-group mb-3">
             <label for="postal_code">郵便番号</label>
-            <input type="text" name="postal_code" class="form-control" required>
+            <input type="text" name="postal_code" value="{{ old('postal_code', $address->postal_code) }}">
         </div>
         <div class="form-group mb-3">
             <label for="address">住所</label>
-            <input type="text" name="address" class="form-control" required>
+            <input type="text" name="address" value="{{ old('address', $address->address) }}">
         </div>
         <div class="form-group mb-3">
             <label for="building">建物名</label>
-            <input type="text" name="building" class="form-control" required>
+            <input type="text" name="building" value="{{ old('building', $address->building) }}">
         </div>
         <button type="submit" class="btn btn-primary">更新する</button>
     </form>

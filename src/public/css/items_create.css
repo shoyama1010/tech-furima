@@ -185,6 +185,28 @@
     opacity: 0.92;
 }
 
+.sell-input.is-invalid,
+.sell-textarea.is-invalid,
+.sell-image-upload-box.is-invalid,
+.sell-category-list.is-invalid {
+    border-color: #ff5555;
+}
+
+.sell-field-error {
+    margin: 8px 0 0;
+    color: #ff5555;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.sell-category-list.is-invalid {
+    padding: 12px;
+    border: 1px solid #ff5555;
+    border-radius: 4px;
+    background: #fff5f5;
+}
+
 @media (max-width: 768px) {
     .sell-page {
         padding: 24px 16px 48px;
@@ -216,5 +238,9 @@
     .sell-submit-button {
         font-size: 20px;
         height: 50px;
+    }
+
+    .sell-field-error {
+        font-size: 13px;
     }
 }

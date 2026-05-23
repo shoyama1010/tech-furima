@@ -10,7 +10,7 @@
 
     <h2 class="text-center mb-4">会員登録</h2>
 
-    @if ($errors->any())
+    <!-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -18,21 +18,30 @@
             @endforeach
         </ul>
     </div>
-    @endif
+    @endif -->
 
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" novalidate>
         @csrf
-        <div class="form-group mb-3">    
+        <div class="form-group mb-3">
             <label for="name">ユーザー名</label>
             <input type="text" id="name" name="name" class="form-control" required>
+            @error('name')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
         </div>
         <div class="form-group mb-3">
             <label for="email">メールアドレス</label>
             <input type="email" id="email" name="email" class="form-control" required>
+            @error('email')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
         </div>
         <div class="form-group mb-3">
             <label for="password">パスワード</label>
             <input type="password" id="password" name="password" class="form-control" required>
+            @error('password')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
         </div>
         <div class="form-group mb-3">
             <label for="password_confirmation">確認用パスワード</label>

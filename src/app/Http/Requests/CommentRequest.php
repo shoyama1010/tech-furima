@@ -25,9 +25,15 @@ class CommentRequest extends FormRequest
     public function messages()
     {
         return [
-            'content.required' => 'コメント内容を入力してください。',
-            'content.max' => 'コメントは500文字以内で入力してください。',
-            'item_id.exists' => '該当する商品が見つかりません。',
+            // 'content.required' => 'コメント内容を入力してください。',
+            // 'content.max' => 'コメントは500文字以内で入力してください。',
+            // 'item_id.exists' => '該当する商品が見つかりません。',
+            'item_id.required' => '商品情報が不足しています。',
+            'item_id.integer' => '商品IDの形式が不正です。',
+            'item_id.exists' => '該当する商品が存在しません。',
+            'content.required' => 'コメントを入力してください。',
+            'content.string' => 'コメントは文字列で入力してください。',
+            'content.max' => 'コメントは255文字以内で入力してください。',
         ];
     }
 }

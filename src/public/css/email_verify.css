@@ -1,0 +1,99 @@
+/* src/public/css/email_verify.css */
+.verify-page {
+    min-height: calc(100vh - 80px);
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px 120px;
+}
+
+.verify-container {
+    width: 100%;
+    max-width: 760px;
+    text-align: center;
+}
+
+.verify-message {
+    margin: 0 0 28px;
+    color: #111;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.7;
+}
+
+.verify-action {
+    margin-bottom: 28px;
+}
+
+.verify-mailhog-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    height: 56px;
+    padding: 0 24px;
+    border: 1px solid #8b8b8b;
+    border-radius: 6px;
+    background: #d9d9d9;
+    color: #111;
+    font-size: 24px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.verify-mailhog-button:hover {
+    color: #111;
+    opacity: 0.92;
+}
+
+.verify-success-message {
+    margin: 0 0 20px;
+    color: #ff5555;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.6;
+}
+
+.verify-resend-form {
+    margin: 0;
+}
+
+.verify-resend-button {
+    border: none;
+    background: transparent;
+    color: #0073cc;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.verify-resend-button:hover {
+    opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+    .verify-page {
+        padding: 32px 16px 80px;
+    }
+
+    .verify-message {
+        font-size: 18px;
+    }
+
+    .verify-mailhog-button {
+        min-width: 150px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .verify-resend-button {
+        font-size: 16px;
+    }
+
+    .verify-success-message {
+        font-size: 16px;
+    }
+}

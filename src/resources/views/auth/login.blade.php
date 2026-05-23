@@ -8,7 +8,7 @@
 <div class="auth-container">
     <h2 class="text-center mb-4">ログイン</h2>
 
-    @if ($errors->any())
+    <!-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -16,17 +16,23 @@
             @endforeach
         </ul>
     </div>
-    @endif
+    @endif -->
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" novalidate>
         @csrf
         <div class="form-group mb-3">
             <label for="email">ユーザー名 / メールアドレス</label>
             <input type="text" id="email" name="email" class="form-control" required>
+            @error('email')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
         </div>
         <div class="form-group mb-3">
             <label for="password">パスワード</label>
             <input type="password" id="password" name="password" class="form-control" required>
+            @error('password')
+            <p class="auth-error">{{ $message }}</p>
+            @enderror
         </div>
         <button type="submit" class="btn btn-primary w-100">ログインする</button>
 
