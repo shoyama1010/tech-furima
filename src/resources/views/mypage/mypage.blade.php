@@ -1,76 +1,73 @@
 @extends('layouts.app')
 
+@section('css')
+<link rel="stylesheet" href="{{ asset('css/mypage.css') }}">
+@endsection
+
 @section('main')
-<div class="container">
-    <!-- メール認証 -->
-    @if (Route::has('verification.notice') && !auth()->user()->hasVerifiedEmail())
-    <div class="alert alert-warning text-center">
-        メール認証が必要です。確認メールをご確認ください。
-        <a href="{{ url('/email/verify') }}" class="btn btn-primary btn-sm">確認ページへ</a>
-    </div>
-    @endif 
+<div class="mypage-page">
+    <div class="mypage-container">
 
-     <!-- 確認用のメッセージ  -->
-    @if (session('message'))
-    <div class="alert alert-success">
-        {{ session('message') }}
-    </div>
-    @endif
-
-    <!-- ユーザー情報セクション -->
-    <div class="user-info text-center mb-4">
-        <img src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : '/images/default-profile.png' }}" alt="プロフィール画像" class="rounded-circle" width="100" height="100">
-        <h1>ユーザー名</h1>
-        <p>{{ $user->name }}</p>
-        <a href="{{ route('profile.edit') }}" class="btn btn-primary mt-2">プロフィールを編集</a>
-    </div>
-
-    <!-- タブメニュー -->
-    <ul class="nav nav-tabs" id="mypageTabs">
-        <li class="nav-item">
-            <a class="nav-link active" id="sold-tab" data-toggle="tab" href="#soldItems">出品した商品</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" id="purchased-tab" data-toggle="tab" href="#purchasedItems">購入した商品</a>
-        </li>
-    </ul>
-
-    <div class="tab-content">
-        <!-- 出品した商品 -->
-        <div class="tab-pane fade show active" id="soldItems">
-            <h3>出品した商品</h3>
-            <div class="items-container">
-                @forelse ($itemsSold as $item)
-
-                <div class="item">
-                    <img src="{{ $item->image_url }}" alt="{{ $item->name }}" class="img-fluid">
-                    <h4 class="mt-2">{{ $item->name }}</h4>
-                    <p><strong>価格:</strong> ¥{{ number_format($item->price) }}</p>
+        <section class="mypage-profile">
+            <div class="mypage-profile-left">
+                <div class="mypage-profile-image-wrap">
+                    <img id="profile_image_preview"
+                        src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : '/images/default-profile.png' }}"
+                        alt="プロフィール画像"
+                        class="rounded-circle"
+                        width="100" height="100">
                 </div>
+                <div class="mypage-profile-info">
+                    <h1 class="mypage-user-name">{{ $user->name }}</h1>
+                </div>
+            </div>
+            
+            <div class="mypage-profile-right">
+                <a href="{{ url('/mypage/profile') }}" class="mypage-edit-button">プロフィールを編集</a>
 
+            </div>
+        </section>
+
+        <div class="mypage-tabs">
+            <a
+                href="{{ route('mypage', ['tab' => 'sell']) }}"
+                class="mypage-tab {{ request('tab', 'sell') === 'sell' ? 'is-active' : '' }}">
+                出品した商品
+            </a>
+            <a
+                href="{{ route('mypage', ['tab' => 'buy']) }}"
+                class="mypage-tab {{ request('tab') === 'buy' ? 'is-active' : '' }}">
+                購入した商品
+            </a>
+        </div>
+        @php
+        $activeTab = request('tab', 'sell');
+        $displayItems = $activeTab === 'buy' ? $itemsPurchased : $itemsSold;
+        @endphp
+
+        <section class="mypage-items-section">
+            <div class="mypage-items-grid">
+                @forelse ($displayItems as $item)
+                <a href="{{ route('items.detail', $item->id) }}" class="mypage-item-card">
+                    <div class="mypage-item-image-wrap">
+                        <img
+                            src="{{ $item->image_url }}"
+                            alt="{{ $item->name }}"
+                            class="mypage-item-image">
+                    </div>
+                    <p class="mypage-item-name">{{ $item->name }}</p>
+                </a>
                 @empty
-                <p class="text-center">出品した商品はありません。</p>
+                <p class="mypage-empty-message">商品はまだありません。</p>
                 @endforelse
             </div>
-        </div>
+        </section>
 
-        <div class="tab-pane fade" id="purchasedItems">
-            <h3>購入した商品</h3>
-            <div class="items-container">
-                @forelse ($itemsPurchased as $item)
-                <div class="item">
-                    <img src="{{ $item->image_url }}" alt="{{ $item->name }}" class="img-fluid">
-                    <h4 class="mt-2">{{ $item->name }}</h4>
-                    <p><strong>価格:</strong> ¥{{ number_format($item->price) }}</p>
-                </div>
-                @empty
-                <p class="text-center">購入した商品はありません。</p>
-                @endforelse
-            </div>
-        </div>
     </div>
 </div>
 @endsection
+
+
 
 @section('scripts')
 <script>

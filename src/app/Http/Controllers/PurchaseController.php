@@ -37,10 +37,10 @@ class PurchaseController extends Controller
         try {
             Stripe::setApiKey(config('services.stripe.secret'));
 
-            $item = null;
+            $session = null;
             $order = null;
 
-            DB::transaction(function () use ($id, &$item, &$order) {
+            DB::transaction(function () use ($id, &$session, &$order, $request) {
                 $item = Item::lockForUpdate()->findOrFail($id);
 
                 if ($item->is_sold || $item->status === 'sold') {
@@ -62,33 +62,51 @@ class PurchaseController extends Controller
                         'total_price' => $item->price,
                     ]
                 );
-            });
 
-            $session = Session::create([
-                'payment_method_types' => ['card'],
-                'mode' => 'payment',
-                'line_items' => [[
-                    'price_data' => [
-                        'currency' => 'jpy',
-                        'product_data' => [
-                            'name' => $item->name,
+                $selectedMethod = $request->input('payment_method');
+                $stripePaymentMethod = '';
+
+                switch ($selectedMethod) {
+                    case 'credit_card':
+                        $stripePaymentMethod = 'card';
+                        break;
+
+                    case 'convenience_store':
+                        $stripePaymentMethod = 'konbini';
+                        break;
+
+                    default:
+                        throw new \RuntimeException('支払い方法が不正です。');
+                }
+
+                $session = Session::create([
+                    'payment_method_types' => [$stripePaymentMethod],
+                    'mode' => 'payment',
+                    'line_items' => [[
+                        'price_data' => [
+                            'currency' => 'jpy',
+                            'product_data' => [
+                                'name' => $item->name,
+                            ],
+                            'unit_amount' => (int) $item->price,
                         ],
-                        'unit_amount' => (int) $item->price,
+                        'quantity' => 1,
+                    ]],
+                    'metadata' => [
+                        'order_id' => (string) $order->id,
+                        'item_id' => (string) $item->id,
+                        'user_id' => (string) auth()->id(),
+                        'payment_method' => $selectedMethod,
                     ],
-                    'quantity' => 1,
-                ]],
-                'metadata' => [
-                    'order_id' => (string) $order->id,
-                    'item_id' => (string) $item->id,
-                    'user_id' => (string) auth()->id(),
-                ],
-                'success_url' => route('purchase.success', ['id' => $item->id]) . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => route('purchase.show', ['id' => $item->id]),
-            ]);
+                    'success_url' => route('purchase.success', ['id' => $item->id]) . '?session_id={CHECKOUT_SESSION_ID}',
+                    'cancel_url' => route('purchase.show', ['id' => $item->id]),
+                ]);
 
-            $order->update([
-                'payment_session_id' => $session->id,
-            ]);
+                $order->update([
+                    'payment_session_id' => $session->id,
+                    'payment_method' => $selectedMethod,
+                ]);
+            });
 
             return redirect($session->url);
         } catch (\Throwable $e) {
@@ -99,8 +117,8 @@ class PurchaseController extends Controller
             ]);
 
             return redirect()
-                ->route('items.detail', $id)
-                ->with('error', '購入処理中にエラーが発生しました。');
+                ->route('purchase.show', $id)
+                ->withErrors(['purchase' => $e->getMessage()]);
         }
     }
 

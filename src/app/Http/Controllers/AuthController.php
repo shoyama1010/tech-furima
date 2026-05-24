@@ -20,7 +20,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        // メール認証メールを送信
+        // 認証メールを送信
         event(new Registered($user));
         
         Auth::login($user);

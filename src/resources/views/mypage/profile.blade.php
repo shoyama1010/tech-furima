@@ -9,8 +9,7 @@
     <h2 class="text-center mb-4">プロフィール設定</h2>
     <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data">
         @csrf
-        @method('PUT') <!-- プロフィール情報更新なのでPUTメソッドを使用 -->
-
+        @method('PUT')
         <!-- プロフィール画像 -->
         <div class=" form-group mb-3">
             <img id="profile_image_preview"
@@ -18,7 +17,7 @@
                 alt="プロフィール画像"
                 class="rounded-circle"
                 width="100" height="100">
-                
+
             <input type="file" name="profile_image" id="profile_image" class="form-control" accept="image/*" onchange="previewImage(event)">
         </div>
 

@@ -1,4 +1,4 @@
-// src/resources/views/items/detail.blade.php
+
 @extends('layouts.app')
 
 @section('css')
