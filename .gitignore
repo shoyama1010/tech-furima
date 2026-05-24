@@ -1,3 +1,5 @@
 docker/mysql/data/*
 !.gitkeep
 
+src/.env.testing
+src/storage/app/public_backup/
