@@ -39,19 +39,16 @@ class Item extends Model
         return $this->hasMany(Like::class, 'item_id', 'id'); //１対多
     }
     
-
     public function orders()
     {
         return $this->hasMany(Order::class);
     }
-
     // 購入済みチェックメソッド
     public function isSold(): bool
     {
         return (bool) $this->is_sold || $this->orders()->exists();
         // return $this->is_sold === 1; // is_sold カラムが 1 の場合、購入済み
     }
-
     // 画像アップロード統一処理
     public function getImageUrlAttribute($value): string
     {
@@ -63,7 +60,6 @@ class Item extends Model
         if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
             return $value;
         }
-
         return asset('storage/' . ltrim($value, '/'));
     }
 
