@@ -150,7 +150,8 @@ PHPコンテナにログインした状態で
 php artisan storage:link
 
 
-## テスト
+
+# テスト
 
 本アプリでは、PHPUnit を使用して Feature テストおよび Unit テストを実装しています。
 
@@ -192,6 +193,7 @@ php artisan migrate --env=testing
 php artisan test
 
 実行結果： Tests: 35 passed
+
 
 
 # 各種機能について
