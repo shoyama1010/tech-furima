@@ -175,6 +175,41 @@ DB_USERNAME=root
 
 DB_PASSWORD=root
 
+CREATE DATABASE tech_furima_test
+
+## 2 .env.testing の設定例
+
+APP_ENV=testing
+
+DB_CONNECTION=mysql
+
+DB_HOST=mysql
+
+DB_PORT=3306
+
+DB_DATABASE=tech_furima_test
+
+DB_USERNAME=root
+
+DB_PASSWORD=root
+
+## 3 テスト用APP_KEY生成
+
+docker-compose exec php bash
+
+php artisan key:generate --env=testing
+
+## 4 テスト用DBのマイグレーション
+
+php artisan migrate --env=testing
+
+## 5 テスト実行
+
+php artisan test
+
+実行結果： Tests: 35 passed
+
+
 
 # 各種機能について
 
