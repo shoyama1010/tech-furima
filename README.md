@@ -155,7 +155,6 @@ php artisan storage:link
 
 ## テスト用データベースの作成
 
-```bash
 docker-compose exec mysql mysql -u root -p
 
 CREATE DATABASE tech_furima_test
