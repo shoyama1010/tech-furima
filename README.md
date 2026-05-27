@@ -35,6 +35,7 @@ http://localhost
 - メール認証：mailhog
 - stripe
 - storage（シンボリックリンク）
+- Sanctum
 
 # テーブル設計
 ![Image](https://github.com/user-attachments/assets/87df9928-f44d-4ce9-8684-85df3658eef8)
@@ -133,6 +134,26 @@ PHPコンテナにログインした状態で
 
 php artisan storage:link
 
+## 9 API一覧
+| Method | URL | 内容 |
+
+|---|---|---|
+
+| POST | /api/login | ログイン |
+
+| POST | /api/logout | ログアウト |
+
+| GET | /api/items | 商品一覧 |
+
+| GET | /api/items/{id} | 商品詳細 |
+
+| POST | /api/items/{id}/toggle-like | いいね切替 |
+
+## 10 認証について
+- Laravel Sanctum を用いた Token認証を実装しています。
+- ログイン成功時に Token を発行し、React側の localStorage に保持しています。
+- API通信時は Authorization Bearer Token により認証を行っています。
+
 # テスト
 
 本アプリでは、PHPUnit を使用して Feature テストおよび Unit テストを実装しています。
@@ -193,7 +214,20 @@ php artisan test
 
 実行結果： Tests: 35 passed
 
+## 工夫した点　
+- Laravel API + React によるSPA構成
+- Sanctum Token認証を利用
+- React Router による画面遷移
+- Tailwind CSS によるUI構築
+- いいね機能を非同期通信で実装
+- ログイン状態に応じてヘッダー表示を切替
 
+## 今後の課題
+- マイページ機能の強化
+- コメント投稿機能
+- 購入機能
+- Tokenの永続認証改善
+- Redux / ContextAPI による状態管理
 
 # 各種機能について
 
