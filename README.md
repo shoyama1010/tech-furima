@@ -280,9 +280,10 @@ php artisan test
 
 ## 出品商品情報登録機能
 ・.商品出品画面にて必要な情報（商品名、画像、カテゴリ、状態、商品説明）を登録できます。
+<img width="1610" height="971" alt="スクリーンショット (5300)" src="https://github.com/user-attachments/assets/81f404b6-53a0-4503-bc42-6a907f667a23" />
 
 ・出品された商品は、商品一覧画面は勿論、「マイページ/プロフィール」の画面にも登録されます。
-![Image](https://github.com/user-attachments/assets/a2fc4450-6faa-4884-ad99-2cf21a635686)
+<img width="1776" height="918" alt="スクリーンショット (5306)" src="https://github.com/user-attachments/assets/3b0ee914-1bd2-45d5-8f41-d3b016d894ac" />
 
 ## 画像アップロード機能
 ・出品画面から出品されるときに、商品画像（ローカル画像）を、ユーザー自身の画像（縮小済）からアップロードできます。
