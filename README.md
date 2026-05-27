@@ -236,7 +236,8 @@ php artisan test
 メールが送信された「お知らせ」は、今回「マイページ」にて表示させてます。（ユーザー向けに、プロフィール情報も続けて入力して貰えるように）
 
 - 画面遷移図
-![Image](https://github.com/user-attachments/assets/f6b5b3a7-3db9-4717-b090-178215e1947d)
+
+<img width="1764" height="923" alt="Image" src="https://github.com/user-attachments/assets/141e300c-644d-48bd-af26-542d79e50211" />
 
 ![Image](https://github.com/user-attachments/assets/1414af7e-2d49-422d-a64c-990cb4a0837f)
 
