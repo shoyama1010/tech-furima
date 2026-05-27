@@ -215,12 +215,18 @@ php artisan test
 実行結果： Tests: 35 passed
 
 ## 工夫した点　
-- Laravel API + React によるSPA構成
-- Sanctum Token認証を利用
-- React Router による画面遷移
-- Tailwind CSS によるUI構築
-- いいね機能を非同期通信で実装
-- ログイン状態に応じてヘッダー表示を切替
+
+### 1.APIとして利用しやすいレスポンス設計
+
+React側で扱いやすいように、商品一覧・商品詳細APIでは必要なデータだけをJSON形式で返すようにしました。
+
+### 2. Laravel SanctumによるToken認証
+
+React SPAからログインできるように、Laravel Sanctumを用いたToken認証を実装しました。
+
+ログイン成功時にアクセストークンを発行し、認証が必要なAPIではBearer Tokenを使ってログインユーザーを判定しています。
+
+
 
 ## 今後の課題
 - マイページ機能の強化
