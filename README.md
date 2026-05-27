@@ -253,7 +253,7 @@ php artisan test
 
 ## ユーザー情報変更機能
 ・プロフィール編集画面にて、ユーザー情報が編集画面上で変更されてから、マイページにて表示されます。
-![Image](https://github.com/user-attachments/assets/4c170314-f1c1-4656-a750-56da05570ad9)
+<img width="1776" height="918" alt="Image" src="https://github.com/user-attachments/assets/7b770cf2-160e-4f6c-9f1b-c4f0577e8fc2" />
 ![Image](https://github.com/user-attachments/assets/310d1d96-600b-49a1-aada-f02aa9133113)
 
 ## 商品検索機能
