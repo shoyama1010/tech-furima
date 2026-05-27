@@ -272,7 +272,8 @@ php artisan test
 
 ## 決済機能
 ・実際に購入ボタンから、PAY.JPに登録して、そこからsripeの決済画面に接続されて、はじめて「購入」となります。
-![Image](https://github.com/user-attachments/assets/2cde985b-219f-41f4-ac65-9be4d968da07)
+<img width="1775" height="961" alt="スクリーンショット (5301)" src="https://github.com/user-attachments/assets/4af2ac91-da38-4763-b636-2241f49b2313" />
+<img width="1758" height="988" alt="スクリーンショット (5302)" src="https://github.com/user-attachments/assets/ead0a027-dde9-4460-be8c-630b54bed610" />
 
 ## いいね機能
 ・☆印を押して、「いいね」することができ、解除することもできます。「いいね」された商品は、「マイリスト」に登録されます。
