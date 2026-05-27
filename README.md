@@ -254,7 +254,8 @@ php artisan test
 ## ユーザー情報変更機能
 ・プロフィール編集画面にて、ユーザー情報が編集画面上で変更されてから、マイページにて表示されます。
 <img width="1776" height="918" alt="Image" src="https://github.com/user-attachments/assets/7b770cf2-160e-4f6c-9f1b-c4f0577e8fc2" />
-![Image](https://github.com/user-attachments/assets/310d1d96-600b-49a1-aada-f02aa9133113)
+<img width="1601" height="952" alt="スクリーンショット (5307)" src="https://github.com/user-attachments/assets/f30e299b-54e2-4508-933d-63512923973a" />
+
 
 ## 商品検索機能
 ・検索欄では「商品名」を入れると、部分一致検索で、興味ある商品が出てきます。「マイリスト」ページにて見れます。
