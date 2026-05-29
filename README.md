@@ -48,7 +48,7 @@ http://localhost
 
 # ER図
 
-<img width="721" height="894" alt="furima1" src="https://github.com/user-attachments/assets/236a5e66-b386-4e72-b765-a956f2f0a940" />
+<img width="1024" height="763" alt="スクリーンショット (5317)" src="https://github.com/user-attachments/assets/6c6f27e1-a800-46ce-b7ed-5bf4d82fa0a4" />
 
 
 
