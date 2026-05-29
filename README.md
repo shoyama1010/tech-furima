@@ -40,17 +40,11 @@ http://localhost
 - Sanctum
 
 # テーブル設計
-![Image](https://github.com/user-attachments/assets/87df9928-f44d-4ce9-8684-85df3658eef8)
-
-![Image](https://github.com/user-attachments/assets/8cc6c5e8-4cb3-40f2-906e-10153395ad60)
-
-![Image](https://github.com/user-attachments/assets/40918133-0891-4935-9706-226072d6ba64)
+<img width="1539" height="660" alt="スクリーンショット (5318)" src="https://github.com/user-attachments/assets/cc224ddf-cefe-4294-afbd-dda08e8fcb4d" />
+<img width="1553" height="633" alt="スクリーンショット (5320)" src="https://github.com/user-attachments/assets/435f3a3c-b683-49b1-824e-bb9a3eacd1c2" />
 
 # ER図
-
 <img width="1024" height="763" alt="スクリーンショット (5317)" src="https://github.com/user-attachments/assets/6c6f27e1-a800-46ce-b7ed-5bf4d82fa0a4" />
-
-
 
 # 環境構築
 ## 1 Gitファイルをクローンする
