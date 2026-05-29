@@ -48,7 +48,8 @@ http://localhost
 
 # ER図
 
-![Image](https://github.com/user-attachments/assets/f4168643-0bee-4211-ba6a-98725a6b484f)
+<img width="721" height="894" alt="furima1" src="https://github.com/user-attachments/assets/236a5e66-b386-4e72-b765-a956f2f0a940" />
+
 
 
 # 環境構築
