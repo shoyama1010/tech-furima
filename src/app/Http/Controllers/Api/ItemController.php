@@ -43,20 +43,15 @@ class ItemController extends Controller
         $item = Item::with([
             'categories:id,name',
             'comments' => function ($query) {
-                $query->latest();
+                $query->with('user:id,name')->latest();
             },
-            'comments.user:id,name',
-            'likes',
-        ])->withCount([
-            'likes',
-            'comments',
-        ])->findOrFail($id);
+        ])
+            ->withCount(['likes', 'comments'])
+            ->findOrFail($id);
 
-        $likedByMe = false;
-
-        if ($user) {
-            $likedByMe = $item->likes->contains('user_id', $user->id);
-        }
+        $likedByMe = $user
+            ? $item->likes()->where('user_id', $user->id)->exists()
+            : false;
 
         return response()->json([
             'data' => [
@@ -65,12 +60,15 @@ class ItemController extends Controller
                 'price' => $item->price,
                 'description' => $item->description,
                 'condition' => $item->condition,
-                'image_url' => $item->image_full_url,
+                // 'image_url' => $item->image_full_url,
+                'image_url' => $item->image_url,
+                
                 'is_sold' => $item->isSold(),
                 'status' => $item->status,
                 'likes_count' => $item->likes_count,
                 'comments_count' => $item->comments_count,
                 'liked_by_me' => $likedByMe,
+
                 'categories' => $item->categories->map(fn($category) => [
                     'id' => $category->id,
                     'name' => $category->name,
@@ -79,13 +77,12 @@ class ItemController extends Controller
                 'comments' => $item->comments->map(fn($comment) => [
                     'id' => $comment->id,
                     'content' => $comment->content,
-                    'created_at' => $comment->created_at ? $comment->created_at->format('Y-m-d H:i:s') : null,
-                    // 'created_at' => $comment->created_at?->format('Y-m-d H:i:s'),
+                    'created_at' => $comment->created_at
+                        ? $comment->created_at->format('Y-m-d H:i:s')
+                        : null,
                     'user' => [
                         'id' => $comment->user ? $comment->user->id : null,
                         'name' => $comment->user ? $comment->user->name : null,
-                        // 'id' => $comment->user?->id,
-                        // 'name' => $comment->user?->name,
                     ],
                 ])->values(),
             ],
