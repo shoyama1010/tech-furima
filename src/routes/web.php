@@ -25,7 +25,8 @@ use App\Http\Controllers\UserController;
 */
 
 
-Route::get('/', [ItemController::class, 'index'])->name('items.index');
+// Route::get('/', [ItemController::class, 'index'])->name('items.index');
+Route::get('/', [ItemController::class, 'index'])->name('home');
 
 Route::get('/search', [ItemController::class, 'search'])->name('items.search');
 
@@ -56,7 +57,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/mypage/profile', [UserController::class, 'edit'])->name('profile.edit');
     Route::post('/mypage/profile', [UserController::class, 'updateProfile'])->name('profile.update');
     // プロフィール更新処理
-    Route::put('/user/profile', [UserController::class, 'update'])->name('user-profile-information.update');
+    Route::put('/user/profile', [UserController::class, 'update'])
+        ->name('user.profile.update');
+    // Route::put('/user/profile', [UserController::class, 'update'])
+    // ->name('user-profile-information.update');
 
     // コメント処理
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
@@ -82,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/items', [ItemController::class, 'index'])->name('items.index');
 
     Route::post('/items', [ItemController::class, 'store'])->name('items.store');
-    Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
+    // Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
 
     Route::post('/items/{id}/like', [ItemController::class, 'like'])->name('items.like');
 });
@@ -92,7 +96,7 @@ Route::post('/items/{item}/toggle-like', [LikeController::class, 'toggle'])->nam
 
 Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');
 
-Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
+// Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
 
 
 // メール確認のプロンプト（未確認のユーザー向け）
