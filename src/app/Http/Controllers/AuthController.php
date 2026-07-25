@@ -29,12 +29,14 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request)
     {
+
         if (Auth::attempt($request->only('email', 'password'))) {
             $user = auth()->user();
 
             // ✅ メール認証済みかチェック
             if (is_null($user->email_verified_at)) {
                 Auth::logout();
+                
                 return redirect()->route('verification.notice')->withErrors([
                     'email' => 'メール認証が完了していません。メールを確認してください。',
                 ]);
