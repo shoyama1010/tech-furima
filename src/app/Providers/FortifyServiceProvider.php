@@ -44,7 +44,6 @@ class FortifyServiceProvider extends ServiceProvider
         // 会員登録処理にクラスを紐付ける
         Fortify::createUsersUsing(CreateNewUser::class);
 
-
         // Fortifyの認証関連のビュー設定
         Fortify::registerView(function () {
             return view('auth.register'); // 会員登録画面

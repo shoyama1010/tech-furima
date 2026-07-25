@@ -7,29 +7,27 @@
 @section('main')
 <div class="auth-container">
     <h2 class="text-center mb-4">ログイン</h2>
-
-    <!-- @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif -->
-
+    
     <form method="POST" action="{{ route('login') }}" novalidate>
         @csrf
         <div class="form-group mb-3">
-            <label for="email">ユーザー名 / メールアドレス</label>
-            <input type="text" id="email" name="email" class="form-control" required>
+            <label for="email"> メールアドレス</label>
+            <input type="email" id="email" name="email" class="form-control"
+                value="{{ old('email') }}"
+                autocomplete="username"
+                required>
+
             @error('email')
             <p class="auth-error">{{ $message }}</p>
             @enderror
         </div>
+
         <div class="form-group mb-3">
             <label for="password">パスワード</label>
-            <input type="password" id="password" name="password" class="form-control" required>
+
+            <input type="password" id="password" name="password" class="form-control"
+                autocomplete="current-password" required>
+
             @error('password')
             <p class="auth-error">{{ $message }}</p>
             @enderror
