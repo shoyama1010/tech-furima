@@ -8,7 +8,7 @@ tech-furima は、Laravel と React（TypeScript）を用いて開発した、�
 
 LaravelをAPIサーバーとして利用し、ReactによるSPA（Single Page Application）でユーザー体験を向上させました。
 
-また、本番環境では Railway（バックエンド）と Vercel（フロントエンド）へデプロイし、実際の公開・運用までを想定した構成になっています。
+また、本番環境では Railway（バックエンド）へデプロイし、実際の公開・運用までを想定した構成になっています。
 
 # 作成した目的
 
