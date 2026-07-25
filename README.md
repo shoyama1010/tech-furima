@@ -2,14 +2,23 @@
 
 ![スクリーンショット (315)](https://github.com/user-attachments/assets/efe1a434-1ee6-4cb5-ae76-2c849c63ab57)
 
-アイテムの出品と購入を行うためのメルカリ風のフリマアプリです。
+# アプリ概要
 
-出品されている商品を検索（部分一致検索）できます。またユーザーがログインしなくても、商品の詳細を閲覧することができます。
+tech-furima は、Laravel と React（TypeScript）を用いて開発した、メルカリ風のフリマアプリです。
+
+LaravelをAPIサーバーとして利用し、ReactによるSPA（Single Page Application）でユーザー体験を向上させました。
+
+また、本番環境では Railway（バックエンド）と Vercel（フロントエンド）へデプロイし、実際の公開・運用までを想定した構成になっています。
 
 # 作成した目的
-以前から実装してたフリマアプリに、UI自体や基本機能に問題があったため。フロントエンド実装とそれにより画面のSPA化するため、Laravel API と React(TypeScript) を用いたフリマアプリにしました。フロントエンド（React）のリポジトリは下記です。
 
-https://github.com/shoyama1010/frimaSite-frontend
+以前にLaravel Bladeで実装したフリマアプリを、Laravel API + React（TypeScript）によるSPAへ再構築し、より実務に近い構成で開発・公開まで経験することを目的として制作しました。
+
+- API設計を意識したバックエンド実装
+- ReactによるSPA化やCookie認証からトークン認証への移行
+- Railway・Vercelへの本番デプロイ
+
+フロントエンド（React）のリポジトリは ⇒ https://github.com/shoyama1010/frimaSite-frontend
 
 # アプリケーションURL
 ローカル環境
@@ -39,6 +48,7 @@ http://localhost
 - stripe
 - storage（シンボリックリンク）
 - Sanctum
+- Railway
 
 # テーブル設計
 <img width="1539" height="660" alt="スクリーンショット (5318)" src="https://github.com/user-attachments/assets/cc224ddf-cefe-4294-afbd-dda08e8fcb4d" />
