@@ -22,7 +22,15 @@ LaravelをAPIサーバーとして利用し、ReactによるSPA（Single Page Ap
 
 # アプリケーションURL
 ローカル環境
+
 http://localhost
+
+本番環境（Railway）
+
+https://tech-furima-production.up.railway.app
+
+- ログインする時は、デモ用アカウントでログインし、機能を試してください。
+- メールアドレス：test@example.com、パスワード：password
 
 # 機能一覧
 
