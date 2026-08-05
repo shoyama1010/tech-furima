@@ -7,7 +7,11 @@
 @section('main')
 <div class="container">
     <h2 class="text-center mb-4">プロフィール設定</h2>
-    <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data">
+
+    <!-- <form method="POST" action="{{ route('user-profile-information.update') }}" enctype="multipart/form-data"> -->
+    <form method="POST"
+        action="{{ route('user.profile.update') }}"
+        enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <!-- プロフィール画像 -->
