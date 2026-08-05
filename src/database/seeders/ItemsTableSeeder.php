@@ -22,7 +22,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Armani+Mens+Clock.jpg',
                 'condition' => '良好',
                 'category_id' => 1, // ファッション
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -33,7 +34,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/HDD+Hard+Disk.jpg',
                 'condition' => '目立った傷や汚れなし',
                 'category_id' => 2, // 家電
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -44,7 +46,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/iLoveIMG+d.jpg',
                 'condition' => 'やや傷や汚れあり',
                 'category_id' => 10, // キッチン
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -55,7 +58,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Leather+Shoes+Product+Photo.jpg',
                 'condition' => '状態が悪い',
                 'category_id' => 1, // ファッション
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -66,7 +70,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Living+Room+Laptop.jpg',
                 'condition' => '良好',
                 'category_id' => 2, // 家電
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -78,7 +83,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Music+Mic+4632231.jpg',
                 'condition' => '目立った傷や汚れなし',
                 'category_id' => 2, // 家電
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -89,7 +95,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Purse+fashion+pocket.jpg',
                 'condition' => 'やや傷や汚れあり',
                 'category_id' => 1, // ファッション
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -101,7 +108,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Tumbler+souvenir.jpg',
                 'condition' => '状態が悪い',
                 'category_id' => 10, // キッチン
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -112,7 +120,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/Waitress+with+Coffee+Grinder.jpg',
                 'condition' => '良好',
                 'category_id' => 6, // コスメ
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -123,7 +132,8 @@ class ItemsTableSeeder extends Seeder
                 'image_url' => 'https://coachtech-matter.s3.ap-northeast-1.amazonaws.com/image/%E5%A4%96%E5%87%BA%E3%83%A1%E3%82%A4%E3%82%AF%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%82%BB%E3%83%83%E3%83%88.jpg',
                 'condition' => '目立った傷や汚れなし',
                 'category_id' => 4, // レディース
-                'user_id' => 1, // 仮のユーザーID
+                // 'user_id' => 1, // 仮のユーザーID
+                'user_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

@@ -22,11 +22,31 @@ class UsersTableSeeder extends Seeder
         DB::statement('ALTER TABLE users AUTO_INCREMENT = 1;');
 
         DB::table('users')->insert([
+            // [
+            //     'name' => 'Test User',
+            //     'email' => 'test@example.com',
+            //     'password' => Hash::make('password'), // パスワードを暗号化
+            //     'postal_code' => '123-4567', // テスト郵便番号
+            //     'created_at' => now(),
+            //     'updated_at' => now(),
+            // ],
             [
+                'id' => 1,
                 'name' => 'Test User',
                 'email' => 'test@example.com',
-                'password' => Hash::make('password'), // パスワードを暗号化
-                'postal_code' => '123-4567', // テスト郵便番号
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'postal_code' => '123-4567',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 2,
+                'name' => 'Seller User',
+                'email' => 'seller@example.com',
+                'email_verified_at' => now(),
+                'password' => Hash::make('password'),
+                'postal_code' => '765-4321',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
