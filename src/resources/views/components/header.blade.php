@@ -1,8 +1,10 @@
-
 <header class="site-header">
     <div class="site-header__inner">
         <a class="site-header__logo" href="{{ url('/') }}">
-            <img src="{{ asset('images/logo.svg') }}" alt="coachtech">
+            <!-- <img src="{{ asset('images/logo.svg') }}" alt="coachtech"> -->
+            <span class="site-header__logo-icon">T</span>
+            <span class="site-header__logo-tech">Tech</span>
+            <span class="site-header__logo-furima">furima</span>
         </a>
 
         @if(Auth::check())
