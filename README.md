@@ -1,6 +1,6 @@
 # tech-furima
 
-![スクリーンショット (315)](https://github.com/user-attachments/assets/efe1a434-1ee6-4cb5-ae76-2c849c63ab57)
+<img width="1903" height="913" alt="スクリーンショット (6233)" src="https://github.com/user-attachments/assets/eccbc669-51c8-436c-8cdb-b1967c1481a7" />
 
 # アプリ概要
 
