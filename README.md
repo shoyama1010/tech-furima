@@ -296,9 +296,8 @@ Seeder画像とアップロード画像の表示形式を意識し、フロン�
 
 ## ユーザー情報変更機能
 ・プロフィール編集画面にて、ユーザー情報が編集画面上で変更されてから、マイページにて表示されます。
-<img width="1776" height="918" alt="Image" src="https://github.com/user-attachments/assets/7b770cf2-160e-4f6c-9f1b-c4f0577e8fc2" />
-<img width="1601" height="952" alt="スクリーンショット (5307)" src="https://github.com/user-attachments/assets/f30e299b-54e2-4508-933d-63512923973a" />
-
+<img width="1895" height="898" alt="スクリーンショット (6237)" src="https://github.com/user-attachments/assets/deff0a9c-52e8-4cd2-a85a-35dd20b6c3f9" />
+<img width="1901" height="907" alt="スクリーンショット (6238)" src="https://github.com/user-attachments/assets/15cda466-090a-4dfa-b6bc-739aa1686e63" />
 
 ## 商品検索機能
 ・検索欄では「商品名」を入れると、部分一致検索で、興味ある商品が出てきます。「マイリスト」ページにて見れます。
