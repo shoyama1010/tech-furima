@@ -45,6 +45,61 @@ https://tech-furima-production.up.railway.app
 - 画像アップロード
 - 検索機能
 
+# 各種機能（画面構成）について
+
+## メール認証機能
+・①会員登録後、②登録時に「認証用メール」を送信　③（mailhogでの）認証リンクのクリック　④ユーザーが受信したメール内のリンクをクリックとなってますが、
+メールが送信された「お知らせ」は、今回「マイページ」にて表示させてます。（ユーザー向けに、プロフィール情報も続けて入力して貰えるように）
+
+ローカル環境：http://localhost:8025
+
+<img width="1764" height="923" alt="Image" src="https://github.com/user-attachments/assets/141e300c-644d-48bd-af26-542d79e50211" />
+
+![Image](https://github.com/user-attachments/assets/1414af7e-2d49-422d-a64c-990cb4a0837f)
+
+![Image](https://github.com/user-attachments/assets/a74ed594-11a9-4214-82cc-910035582ac3)
+
+## コメント送信機能
+・ユーザーがログインしている時のみ商品詳細ページの下部に表示されます。
+
+## ユーザー情報変更機能
+・プロフィール編集画面にて、ユーザー情報が編集画面上で変更されてから、マイページにて表示されます。
+<img width="1895" height="898" alt="スクリーンショット (6237)" src="https://github.com/user-attachments/assets/deff0a9c-52e8-4cd2-a85a-35dd20b6c3f9" />
+<img width="1901" height="907" alt="スクリーンショット (6238)" src="https://github.com/user-attachments/assets/15cda466-090a-4dfa-b6bc-739aa1686e63" />
+
+## 商品検索機能
+・検索欄では「商品名」を入れると、部分一致検索で、興味ある商品が出てきます。「マイリスト」ページにて見れます。
+
+## 商品購入機能
+・商品を１つ選択してオーダーできます。購入方法は「支払い方法選択」にて、次の「決済機能」にておこないます。
+<img width="1849" height="905" alt="スクリーンショット (6248)" src="https://github.com/user-attachments/assets/9e762412-ab70-429e-9219-d5e86d89ba54" />
+
+・購入された商品は、「マイリスト」に登録されます。
+<img width="1768" height="888" alt="スクリーンショット (6245)" src="https://github.com/user-attachments/assets/16fc5184-2f9e-4ee4-989d-8b29a0c71b4a" />
+
+## 決済機能
+・実際に購入ボタンから、PAY.JPに登録して、そこからstripeの決済画面に接続されて、はじめて「購入」となります。
+<img width="1904" height="907" alt="スクリーンショット (6250)" src="https://github.com/user-attachments/assets/7c8041a8-bd24-462d-a6da-b2f6fea7209c" />
+<img width="1714" height="938" alt="スクリーンショット (6251)" src="https://github.com/user-attachments/assets/5943e5b0-97a8-4904-b661-61d3d8d0408a" />
+
+## いいね機能
+・☆印を押して、「いいね」することができ、解除することもできます。「いいね」された商品は、「マイリスト」に登録されます。
+<img width="1858" height="898" alt="スクリーンショット (6253)" src="https://github.com/user-attachments/assets/0f5d7d34-efea-4051-9566-7c3d1cf74333" />
+<img width="1764" height="881" alt="スクリーンショット (6254)" src="https://github.com/user-attachments/assets/cb6eb4fa-e328-43d1-be1d-667872b5adc7" />
+
+## 出品商品情報登録機能
+・.商品出品画面にて必要な情報（商品名、画像、カテゴリ、状態、商品説明）を登録できます。
+<img width="1655" height="892" alt="スクリーンショット (6240)" src="https://github.com/user-attachments/assets/2bb7ae1e-7c4a-4562-8170-b1bf29196a9e" />
+
+・出品された商品は、商品一覧画面は勿論、「マイページ/プロフィール」の画面にも登録されます。
+<img width="1768" height="888" alt="スクリーンショット (6245)" src="https://github.com/user-attachments/assets/41cbc801-b289-4097-bf2f-60af4ad4330c" />
+
+## 画像アップロード機能
+・出品画面から出品されるときに、商品画像（ローカル画像）を、ユーザー自身の画像（縮小済）からアップロードできます。
+
+＊新規画像では、storage/app/public/item_imagesにてシンボリックリンクされております。
+
+
 # 使用技術
 - Laravel 8
 - Nginx 1.21.1
@@ -276,66 +331,4 @@ Seeder画像とアップロード画像の表示形式を意識し、フロン�
 - マイページ機能の強化
 - Tokenの永続認証改善
 - Redux / ContextAPI による状態管理
-
-# 各種機能について
-
-## メール認証機能
-・①会員登録後、②登録時に「認証用メール」を送信　③（mailhogでの）認証リンクのクリック　④ユーザーが受信したメール内のリンクをクリックとなってますが、
-メールが送信された「お知らせ」は、今回「マイページ」にて表示させてます。（ユーザー向けに、プロフィール情報も続けて入力して貰えるように）
-
-ローカル環境：http://localhost:8025
-
-<img width="1764" height="923" alt="Image" src="https://github.com/user-attachments/assets/141e300c-644d-48bd-af26-542d79e50211" />
-
-![Image](https://github.com/user-attachments/assets/1414af7e-2d49-422d-a64c-990cb4a0837f)
-
-![Image](https://github.com/user-attachments/assets/a74ed594-11a9-4214-82cc-910035582ac3)
-
-## コメント送信機能
-・ユーザーがログインしている時のみ商品詳細ページの下部に表示されます。
-
-## ユーザー情報変更機能
-・プロフィール編集画面にて、ユーザー情報が編集画面上で変更されてから、マイページにて表示されます。
-<img width="1895" height="898" alt="スクリーンショット (6237)" src="https://github.com/user-attachments/assets/deff0a9c-52e8-4cd2-a85a-35dd20b6c3f9" />
-<img width="1901" height="907" alt="スクリーンショット (6238)" src="https://github.com/user-attachments/assets/15cda466-090a-4dfa-b6bc-739aa1686e63" />
-
-## 商品検索機能
-・検索欄では「商品名」を入れると、部分一致検索で、興味ある商品が出てきます。「マイリスト」ページにて見れます。
-
-## 商品購入機能
-・商品を１つ選択してオーダーできます。購入方法は「支払い方法選択」にて、決済にておこないます。
-
-・購入した住所も画面から変更できます。
-
-・購入された商品は、「マイリスト」に登録されます。
-<img width="1904" height="907" alt="スクリーンショット (6250)" src="https://github.com/user-attachments/assets/7c8041a8-bd24-462d-a6da-b2f6fea7209c" />
-<img width="1849" height="905" alt="スクリーンショット (6248)" src="https://github.com/user-attachments/assets/9e762412-ab70-429e-9219-d5e86d89ba54" />
-
-
-## 決済機能
-・実際に購入ボタンから、PAY.JPに登録して、そこからstripeの決済画面に接続されて、はじめて「購入」となります。
-<img width="1775" height="961" alt="スクリーンショット (5301)" src="https://github.com/user-attachments/assets/4af2ac91-da38-4763-b636-2241f49b2313" />
-<img width="1758" height="988" alt="スクリーンショット (5302)" src="https://github.com/user-attachments/assets/ead0a027-dde9-4460-be8c-630b54bed610" />
-
-## いいね機能
-・☆印を押して、「いいね」することができ、解除することもできます。「いいね」された商品は、「マイリスト」に登録されます。
-<img width="1906" height="968" alt="スクリーンショット (5311)" src="https://github.com/user-attachments/assets/41d524bd-f21a-4353-bc91-5dd8d311ffc3" />
-<img width="1920" height="951" alt="スクリーンショット (5312)" src="https://github.com/user-attachments/assets/5d7ec90f-3ddb-4b06-b1f9-d5bb78b93af7" />
-
-## 出品商品情報登録機能
-・.商品出品画面にて必要な情報（商品名、画像、カテゴリ、状態、商品説明）を登録できます。
-<img width="1602" height="956" alt="スクリーンショット (5303)" src="https://github.com/user-attachments/assets/14e27e82-2744-4d68-adf9-430834286e2c" />
-<img width="1607" height="957" alt="スクリーンショット (5304)" src="https://github.com/user-attachments/assets/b43ef1f0-a7ef-4124-b91c-a5ab00c9d6cf" />
-
-・出品された商品は、商品一覧画面は勿論、「マイページ/プロフィール」の画面にも登録されます。
-<img width="1768" height="908" alt="スクリーンショット (5305)" src="https://github.com/user-attachments/assets/9d177c6f-ed6e-4d19-8e16-2b130f94102f" />
-
-## 画像アップロード機能
-・出品画面から出品されるときに、商品画像（ローカル画像）を、ユーザー自身の画像（縮小済）からアップロードできます。
-
-＊新規画像では、storage/app/public/item_imagesにてシンボリックリンクされております。
-
-
-
-
 
