@@ -48,16 +48,19 @@ https://tech-furima-production.up.railway.app
 # 各種機能（画面構成）について
 
 ## メール認証機能
-・①会員登録後、②登録時に「認証用メール」を送信　③（mailhogでの）認証リンクのクリック　④ユーザーが受信したメール内のリンクをクリックとなってますが、
-メールが送信された「お知らせ」は、今回「マイページ」にて表示させてます。（ユーザー向けに、プロフィール情報も続けて入力して貰えるように）
+①会員登録後、②登録時に「認証用メール」を送信　
 
-ローカル環境：http://localhost:8025
+<img width="1752" height="878" alt="スクリーンショット (6255)" src="https://github.com/user-attachments/assets/f89d4ce2-8bd5-4f16-a6df-e3063e1ed0a1" />
+<img width="1754" height="904" alt="スクリーンショット (6258)" src="https://github.com/user-attachments/assets/57b20352-1e98-48ea-b072-9cdb55198acb" />
 
-<img width="1764" height="923" alt="Image" src="https://github.com/user-attachments/assets/141e300c-644d-48bd-af26-542d79e50211" />
+③ ローカル環境：http://localhost:8025でアクセスし、（mailhogでの）認証リンクのクリック　
 
-![Image](https://github.com/user-attachments/assets/1414af7e-2d49-422d-a64c-990cb4a0837f)
+<img width="1872" height="893" alt="スクリーンショット (6259)" src="https://github.com/user-attachments/assets/78dabf6d-923a-4f21-96e1-26eeb82ff03b" />
+<img width="1785" height="885" alt="スクリーンショット (6260)" src="https://github.com/user-attachments/assets/dc8f4673-532e-4c78-bda0-e14d95452f0f" />
 
-![Image](https://github.com/user-attachments/assets/a74ed594-11a9-4214-82cc-910035582ac3)
+④メール送信の通知先画面は、今回「マイページ」にて表示させてます。（ユーザー向けに、プロフィール情報も続けて入力して貰えるように）
+
+<img width="1899" height="955" alt="スクリーンショット (6261)" src="https://github.com/user-attachments/assets/d470ad32-716b-4337-beb2-27c7c864d058" />
 
 ## コメント送信機能
 ・ユーザーがログインしている時のみ商品詳細ページの下部に表示されます。
