@@ -53,9 +53,7 @@ https://tech-furima-production.up.railway.app
 <img width="1752" height="878" alt="スクリーンショット (6255)" src="https://github.com/user-attachments/assets/f89d4ce2-8bd5-4f16-a6df-e3063e1ed0a1" />
 <img width="1754" height="904" alt="スクリーンショット (6258)" src="https://github.com/user-attachments/assets/57b20352-1e98-48ea-b072-9cdb55198acb" />
 
-③ ローカル環境では、http://localhost:8025　でアクセス
-
-（mailhogでの）認証リンクのクリック　
+③ ローカル環境では、http://localhost:8025 （mailhogでの）認証リンクのクリック　
 
 <img width="1872" height="893" alt="スクリーンショット (6259)" src="https://github.com/user-attachments/assets/78dabf6d-923a-4f21-96e1-26eeb82ff03b" />
 <img width="1785" height="885" alt="スクリーンショット (6260)" src="https://github.com/user-attachments/assets/dc8f4673-532e-4c78-bda0-e14d95452f0f" />
