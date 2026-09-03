@@ -313,7 +313,7 @@ Seeder画像とアップロード画像の表示形式を意識し、フロン�
 
 
 ## 決済機能
-・実際に購入ボタンから、PAY.JPに登録して、そこからsripeの決済画面に接続されて、はじめて「購入」となります。
+・実際に購入ボタンから、PAY.JPに登録して、そこからstripeの決済画面に接続されて、はじめて「購入」となります。
 <img width="1775" height="961" alt="スクリーンショット (5301)" src="https://github.com/user-attachments/assets/4af2ac91-da38-4763-b636-2241f49b2313" />
 <img width="1758" height="988" alt="スクリーンショット (5302)" src="https://github.com/user-attachments/assets/ead0a027-dde9-4460-be8c-630b54bed610" />
 
