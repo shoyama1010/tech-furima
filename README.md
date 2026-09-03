@@ -308,9 +308,9 @@ Seeder画像とアップロード画像の表示形式を意識し、フロン�
 ・購入した住所も画面から変更できます。
 
 ・購入された商品は、「マイリスト」に登録されます。
-![Image](https://github.com/user-attachments/assets/e2711372-f370-406c-96f3-28743e6fc4cd)
-![Image](https://github.com/user-attachments/assets/14a19ba9-2e89-4e16-8e72-e1f769888145)
-![Image](https://github.com/user-attachments/assets/7cc37d61-2a95-41e1-9ac0-ff4c9b6bce61)
+<img width="1904" height="907" alt="スクリーンショット (6250)" src="https://github.com/user-attachments/assets/7c8041a8-bd24-462d-a6da-b2f6fea7209c" />
+<img width="1849" height="905" alt="スクリーンショット (6248)" src="https://github.com/user-attachments/assets/9e762412-ab70-429e-9219-d5e86d89ba54" />
+
 
 ## 決済機能
 ・実際に購入ボタンから、PAY.JPに登録して、そこからsripeの決済画面に接続されて、はじめて「購入」となります。
