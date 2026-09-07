@@ -4,15 +4,15 @@
 
 # アプリ概要
 
-tech-furima は、Laravel と React（TypeScript）を用いて開発した、メルカリ風のフリマアプリです。
+tech-furima は、Laravel bladeで構築した、メルカリ風のフリマアプリです。
 
-LaravelをAPIサーバーとして利用し、ReactによるSPA（Single Page Application）でユーザー体験を向上させました。
+LaravelをAPIサーバーとして利用し、ReactによるSPA（Single Page Application）で、一部画面をユーザー体験として向上させました。
 
 また、本番環境では Railway（バックエンド）へデプロイし、実際の公開・運用までを想定した構成になっています。
 
 # 作成した目的
 
-以前にLaravel Bladeで実装したフリマアプリを、Laravel API + React（TypeScript）によるSPAへ再構築し、より実務に近い構成で開発・公開まで経験することを目的として制作しました。
+以前にLaravel Bladeで実装したフリマアプリを、Laravel Bladeで構築した既存機能を残しつつ、React（TypeScript）から利用するAPIを追加し、一部画面から段階的にSPA化しました。
 
 - API設計を意識したバックエンド実装
 - ReactによるSPA化やCookie認証からトークン認証への移行
