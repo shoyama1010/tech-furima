@@ -207,6 +207,16 @@ header a {
 
 
 @media (max-width: 768px) {
+
+    /* .site-header {
+        position: static;
+        height: auto;
+    }
+
+    body {
+        padding-top: 0;
+    } */
+
     .site-header__inner {
         display: flex;
         flex-wrap: wrap;
@@ -276,6 +286,6 @@ header a {
 
     /* スマホ用ヘッダーの高さ分 */
     body {
-        padding-top: 122px;
+        padding-top: 145px;
     }
 }
