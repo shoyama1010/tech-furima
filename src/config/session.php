@@ -170,7 +170,7 @@ return [
     */
 
     // 'secure' => env('SESSION_SECURE_COOKIE'),
-    'secure' => false,  // ローカル環境なら false にする
+    'secure' => env('SESSION_SECURE_COOKIE', false),
 
     /*
     |--------------------------------------------------------------------------
