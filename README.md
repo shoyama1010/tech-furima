@@ -107,7 +107,7 @@ https://tech-furima-production.up.railway.app
 # 使用技術
 - Laravel 8
 - Nginx 1.21.1
-- PHP 8.2
+- PHP 8.2.35(更新済)
 - html
 - css
 - mysql 8.0.26
