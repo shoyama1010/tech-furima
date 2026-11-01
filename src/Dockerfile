@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.2.35-fpm
 
 WORKDIR /var/www
 
@@ -16,8 +16,10 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+# RUN php artisan config:cache \
+#     && php artisan route:cache \
+#     && php artisan view:cache
 
-CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+CMD php artisan storage:link && exec php artisan serve --host=0.0.0.0 --port=${PORT}
+
+
