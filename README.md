@@ -29,7 +29,8 @@ http://localhost
 
 https://tech-furima-production.up.railway.app
 
-- ログインする時は、デモ用アカウントでログインし、機能を試してください。
+- この公開アプリは、一般ユーザー向けには作られておりません。（Railwayの設定上、メール通知機能に適応してません）
+- ログインする時は、デモ用アカウントでのログインし、機能を試してください。
 - メールアドレス：test@example.com、パスワード：password
 
 # 機能一覧
