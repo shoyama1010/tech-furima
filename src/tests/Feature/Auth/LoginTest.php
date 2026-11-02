@@ -71,4 +71,27 @@ class LoginTest extends TestCase
         $response->assertSessionHasErrors('email');
         $this->assertGuest();
     }
+
+    public function test_メール未認証ユーザーは認証案内画面へ遷移する(): void
+    {
+        $user = User::factory()->unverified()->create([
+            'email' => 'unverified@example.com',
+            'password' => Hash::make('password123'),
+        ]);
+
+        $response = $this->post('/login', [
+            'email' => 'unverified@example.com',
+            'password' => 'password123',
+        ]);
+
+        // メール認証案内画面へリダイレクトされる
+        $response->assertRedirect(route('verification.notice'));
+
+        // ログイン状態が維持されている
+        $this->assertAuthenticatedAs($user);
+
+        // 認証案内画面へアクセスできる
+        $this->get(route('verification.notice'))
+            ->assertStatus(200);
+    }
 }

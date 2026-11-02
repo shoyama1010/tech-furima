@@ -50,17 +50,16 @@ Route::middleware(['guest'])->group(
 // ログアウト処理 (認証済みのみ）
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth'])->group(function () {
+// Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // マイページ関連のルート
     Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
-    
+
     Route::get('/mypage/profile', [UserController::class, 'edit'])->name('profile.edit');
     Route::post('/mypage/profile', [UserController::class, 'updateProfile'])->name('profile.update');
     // プロフィール更新処理
     Route::put('/user/profile', [UserController::class, 'update'])
         ->name('user.profile.update');
-    // Route::put('/user/profile', [UserController::class, 'update'])
-    // ->name('user-profile-information.update');
 
     // コメント処理
     Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
@@ -92,12 +91,11 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // いいね機能
-Route::post('/items/{item}/toggle-like', [LikeController::class, 'toggle'])->name('items.toggle-like');
+Route::post('/items/{item}/toggle-like', [LikeController::class, 'toggle']
+)->middleware(['auth', 'verified'])
+->name('items.toggle-like');
 
 Route::get('/items/detail/{id}', [ItemController::class, 'show'])->name('items.detail');
-
-// Route::get('/items/{id}', [ItemController::class, 'show'])->name('items.detail');
-
 
 // メール確認のプロンプト（未確認のユーザー向け）
 Route::get('/email/verify', function () {
@@ -107,7 +105,9 @@ Route::get('/email/verify', function () {
 // メール内リンククリック時の処理
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-    return redirect('/mypage')->with('message', 'メール認証が完了しました！');
+
+    return redirect()->route('items.index')
+        ->with('message', 'メール認証が完了しました！');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // 認証メールの再送
@@ -115,4 +115,3 @@ Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
     return back()->with('message', '認証メールを再送しました。');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
