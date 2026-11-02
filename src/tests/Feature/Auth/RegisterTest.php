@@ -2,6 +2,9 @@
 
 namespace Tests\Feature\Auth;
 
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Auth\Notifications\VerifyEmail;
+
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -68,5 +71,34 @@ class RegisterTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('password');
+    }
+
+    public function test_会員登録後にメール認証通知が送信される(): void
+    {
+        // 実際のメール送信を行わず、通知を記録する
+        Notification::fake();
+
+        // 新規会員登録
+        $response = $this->post('/register', [
+            'name' => 'メール認証テスト',
+            'email' => 'verify-test@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        // 作成されたユーザーを取得
+        $user = User::where('email', 'verify-test@example.com')->firstOrFail();
+
+        // 認証メール通知が発行されたことを確認
+        Notification::assertSentTo($user, VerifyEmail::class);
+
+        // 登録直後はメール未認証
+        $this->assertNull($user->email_verified_at);
+
+        // 認証案内画面へ遷移することを確認
+        $response->assertRedirect(route('verification.notice'));
+
+        // 登録後のログイン状態を確認
+        $this->assertAuthenticatedAs($user);
     }
 }

@@ -95,4 +95,65 @@ class LikeToggleTest extends TestCase
             'item_id' => $itemId,
         ]);
     }
+
+    public function test_メール未認証ユーザーはいいねできない(): void
+    {
+        // メール未認証ユーザーを作成
+        $user = User::factory()->unverified()->create();
+
+        // 出品者と商品を作成
+        $seller = User::factory()->create();
+        $itemId = $this->createItem($seller->id);
+
+        // 未認証ユーザーとしてログイン
+        $this->actingAs($user);
+
+        // いいね操作を実行
+        $response = $this->post(
+            route('items.toggle-like', $itemId)
+        );
+
+        // メール認証案内画面へリダイレクトされる
+        $response->assertRedirect(route('verification.notice'));
+
+        // いいねがDBに保存されていないことを確認
+        $this->assertDatabaseMissing('likes', [
+            'user_id' => $user->id,
+            'item_id' => $itemId,
+        ]);
+
+        // ログイン状態は維持される
+        $this->assertAuthenticatedAs($user);
+    }
+
+
+    public function test_メール未認証ユーザーは商品詳細からいいねできない(): void
+    {
+        // メール未認証ユーザーを作成
+        $user = User::factory()->unverified()->create();
+
+        // 出品者と商品を作成
+        $seller = User::factory()->create();
+        $itemId = $this->createItem($seller->id);
+
+        // 未認証ユーザーとしてログイン
+        $this->actingAs($user);
+
+        // 商品詳細画面からのいいねAPIを実行
+        $response = $this->postJson(
+            route('items.like', $itemId)
+        );
+
+        // メール認証が必要なため403を返す
+        $response->assertStatus(403);
+
+        // いいねが保存されていないことを確認
+        $this->assertDatabaseMissing('likes', [
+            'user_id' => $user->id,
+            'item_id' => $itemId,
+        ]);
+
+        // ログイン状態は維持される
+        $this->assertAuthenticatedAs($user);
+    }
 }

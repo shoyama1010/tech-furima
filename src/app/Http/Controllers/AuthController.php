@@ -21,7 +21,7 @@ class AuthController extends Controller
         ]);
         // 認証メールを送信
         event(new Registered($user));
-        
+
         Auth::login($user);
         // 認証確認ページへリダイレクト
         return redirect()->route('verification.notice')->with('success', '登録が完了しました。認証メールをご確認ください。');
@@ -31,11 +31,13 @@ class AuthController extends Controller
     {
 
         if (Auth::attempt($request->only('email', 'password'))) {
+            // セッション固定攻撃への対策
+            $request->session()->regenerate();
+            
             $user = auth()->user();
 
             // ✅ メール認証済みかチェック
             if (is_null($user->email_verified_at)) {
-                Auth::logout();
                 
                 return redirect()->route('verification.notice')->withErrors([
                     'email' => 'メール認証が完了していません。メールを確認してください。',
@@ -43,7 +45,6 @@ class AuthController extends Controller
             }
 
             // ✅ 認証済みユーザーは通常のリダイレクト
-            // return redirect()->route('items.index')->with('success', 'ログインしました。');
             return redirect()->route('items.index')->with('success', 'ログインしました。');
         }
 

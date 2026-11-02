@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 
 @section('css')
@@ -163,9 +162,16 @@
 
                 if (response.status === 401) {
                     alert('ログインが必要です');
+                    window.location.href = '/login';
                     return;
                 }
 
+                if (response.status === 403) {
+                    alert('メール認証が完了していません。認証を完了してください。');
+                    window.location.href = '/email/verify';
+                    return;
+                }
+                
                 if (!response.ok) {
                     throw new Error('いいねの更新に失敗しました');
                 }
