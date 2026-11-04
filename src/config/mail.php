@@ -45,6 +45,12 @@ return [
             'auth_mode' => null,
         ],
 
+        // Mailtrap HTTPS API（Railway staging用）
+        'mailtrap' => [
+            'transport' => 'mailtrap',
+            'token' => env('MAILTRAP_API_TOKEN'),
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],
